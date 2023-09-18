@@ -11,6 +11,11 @@ namespace SchemaBuilder
 {
     public class PiggyContext : DbContext
     {
+        public PiggyContext() : base("Server=DESKTOP-ISFDFVM;Database=piggybank;User Id=piggybank;Password=piggybank;")
+        {
+
+        }
+
         public DbSet<Product> products { get; set; }
         public DbSet<Order> orders { get; set; }
         public DbSet<OrderDetail> order_details { get; set; }

@@ -1,4 +1,5 @@
-﻿using SchemaBuilder.models;
+﻿using Microsoft.EntityFrameworkCore;
+using SchemaBuilder.models;
 using System.Data.Entity;
 
 namespace SchemaBuilder
@@ -7,6 +8,24 @@ namespace SchemaBuilder
     {
         static void Main(string[] args)
         {
+            /*
+            // Build the configuration from an appsettings.json file
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            // Get the custom connection string from the configuration
+            string connectionString = config.GetConnectionString("DefaultConnection");
+
+            // Create the DbContextOptions with the custom connection string
+            var options = new DbContextOptionsBuilder<PiggyContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+            */
+
+
+            // using (var db = new PiggyContext(options))
             using (var db = new PiggyContext())
             {
                 var address = new Address

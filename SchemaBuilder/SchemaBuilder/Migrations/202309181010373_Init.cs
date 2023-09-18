@@ -12,10 +12,10 @@
                 c => new
                     {
                         AddressId = c.Int(nullable: false, identity: true),
-                        Number = c.String(),
-                        Street = c.String(),
-                        City = c.String(),
-                        Zip = c.String(),
+                        Number = c.String(nullable: false, maxLength: 50),
+                        Street = c.String(nullable: false, maxLength: 150),
+                        City = c.String(nullable: false, maxLength: 100),
+                        Zip = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => t.AddressId);
             
@@ -24,7 +24,7 @@
                 c => new
                     {
                         ManufacturerId = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        Name = c.String(nullable: false, maxLength: 100),
                         AddressId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ManufacturerId)
@@ -56,22 +56,21 @@
                         UserId = c.Int(nullable: false),
                         AddressId = c.Int(nullable: false),
                         StatusId = c.Int(nullable: false),
-                        Status_OrderStatusId = c.Int(),
                     })
                 .PrimaryKey(t => t.OrderId)
                 .ForeignKey("dbo.Addresses", t => t.AddressId)
-                .ForeignKey("dbo.OrderStatus", t => t.Status_OrderStatusId)
+                .ForeignKey("dbo.OrderStatus", t => t.StatusId)
                 .ForeignKey("dbo.Users", t => t.UserId)
                 .Index(t => t.UserId)
                 .Index(t => t.AddressId)
-                .Index(t => t.Status_OrderStatusId);
+                .Index(t => t.StatusId);
             
             CreateTable(
                 "dbo.OrderStatus",
                 c => new
                     {
                         OrderStatusId = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        Name = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => t.OrderStatusId);
             
@@ -80,11 +79,11 @@
                 c => new
                     {
                         UserId = c.Int(nullable: false, identity: true),
-                        Firstname = c.String(),
-                        Lastname = c.String(),
-                        Email = c.String(),
-                        Password = c.String(),
-                        Phone = c.String(),
+                        Firstname = c.String(nullable: false, maxLength: 50),
+                        Lastname = c.String(nullable: false, maxLength: 50),
+                        Email = c.String(nullable: false, maxLength: 100),
+                        Password = c.String(nullable: false, maxLength: 256),
+                        Phone = c.String(maxLength: 20),
                         IsActive = c.Boolean(nullable: false),
                         RoleId = c.Int(nullable: false),
                         AddressId = c.Int(nullable: false),
@@ -100,7 +99,7 @@
                 c => new
                     {
                         RoleId = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        Name = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => t.RoleId);
             
@@ -109,16 +108,17 @@
                 c => new
                     {
                         ProductId = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        ImageUrl = c.String(),
-                        Description = c.String(),
+                        Name = c.String(nullable: false, maxLength: 200),
+                        ImageUrl = c.String(maxLength: 200),
+                        Description = c.String(maxLength: 2000),
                         Height = c.Int(nullable: false),
                         Width = c.Int(nullable: false),
                         Length = c.Int(nullable: false),
                         Weight = c.Int(nullable: false),
                         Capacity = c.Int(nullable: false),
-                        Color = c.String(),
+                        Color = c.String(maxLength: 50),
                         Price = c.Int(nullable: false),
+                        IsActive = c.Boolean(nullable: false),
                         ManufacturerId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ProductId)
@@ -130,7 +130,7 @@
                 c => new
                     {
                         ReviewStatusId = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        Name = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => t.ReviewStatusId);
             
@@ -140,39 +140,38 @@
                     {
                         ReviewId = c.Int(nullable: false, identity: true),
                         Score = c.Int(nullable: false),
-                        Message = c.String(),
+                        Message = c.String(maxLength: 2000),
                         CreatedAt = c.DateTime(nullable: false),
                         StatusId = c.Int(nullable: false),
                         UserId = c.Int(nullable: false),
-                        Status_ReviewStatusId = c.Int(),
                     })
                 .PrimaryKey(t => t.ReviewId)
-                .ForeignKey("dbo.ReviewStatus", t => t.Status_ReviewStatusId)
+                .ForeignKey("dbo.ReviewStatus", t => t.StatusId)
                 .ForeignKey("dbo.Users", t => t.UserId)
-                .Index(t => t.UserId)
-                .Index(t => t.Status_ReviewStatusId);
+                .Index(t => t.StatusId)
+                .Index(t => t.UserId);
             
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.Reviews", "UserId", "dbo.Users");
-            DropForeignKey("dbo.Reviews", "Status_ReviewStatusId", "dbo.ReviewStatus");
+            DropForeignKey("dbo.Reviews", "StatusId", "dbo.ReviewStatus");
             DropForeignKey("dbo.OrderDetails", "ProductId", "dbo.Products");
             DropForeignKey("dbo.Products", "ManufacturerId", "dbo.Manufacturers");
             DropForeignKey("dbo.OrderDetails", "OrderId", "dbo.Orders");
             DropForeignKey("dbo.Orders", "UserId", "dbo.Users");
             DropForeignKey("dbo.Users", "RoleId", "dbo.Roles");
             DropForeignKey("dbo.Users", "AddressId", "dbo.Addresses");
-            DropForeignKey("dbo.Orders", "Status_OrderStatusId", "dbo.OrderStatus");
+            DropForeignKey("dbo.Orders", "StatusId", "dbo.OrderStatus");
             DropForeignKey("dbo.Orders", "AddressId", "dbo.Addresses");
             DropForeignKey("dbo.Manufacturers", "AddressId", "dbo.Addresses");
-            DropIndex("dbo.Reviews", new[] { "Status_ReviewStatusId" });
             DropIndex("dbo.Reviews", new[] { "UserId" });
+            DropIndex("dbo.Reviews", new[] { "StatusId" });
             DropIndex("dbo.Products", new[] { "ManufacturerId" });
             DropIndex("dbo.Users", new[] { "AddressId" });
             DropIndex("dbo.Users", new[] { "RoleId" });
-            DropIndex("dbo.Orders", new[] { "Status_OrderStatusId" });
+            DropIndex("dbo.Orders", new[] { "StatusId" });
             DropIndex("dbo.Orders", new[] { "AddressId" });
             DropIndex("dbo.Orders", new[] { "UserId" });
             DropIndex("dbo.OrderDetails", new[] { "ProductId" });
