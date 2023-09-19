@@ -2,7 +2,6 @@
 using SchemaBuilder.models;
 using System;
 using System.Collections.Generic;
-// using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
@@ -10,11 +9,21 @@ using System.Threading.Tasks;
 
 namespace PiggyBankMVC.DataAccessLayer
 {
-    public class PiggyContext : Microsoft.EntityFrameworkCore.DbContext
+    public class PiggyContext : DbContext
     {
         public PiggyContext(DbContextOptions<PiggyContext> options) : base(options)
         {
             
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
 
         public DbSet<Product> products { get; set; }

@@ -14,11 +14,6 @@ namespace PiggyBankMVC.DataAccessLayer
                 if (context.addresses.Any())
                     return;
 
-                int addressIdGenerator = 2;
-                int orderGenerator = 1;
-
-
-
                 (new List<Address>{
                     new Address {Number="---", Street="---", City="---", Zip="---"},
                     new Address {Number="123", Street="Avenue A", City="Lille", Zip="59000"},
@@ -35,6 +30,36 @@ namespace PiggyBankMVC.DataAccessLayer
                     new Address {Number="23", Street="Rue I", City="Lille", Zip="59000"},
                     new Address {Number="39", Street="Rue J", City="Lille", Zip="59000"},
                     new Address {Number="77", Street="Rue K", City="Lille", Zip="59000"},
+                    new Address {Number="234", Street="Avenue X", City="Paris", Zip="75001"},
+                    new Address {Number="789", Street="Rue Y", City="Lyon", Zip="69000"},
+                    new Address {Number="555", Street="Boulevard Z", City="Marseille", Zip="13001"},
+                    new Address {Number="12", Street="Rue de la Paix", City="Paris", Zip="75002"},
+                    new Address {Number="567", Street="Avenue Molière", City="Brussels", Zip="1000"},
+                    new Address {Number="987", Street="Rue de la Liberté", City="Nice", Zip="06000"},
+                    new Address {Number="321", Street="Avenue Franklin", City="New York", Zip="10001"},
+                    new Address {Number="654", Street="Main Street", City="Los Angeles", Zip="90001"},
+                    new Address {Number="111", Street="Rue Lafayette", City="Paris", Zip="75003"},
+                    new Address {Number="222", Street="Avenue Montaigne", City="Paris", Zip="75004"},
+                    new Address {Number="777", Street="Broadway", City="New York", Zip="10002"},
+                    new Address {Number="456", Street="Sunset Boulevard", City="Los Angeles", Zip="90002"},
+                    new Address {Number="888", Street="Königstraße", City="Berlin", Zip="10117"},
+                    new Address {Number="999", Street="Piazza San Marco", City="Venice", Zip="30124"},
+                    new Address {Number="456", Street="Champs-Élysées", City="Paris", Zip="75005"},
+                    new Address {Number="567", Street="Rue de la République", City="Lyon", Zip="69001"},
+                    new Address {Number="101", Street="Avenue des Champs-Élysées", City="Paris", Zip="75006"},
+                    new Address {Number="888", Street="Via Condotti", City="Rome", Zip="00187"},
+                    new Address {Number="321", Street="Oxford Street", City="London", Zip="W1D 1BS"},
+                    new Address {Number="444", Street="Gran Vía", City="Madrid", Zip="28013"},
+                    new Address {Number="777", Street="Fifth Avenue", City="New York", Zip="10003"},
+                    new Address {Number="999", Street="Hollywood Boulevard", City="Los Angeles", Zip="90003"},
+                    new Address {Number="123", Street="Passeig de Gràcia", City="Barcelona", Zip="08008"},
+                    new Address {Number="456", Street="Kurfürstendamm", City="Berlin", Zip="10707"},
+                    new Address {Number="555", Street="Nevsky Prospect", City="St. Petersburg", Zip="190000"},
+                    new Address {Number="789", Street="Piazza del Duomo", City="Milan", Zip="20121"},
+                    new Address {Number="666", Street="Rue du Faubourg Saint-Honoré", City="Paris", Zip="75007"},
+                    new Address {Number="888", Street="Av. Paulista", City="São Paulo", Zip="01310-000"},
+                    new Address {Number="1010", Street="Nanjing Road", City="Shanghai", Zip="200001"},
+                    new Address {Number="555", Street="Ginza", City="Tokyo", Zip="104-0061"}
                 }).ForEach(element => context.addresses.Add(element)); context.SaveChanges();
 
                 (new List<Role>{
@@ -48,39 +73,37 @@ namespace PiggyBankMVC.DataAccessLayer
                     new User {Firstname="Admin", Lastname="Admin", Email="admin@piggybank.com", Password="Admin", Phone="0000000000", IsActive=true, AddressId=1, RoleId=1},
                     new User {Firstname="Moderator", Lastname="Moderator", Email="moderator@piggybank.com", Password="Moderator", Phone="0000000001", IsActive=true, AddressId=1, RoleId=2},
                     new User {Firstname="Assist", Lastname="Assist", Email="assist@piggybank.com", Password="Assist", Phone="0000000002", IsActive=true, AddressId=1, RoleId=3},
-                    new User {Firstname="Jean-Michel", Lastname="Lambda", Email="jean-michel.lambdba@gmail.com", Password="Lambda", Phone="0320597896", IsActive=true, AddressId=addressIdGenerator++, RoleId=4},
-                    new User {Firstname="Azerty", Lastname="Ytreza", Email="azerty@gmail.com", Password="Ytreza", Phone="0328976315", IsActive=true, AddressId=addressIdGenerator++, RoleId=4},
-                    new User {Firstname="Malenia", Lastname="Blade of Miquella", Email="malenia@get-rekt.com", Password="Malenia", Phone="0666666666", IsActive=true, AddressId=addressIdGenerator++, RoleId=4},
-                    new User {Firstname="Andrew", Lastname="Ryan", Email="a.ryan@corporate.org", Password="Ryan", Phone="0564879332", IsActive=true, AddressId=addressIdGenerator++, RoleId=4},
-                    new User {Firstname="George", Lastname="Abitbol", Email="classiest.man@entire.world", Password="Abitbol", Phone="+33678960408", IsActive=true, AddressId=addressIdGenerator++, RoleId=4},
-                    new User { Firstname = "Alice", Lastname = "Johnson", Email = "alice.johnson@example.com", Password = "Password123", Phone = "123-456-7890", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "Bob", Lastname = "Smith", Email = "bob.smith@example.com", Password = "Password456", Phone = "987-654-3210", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "Emily", Lastname = "Davis", Email = "emily.davis@example.com", Password = "Password789", Phone = "555-123-4567", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "David", Lastname = "Wilson", Email = "david.wilson@example.com", Password = "Passwordabc", Phone = "777-888-9999", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "Sophia", Lastname = "Lee", Email = "sophia.lee@example.com", Password = "Passwordxyz", Phone = "222-333-4444", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "Liam", Lastname = "Martin", Email = "liam.martin@example.com", Password = "Password789", Phone = "888-777-6666", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "Olivia", Lastname = "Thompson", Email = "olivia.thompson@example.com", Password = "Password123", Phone = "999-555-7777", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "Noah", Lastname = "Garcia", Email = "noah.garcia@example.com", Password = "Password456", Phone = "111-222-3333", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "Ava", Lastname = "Rodriguez", Email = "ava.rodriguez@example.com", Password = "Passwordxyz", Phone = "444-555-6666", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 },
-                    new User { Firstname = "Mia", Lastname = "Hernandez", Email = "mia.hernandez@example.com", Password = "Passwordabc", Phone = "333-444-5555", IsActive = true, AddressId = addressIdGenerator++, RoleId = 4 }
+                    new User {Firstname="Jean-Michel", Lastname="Lambda", Email="jean-michel.lambdba@gmail.com", Password="Lambda", Phone="0320597896", IsActive=true, AddressId=4, RoleId=4},
+                    new User {Firstname="Azerty", Lastname="Ytreza", Email="azerty@gmail.com", Password="Ytreza", Phone="0328976315", IsActive=true, AddressId=5, RoleId=4},
+                    new User {Firstname="Malenia", Lastname="Blade of Miquella", Email="malenia@get-rekt.com", Password="Malenia", Phone="0666666666", IsActive=true, AddressId=6, RoleId=4},
+                    new User {Firstname="Andrew", Lastname="Ryan", Email="a.ryan@corporate.org", Password="Ryan", Phone="0564879332", IsActive=true, AddressId=7, RoleId=4},
+                    new User {Firstname="George", Lastname="Abitbol", Email="classiest.man@entire.world", Password="Abitbol", Phone="+33678960408", IsActive=true, AddressId=8, RoleId=4},
+                    new User { Firstname = "Alice", Lastname = "Johnson", Email = "alice.johnson@example.com", Password = "Johnson", Phone = "123-456-7890", IsActive = true, AddressId = 9, RoleId = 4 },
+                    new User { Firstname = "Bob", Lastname = "Smith", Email = "bob.smith@example.com", Password = "Smith", Phone = "987-654-3210", IsActive = true, AddressId = 10, RoleId = 4 },
+                    new User { Firstname = "Emily", Lastname = "Davis", Email = "emily.davis@example.com", Password = "Davis", Phone = "555-123-4567", IsActive = true, AddressId = 11, RoleId = 4 },
+                    new User { Firstname = "David", Lastname = "Wilson", Email = "david.wilson@example.com", Password = "Wilson", Phone = "777-888-9999", IsActive = true, AddressId = 12, RoleId = 4 },
+                    new User { Firstname = "Sophia", Lastname = "Lee", Email = "sophia.lee@example.com", Password = "Lee", Phone = "222-333-4444", IsActive = true, AddressId = 13, RoleId = 4 },
+                    new User { Firstname = "Liam", Lastname = "Martin", Email = "liam.martin@example.com", Password = "Martin", Phone = "888-777-6666", IsActive = true, AddressId = 14, RoleId = 4 },
+                    new User { Firstname = "Olivia", Lastname = "Thompson", Email = "olivia.thompson@example.com", Password = "Thompson", Phone = "999-555-7777", IsActive = true, AddressId = 15, RoleId = 4 },
+                    new User { Firstname = "Noah", Lastname = "Garcia", Email = "noah.garcia@example.com", Password = "Garcia", Phone = "111-222-3333", IsActive = true, AddressId = 16, RoleId = 4 }
                 }).ForEach(element => context.users.Add(element)); context.SaveChanges();
 
 
 
                 (new List<Manufacturer>{
-                    new Manufacturer {Name="Ikea", AddressId=addressIdGenerator++},
-                    new Manufacturer {Name="Boulanger", AddressId=addressIdGenerator++},
-                    new Manufacturer {Name="Amazon", AddressId=addressIdGenerator++},
-                    new Manufacturer { Name = "Ashley Furniture", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "Wayfair", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "Rooms To Go", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "Crate & Barrel", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "La-Z-Boy", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "Pier 1 Imports", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "Raymour & Flanigan", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "West Elm", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "Havertys", AddressId = addressIdGenerator++ },
-                    new Manufacturer { Name = "Bob's Discount Furniture", AddressId = addressIdGenerator++ }
+                    new Manufacturer {Name="Ikea", AddressId=17},
+                    new Manufacturer {Name="Boulanger", AddressId=18},
+                    new Manufacturer {Name="Amazon", AddressId=19},
+                    new Manufacturer { Name = "Ashley Furniture", AddressId = 20 },
+                    new Manufacturer { Name = "Wayfair", AddressId = 21 },
+                    new Manufacturer { Name = "Rooms To Go", AddressId = 22 },
+                    new Manufacturer { Name = "Crate & Barrel", AddressId = 23 },
+                    new Manufacturer { Name = "La-Z-Boy", AddressId = 24 },
+                    new Manufacturer { Name = "Pier 1 Imports", AddressId = 25 },
+                    new Manufacturer { Name = "Raymour & Flanigan", AddressId = 26 },
+                    new Manufacturer { Name = "West Elm", AddressId = 27 },
+                    new Manufacturer { Name = "Havertys", AddressId = 28 },
+                    new Manufacturer { Name = "Bob's Discount Furniture", AddressId = 29 }
                 }).ForEach(element => context.manufacturers.Add(element)); context.SaveChanges();
 
                 (new List<Product>{
@@ -117,20 +140,20 @@ namespace PiggyBankMVC.DataAccessLayer
                 }).ForEach(element => context.order_statuses.Add(element)); context.SaveChanges();
 
                 (new List<Order>{
-                    new Order {CreatedAt=DateTime.Now, UserId=4, AddressId=addressIdGenerator++, StatusId=1},
-                    new Order {CreatedAt=DateTime.Now, UserId=5, AddressId=addressIdGenerator++, StatusId=5},
-                    new Order {CreatedAt=DateTime.Now, UserId=6, AddressId=addressIdGenerator++, StatusId=2},
-                    new Order {CreatedAt=DateTime.Now, UserId=4, AddressId=addressIdGenerator++, StatusId=3},
-                    new Order {CreatedAt=DateTime.Now, UserId=7, AddressId=addressIdGenerator++, StatusId=4},
-                    new Order {CreatedAt=DateTime.Now, UserId=8, AddressId=addressIdGenerator++, StatusId=1},
-                    new Order { CreatedAt = DateTime.Now, UserId = 9, AddressId = addressIdGenerator++, StatusId = 2 },
-                    new Order { CreatedAt = DateTime.Now, UserId = 10, AddressId = addressIdGenerator++, StatusId = 3 },
-                    new Order { CreatedAt = DateTime.Now, UserId = 11, AddressId = addressIdGenerator++, StatusId = 4 },
-                    new Order { CreatedAt = DateTime.Now, UserId = 12, AddressId = addressIdGenerator++, StatusId = 1 },
-                    new Order { CreatedAt = DateTime.Now, UserId = 13, AddressId = addressIdGenerator++, StatusId = 5 },
-                    new Order { CreatedAt = DateTime.Now, UserId = 14, AddressId = addressIdGenerator++, StatusId = 2 },
-                    new Order { CreatedAt = DateTime.Now, UserId = 10, AddressId = addressIdGenerator++, StatusId = 3 },
-                    new Order { CreatedAt = DateTime.Now, UserId = 5, AddressId = addressIdGenerator++, StatusId = 4 }
+                    new Order {CreatedAt=DateTime.Now, UserId=4, AddressId=1, StatusId=1},
+                    new Order {CreatedAt=DateTime.Now, UserId=5, AddressId=2, StatusId=5},
+                    new Order {CreatedAt=DateTime.Now, UserId=6, AddressId=3, StatusId=2},
+                    new Order {CreatedAt=DateTime.Now, UserId=4, AddressId=4, StatusId=3},
+                    new Order {CreatedAt=DateTime.Now, UserId=7, AddressId=1, StatusId=4},
+                    new Order {CreatedAt=DateTime.Now, UserId=8, AddressId=2, StatusId=1},
+                    new Order { CreatedAt = DateTime.Now, UserId = 9, AddressId = 5, StatusId = 2 },
+                    new Order { CreatedAt = DateTime.Now, UserId = 10, AddressId = 1, StatusId = 3 },
+                    new Order { CreatedAt = DateTime.Now, UserId = 11, AddressId = 6, StatusId = 4 },
+                    new Order { CreatedAt = DateTime.Now, UserId = 12, AddressId = 7, StatusId = 1 },
+                    new Order { CreatedAt = DateTime.Now, UserId = 13, AddressId = 8, StatusId = 5 },
+                    new Order { CreatedAt = DateTime.Now, UserId = 14, AddressId = 9, StatusId = 2 },
+                    new Order { CreatedAt = DateTime.Now, UserId = 10, AddressId = 10, StatusId = 3 },
+                    new Order { CreatedAt = DateTime.Now, UserId = 5, AddressId = 11, StatusId = 4 }
                 }).ForEach(element => context.orders.Add(element)); context.SaveChanges();
 
                 (new List<OrderDetail>{
@@ -158,7 +181,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new OrderDetail { Quantity = 2, Price = 22000, OrderId = 10, ProductId = 11 },
                     new OrderDetail { Quantity = 3, Price = 26000, OrderId = 11, ProductId = 10 },
                     new OrderDetail { Quantity = 1, Price = 30000, OrderId = 12, ProductId = 12 },
-                    new OrderDetail { Quantity = 2, Price = 32000, OrderId = 113, ProductId = 8 }
+                    new OrderDetail { Quantity = 2, Price = 32000, OrderId = 13, ProductId = 8 }
                 }).ForEach(element => context.order_details.Add(element)); context.SaveChanges();
 
 
