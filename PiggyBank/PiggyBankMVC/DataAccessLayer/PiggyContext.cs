@@ -1,19 +1,20 @@
-﻿using SchemaBuilder.models;
+﻿using Microsoft.EntityFrameworkCore;
+using SchemaBuilder.models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+// using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchemaBuilder
+namespace PiggyBankMVC.DataAccessLayer
 {
-    public class PiggyContext : DbContext
+    public class PiggyContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        public PiggyContext() : base("Server=DESKTOP-ISFDFVM;Database=piggybank;User Id=piggybank;Password=piggybank;")
+        public PiggyContext(DbContextOptions<PiggyContext> options) : base(options)
         {
-
+            
         }
 
         public DbSet<Product> products { get; set; }
@@ -27,10 +28,5 @@ namespace SchemaBuilder
         public DbSet<OrderStatus> order_statuses { get; set; }
         public DbSet<ReviewStatus> review_statuses { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-        }
     }
 }
