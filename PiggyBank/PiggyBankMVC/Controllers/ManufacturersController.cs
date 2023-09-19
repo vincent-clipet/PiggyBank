@@ -22,19 +22,19 @@ namespace PiggyBankMVC.Controllers
         // GET: Manufacturers
         public async Task<IActionResult> Index()
         {
-            var piggyContext = _context.manufacturers.Include(m => m.Address);
+            var piggyContext = _context.Manufacturers.Include(m => m.Address);
             return View(await piggyContext.ToListAsync());
         }
 
         // GET: Manufacturers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.manufacturers == null)
+            if (id == null || _context.Manufacturers == null)
             {
                 return NotFound();
             }
 
-            var manufacturer = await _context.manufacturers
+            var manufacturer = await _context.Manufacturers
                 .Include(m => m.Address)
                 .FirstOrDefaultAsync(m => m.ManufacturerId == id);
             if (manufacturer == null)
@@ -48,7 +48,7 @@ namespace PiggyBankMVC.Controllers
         // GET: Manufacturers/Create
         public IActionResult Create()
         {
-            ViewData["AddressId"] = new SelectList(_context.addresses, "AddressId", "City");
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City");
             return View();
         }
 
@@ -65,24 +65,24 @@ namespace PiggyBankMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressId"] = new SelectList(_context.addresses, "AddressId", "City", manufacturer.AddressId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", manufacturer.AddressId);
             return View(manufacturer);
         }
 
         // GET: Manufacturers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.manufacturers == null)
+            if (id == null || _context.Manufacturers == null)
             {
                 return NotFound();
             }
 
-            var manufacturer = await _context.manufacturers.FindAsync(id);
+            var manufacturer = await _context.Manufacturers.FindAsync(id);
             if (manufacturer == null)
             {
                 return NotFound();
             }
-            ViewData["AddressId"] = new SelectList(_context.addresses, "AddressId", "City", manufacturer.AddressId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", manufacturer.AddressId);
             return View(manufacturer);
         }
 
@@ -98,17 +98,23 @@ namespace PiggyBankMVC.Controllers
                 return NotFound();
             }
 
+            Console.WriteLine("-------------- 0");
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    Console.WriteLine("-------------- A");
                     _context.Update(manufacturer);
+                    Console.WriteLine("-------------- B");
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    Console.WriteLine("-------------- Exception");
                     if (!ManufacturerExists(manufacturer.ManufacturerId))
                     {
+                        Console.WriteLine("-------------- Exc A");
                         return NotFound();
                     }
                     else
@@ -118,19 +124,19 @@ namespace PiggyBankMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressId"] = new SelectList(_context.addresses, "AddressId", "City", manufacturer.AddressId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", manufacturer.AddressId);
             return View(manufacturer);
         }
 
         // GET: Manufacturers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.manufacturers == null)
+            if (id == null || _context.Manufacturers == null)
             {
                 return NotFound();
             }
 
-            var manufacturer = await _context.manufacturers
+            var manufacturer = await _context.Manufacturers
                 .Include(m => m.Address)
                 .FirstOrDefaultAsync(m => m.ManufacturerId == id);
             if (manufacturer == null)
@@ -146,14 +152,14 @@ namespace PiggyBankMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.manufacturers == null)
+            if (_context.Manufacturers == null)
             {
                 return Problem("Entity set 'PiggyContext.manufacturers'  is null.");
             }
-            var manufacturer = await _context.manufacturers.FindAsync(id);
+            var manufacturer = await _context.Manufacturers.FindAsync(id);
             if (manufacturer != null)
             {
-                _context.manufacturers.Remove(manufacturer);
+                _context.Manufacturers.Remove(manufacturer);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +168,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool ManufacturerExists(int id)
         {
-          return (_context.manufacturers?.Any(e => e.ManufacturerId == id)).GetValueOrDefault();
+          return (_context.Manufacturers?.Any(e => e.ManufacturerId == id)).GetValueOrDefault();
         }
     }
 }

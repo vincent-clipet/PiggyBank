@@ -22,20 +22,20 @@ namespace PiggyBankMVC.Controllers
         // GET: Addresses
         public async Task<IActionResult> Index()
         {
-              return _context.addresses != null ? 
-                          View(await _context.addresses.ToListAsync()) :
+              return _context.Addresses != null ? 
+                          View(await _context.Addresses.ToListAsync()) :
                           Problem("Entity set 'PiggyContext.addresses'  is null.");
         }
 
         // GET: Addresses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.addresses == null)
+            if (id == null || _context.Addresses == null)
             {
                 return NotFound();
             }
 
-            var address = await _context.addresses
+            var address = await _context.Addresses
                 .FirstOrDefaultAsync(m => m.AddressId == id);
             if (address == null)
             {
@@ -70,12 +70,12 @@ namespace PiggyBankMVC.Controllers
         // GET: Addresses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.addresses == null)
+            if (id == null || _context.Addresses == null)
             {
                 return NotFound();
             }
 
-            var address = await _context.addresses.FindAsync(id);
+            var address = await _context.Addresses.FindAsync(id);
             if (address == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace PiggyBankMVC.Controllers
         // GET: Addresses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.addresses == null)
+            if (id == null || _context.Addresses == null)
             {
                 return NotFound();
             }
 
-            var address = await _context.addresses
+            var address = await _context.Addresses
                 .FirstOrDefaultAsync(m => m.AddressId == id);
             if (address == null)
             {
@@ -141,14 +141,14 @@ namespace PiggyBankMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.addresses == null)
+            if (_context.Addresses == null)
             {
                 return Problem("Entity set 'PiggyContext.addresses'  is null.");
             }
-            var address = await _context.addresses.FindAsync(id);
+            var address = await _context.Addresses.FindAsync(id);
             if (address != null)
             {
-                _context.addresses.Remove(address);
+                _context.Addresses.Remove(address);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool AddressExists(int id)
         {
-          return (_context.addresses?.Any(e => e.AddressId == id)).GetValueOrDefault();
+          return (_context.Addresses?.Any(e => e.AddressId == id)).GetValueOrDefault();
         }
     }
 }

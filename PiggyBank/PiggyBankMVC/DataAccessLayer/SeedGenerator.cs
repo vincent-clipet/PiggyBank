@@ -11,7 +11,7 @@ namespace PiggyBankMVC.DataAccessLayer
             using (var context = new PiggyContext(serviceProvider.GetRequiredService<DbContextOptions<PiggyContext>>()))
             {
                 // DB is already seeded, GTFO
-                if (context.addresses.Any())
+                if (context.Addresses.Any())
                     return;
 
                 (new List<Address>{
@@ -60,14 +60,14 @@ namespace PiggyBankMVC.DataAccessLayer
                     new Address {Number="888", Street="Av. Paulista", City="São Paulo", Zip="01310-000"},
                     new Address {Number="1010", Street="Nanjing Road", City="Shanghai", Zip="200001"},
                     new Address {Number="555", Street="Ginza", City="Tokyo", Zip="104-0061"}
-                }).ForEach(element => context.addresses.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.Addresses.Add(element)); context.SaveChanges();
 
                 (new List<Role>{
                     new Role {Name="Admin"},
                     new Role {Name="Moderator"},
                     new Role {Name="Assist"},
                     new Role {Name="Customer"},
-                }).ForEach(element => context.roles.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.Roles.Add(element)); context.SaveChanges();
 
                 (new List<User>{
                     new User {Firstname="Admin", Lastname="Admin", Email="admin@piggybank.com", Password="Admin", Phone="0000000000", IsActive=true, AddressId=1, RoleId=1},
@@ -86,7 +86,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new User { Firstname = "Liam", Lastname = "Martin", Email = "liam.martin@example.com", Password = "Martin", Phone = "888-777-6666", IsActive = true, AddressId = 14, RoleId = 4 },
                     new User { Firstname = "Olivia", Lastname = "Thompson", Email = "olivia.thompson@example.com", Password = "Thompson", Phone = "999-555-7777", IsActive = true, AddressId = 15, RoleId = 4 },
                     new User { Firstname = "Noah", Lastname = "Garcia", Email = "noah.garcia@example.com", Password = "Garcia", Phone = "111-222-3333", IsActive = true, AddressId = 16, RoleId = 4 }
-                }).ForEach(element => context.users.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.Users.Add(element)); context.SaveChanges();
 
 
 
@@ -104,7 +104,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new Manufacturer { Name = "West Elm", AddressId = 27 },
                     new Manufacturer { Name = "Havertys", AddressId = 28 },
                     new Manufacturer { Name = "Bob's Discount Furniture", AddressId = 29 }
-                }).ForEach(element => context.manufacturers.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.Manufacturers.Add(element)); context.SaveChanges();
 
                 (new List<Product>{
                     new Product { Name="Red Piggybank", ImageUrl=null, Description="Nice red piggy", Height=60, Width=40, Length=80, Weight=1200, Capacity=883, Color="Red", Price=1800, IsActive=true, ManufacturerId=1},
@@ -127,7 +127,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new Product { Name = "Teal Piggybank", ImageUrl = null, Description = "Stylish teal piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Teal", Price = 3200, IsActive = true, ManufacturerId = 6 },
                     new Product { Name = "Red Piggybank (Limited Edition)", ImageUrl = null, Description = "Exclusive red piggy with gold accents", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Red", Price = 3900, IsActive = false, ManufacturerId = 6 },
                     new Product { Name = "Green Piggybank (Jungle Adventure)", ImageUrl = null, Description = "Green piggy with jungle-themed decorations", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Green", Price = 2800, IsActive = true, ManufacturerId = 7 },
-                }).ForEach(element => context.products.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.Products.Add(element)); context.SaveChanges();
 
 
 
@@ -137,7 +137,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new OrderStatus {Name="Packaged"},
                     new OrderStatus {Name="Sent"},
                     new OrderStatus {Name="Delivered"},
-                }).ForEach(element => context.order_statuses.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.OrderStatuses.Add(element)); context.SaveChanges();
 
                 (new List<Order>{
                     new Order {CreatedAt=DateTime.Now, UserId=4, AddressId=1, StatusId=1},
@@ -154,7 +154,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new Order { CreatedAt = DateTime.Now, UserId = 14, AddressId = 9, StatusId = 2 },
                     new Order { CreatedAt = DateTime.Now, UserId = 10, AddressId = 10, StatusId = 3 },
                     new Order { CreatedAt = DateTime.Now, UserId = 5, AddressId = 11, StatusId = 4 }
-                }).ForEach(element => context.orders.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.Orders.Add(element)); context.SaveChanges();
 
                 (new List<OrderDetail>{
                     new OrderDetail {Quantity=1, Price=20000, OrderId=1, ProductId=1},
@@ -182,7 +182,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new OrderDetail { Quantity = 3, Price = 26000, OrderId = 11, ProductId = 10 },
                     new OrderDetail { Quantity = 1, Price = 30000, OrderId = 12, ProductId = 12 },
                     new OrderDetail { Quantity = 2, Price = 32000, OrderId = 13, ProductId = 8 }
-                }).ForEach(element => context.order_details.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.OrderDetails.Add(element)); context.SaveChanges();
 
 
 
@@ -190,7 +190,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new ReviewStatus {Name="Awaiting Moderation"},
                     new ReviewStatus {Name="Approved"},
                     new ReviewStatus {Name="Unapproved"},
-                }).ForEach(element => context.review_statuses.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.ReviewStatuses.Add(element)); context.SaveChanges();
 
                 (new List<Review>{
                     new Review {Score=5, Message="Very good product, would recommend", CreatedAt = DateTime.Now, StatusId=1, UserId=2, ProductId=1},
@@ -213,7 +213,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     new Review { Score = 4, Message = "Satisfied with the purchase, decent quality", CreatedAt = DateTime.Now, StatusId = 2, UserId = 6, ProductId = 6 },
                     new Review { Score = 5, Message = "Excellent value for money, highly recommended", CreatedAt = DateTime.Now, StatusId = 1, UserId = 7, ProductId = 7 },
                     new Review { Score = 1, Message = "Avoid this product at all costs, terrible", CreatedAt = DateTime.Now, StatusId = 1, UserId = 8, ProductId = 8 }
-                }).ForEach(element => context.reviews.Add(element)); context.SaveChanges();
+                }).ForEach(element => context.Reviews.Add(element)); context.SaveChanges();
             }
         }
     }

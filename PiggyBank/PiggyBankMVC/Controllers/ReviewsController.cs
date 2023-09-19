@@ -22,19 +22,19 @@ namespace PiggyBankMVC.Controllers
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            var piggyContext = _context.reviews.Include(r => r.Product).Include(r => r.Status).Include(r => r.User);
+            var piggyContext = _context.Reviews.Include(r => r.Product).Include(r => r.Status).Include(r => r.User);
             return View(await piggyContext.ToListAsync());
         }
 
         // GET: Reviews/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.reviews == null)
+            if (id == null || _context.Reviews == null)
             {
                 return NotFound();
             }
 
-            var review = await _context.reviews
+            var review = await _context.Reviews
                 .Include(r => r.Product)
                 .Include(r => r.Status)
                 .Include(r => r.User)
@@ -50,9 +50,9 @@ namespace PiggyBankMVC.Controllers
         // GET: Reviews/Create
         public IActionResult Create()
         {
-            ViewData["ProductId"] = new SelectList(_context.products, "ProductId", "Color");
-            ViewData["StatusId"] = new SelectList(_context.review_statuses, "ReviewStatusId", "Name");
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "Email");
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color");
+            ViewData["StatusId"] = new SelectList(_context.ReviewStatuses, "ReviewStatusId", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email");
             return View();
         }
 
@@ -69,28 +69,28 @@ namespace PiggyBankMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.products, "ProductId", "Color", review.ProductId);
-            ViewData["StatusId"] = new SelectList(_context.review_statuses, "ReviewStatusId", "Name", review.StatusId);
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "Email", review.UserId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", review.ProductId);
+            ViewData["StatusId"] = new SelectList(_context.ReviewStatuses, "ReviewStatusId", "Name", review.StatusId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", review.UserId);
             return View(review);
         }
 
         // GET: Reviews/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.reviews == null)
+            if (id == null || _context.Reviews == null)
             {
                 return NotFound();
             }
 
-            var review = await _context.reviews.FindAsync(id);
+            var review = await _context.Reviews.FindAsync(id);
             if (review == null)
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.products, "ProductId", "Color", review.ProductId);
-            ViewData["StatusId"] = new SelectList(_context.review_statuses, "ReviewStatusId", "Name", review.StatusId);
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "Email", review.UserId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", review.ProductId);
+            ViewData["StatusId"] = new SelectList(_context.ReviewStatuses, "ReviewStatusId", "Name", review.StatusId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", review.UserId);
             return View(review);
         }
 
@@ -126,21 +126,21 @@ namespace PiggyBankMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.products, "ProductId", "Color", review.ProductId);
-            ViewData["StatusId"] = new SelectList(_context.review_statuses, "ReviewStatusId", "Name", review.StatusId);
-            ViewData["UserId"] = new SelectList(_context.users, "UserId", "Email", review.UserId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", review.ProductId);
+            ViewData["StatusId"] = new SelectList(_context.ReviewStatuses, "ReviewStatusId", "Name", review.StatusId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", review.UserId);
             return View(review);
         }
 
         // GET: Reviews/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.reviews == null)
+            if (id == null || _context.Reviews == null)
             {
                 return NotFound();
             }
 
-            var review = await _context.reviews
+            var review = await _context.Reviews
                 .Include(r => r.Product)
                 .Include(r => r.Status)
                 .Include(r => r.User)
@@ -158,14 +158,14 @@ namespace PiggyBankMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.reviews == null)
+            if (_context.Reviews == null)
             {
                 return Problem("Entity set 'PiggyContext.reviews'  is null.");
             }
-            var review = await _context.reviews.FindAsync(id);
+            var review = await _context.Reviews.FindAsync(id);
             if (review != null)
             {
-                _context.reviews.Remove(review);
+                _context.Reviews.Remove(review);
             }
             
             await _context.SaveChangesAsync();
@@ -174,7 +174,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool ReviewExists(int id)
         {
-          return (_context.reviews?.Any(e => e.ReviewId == id)).GetValueOrDefault();
+          return (_context.Reviews?.Any(e => e.ReviewId == id)).GetValueOrDefault();
         }
     }
 }

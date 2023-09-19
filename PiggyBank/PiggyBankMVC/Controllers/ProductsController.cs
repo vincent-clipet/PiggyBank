@@ -22,19 +22,19 @@ namespace PiggyBankMVC.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var piggyContext = _context.products.Include(p => p.Manufacturer);
+            var piggyContext = _context.Products.Include(p => p.Manufacturer);
             return View(await piggyContext.ToListAsync());
         }
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.products == null)
+            if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.products
+            var product = await _context.Products
                 .Include(p => p.Manufacturer)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
@@ -48,7 +48,7 @@ namespace PiggyBankMVC.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["ManufacturerId"] = new SelectList(_context.manufacturers, "ManufacturerId", "Name");
+            ViewData["ManufacturerId"] = new SelectList(_context.Manufacturers, "ManufacturerId", "Name");
             return View();
         }
 
@@ -65,24 +65,24 @@ namespace PiggyBankMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ManufacturerId"] = new SelectList(_context.manufacturers, "ManufacturerId", "Name", product.ManufacturerId);
+            ViewData["ManufacturerId"] = new SelectList(_context.Manufacturers, "ManufacturerId", "Name", product.ManufacturerId);
             return View(product);
         }
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.products == null)
+            if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
-            ViewData["ManufacturerId"] = new SelectList(_context.manufacturers, "ManufacturerId", "Name", product.ManufacturerId);
+            ViewData["ManufacturerId"] = new SelectList(_context.Manufacturers, "ManufacturerId", "Name", product.ManufacturerId);
             return View(product);
         }
 
@@ -118,19 +118,19 @@ namespace PiggyBankMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ManufacturerId"] = new SelectList(_context.manufacturers, "ManufacturerId", "Name", product.ManufacturerId);
+            ViewData["ManufacturerId"] = new SelectList(_context.Manufacturers, "ManufacturerId", "Name", product.ManufacturerId);
             return View(product);
         }
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.products == null)
+            if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.products
+            var product = await _context.Products
                 .Include(p => p.Manufacturer)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
@@ -146,14 +146,14 @@ namespace PiggyBankMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.products == null)
+            if (_context.Products == null)
             {
                 return Problem("Entity set 'PiggyContext.products'  is null.");
             }
-            var product = await _context.products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
             if (product != null)
             {
-                _context.products.Remove(product);
+                _context.Products.Remove(product);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +162,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool ProductExists(int id)
         {
-          return (_context.products?.Any(e => e.ProductId == id)).GetValueOrDefault();
+          return (_context.Products?.Any(e => e.ProductId == id)).GetValueOrDefault();
         }
     }
 }

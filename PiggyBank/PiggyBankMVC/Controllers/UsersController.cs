@@ -22,19 +22,19 @@ namespace PiggyBankMVC.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            var piggyContext = _context.users.Include(u => u.Address).Include(u => u.Role);
+            var piggyContext = _context.Users.Include(u => u.Address).Include(u => u.Role);
             return View(await piggyContext.ToListAsync());
         }
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.users == null)
+            if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.users
+            var user = await _context.Users
                 .Include(u => u.Address)
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(m => m.UserId == id);
@@ -49,8 +49,8 @@ namespace PiggyBankMVC.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            ViewData["AddressId"] = new SelectList(_context.addresses, "AddressId", "City");
-            ViewData["RoleId"] = new SelectList(_context.roles, "RoleId", "Name");
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City");
+            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "Name");
             return View();
         }
 
@@ -67,26 +67,26 @@ namespace PiggyBankMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressId"] = new SelectList(_context.addresses, "AddressId", "City", user.AddressId);
-            ViewData["RoleId"] = new SelectList(_context.roles, "RoleId", "Name", user.RoleId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", user.AddressId);
+            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "Name", user.RoleId);
             return View(user);
         }
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.users == null)
+            if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.users.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            ViewData["AddressId"] = new SelectList(_context.addresses, "AddressId", "City", user.AddressId);
-            ViewData["RoleId"] = new SelectList(_context.roles, "RoleId", "Name", user.RoleId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", user.AddressId);
+            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "Name", user.RoleId);
             return View(user);
         }
 
@@ -122,20 +122,20 @@ namespace PiggyBankMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressId"] = new SelectList(_context.addresses, "AddressId", "City", user.AddressId);
-            ViewData["RoleId"] = new SelectList(_context.roles, "RoleId", "Name", user.RoleId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", user.AddressId);
+            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "Name", user.RoleId);
             return View(user);
         }
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.users == null)
+            if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.users
+            var user = await _context.Users
                 .Include(u => u.Address)
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(m => m.UserId == id);
@@ -152,14 +152,14 @@ namespace PiggyBankMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.users == null)
+            if (_context.Users == null)
             {
                 return Problem("Entity set 'PiggyContext.users'  is null.");
             }
-            var user = await _context.users.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
             if (user != null)
             {
-                _context.users.Remove(user);
+                _context.Users.Remove(user);
             }
             
             await _context.SaveChangesAsync();
@@ -168,7 +168,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool UserExists(int id)
         {
-          return (_context.users?.Any(e => e.UserId == id)).GetValueOrDefault();
+          return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
         }
     }
 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchemaBuilder", "SchemaBuilder\SchemaBuilder.csproj", "{535E7DE8-623E-446A-8FA1-70367F18E213}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiggyBankMVC", "PiggyBankMVC\PiggyBankMVC.csproj", "{A5411280-5AEE-4EC6-AC71-A38E0946AF15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiggyBankMVC", "PiggyBankMVC\PiggyBankMVC.csproj", "{A5411280-5AEE-4EC6-AC71-A38E0946AF15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
