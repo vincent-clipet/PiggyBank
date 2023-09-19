@@ -16,6 +16,7 @@ namespace SchemaBuilder.models
         public int Score { get; set; }
 
         [MaxLength(2000), MinLength(5)]
+        [Required]
         public string Message { get; set; }
 
         public DateTime CreatedAt { get; set; }

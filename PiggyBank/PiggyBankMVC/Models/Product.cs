@@ -19,10 +19,10 @@ namespace SchemaBuilder.models
         public string Name { get; set; }
 
         [MaxLength(200)]
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         [MaxLength(2000)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public int Height { get; set; }
 
@@ -35,6 +35,7 @@ namespace SchemaBuilder.models
         public int Capacity { get; set; }
 
         [MaxLength(50)]
+        [Required]
         public string Color { get; set; }
 
         public int Price { get; set; }

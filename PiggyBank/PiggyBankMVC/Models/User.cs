@@ -31,7 +31,7 @@ namespace SchemaBuilder.models
         public string Password { get; set; }
 
         [MaxLength(20)]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         [Required]
         public bool IsActive { get; set; }
