@@ -19,10 +19,7 @@ namespace PiggyBankMVC.DataAccessLayer
         {
             base.OnModelCreating(modelBuilder);
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            }
-            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
 
         public DbSet<Product> Products { get; set; }

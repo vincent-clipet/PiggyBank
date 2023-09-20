@@ -39,11 +39,11 @@ namespace SchemaBuilder.models
         [Required]
         public int RoleId { get; set; }
         [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
+        public virtual Role? Role { get; set; }
 
         [Required]
         public int AddressId { get; set; }
         [ForeignKey("AddressId")]
-        public virtual Address Address { get; set; }
+        public virtual Address? Address { get; set; }
     }
 }

@@ -24,16 +24,16 @@ namespace SchemaBuilder.models
         [Required]
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        public Product? Product { get; set; }
 
         [Required]
         public int StatusId { get; set; }
         [ForeignKey("StatusId")]
-        public ReviewStatus Status { get; set; }
+        public ReviewStatus? Status { get; set; }
 
         [Required]
         public int UserId { get; set; }
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
     }
 }

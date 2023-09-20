@@ -18,17 +18,17 @@ namespace SchemaBuilder.models
         [Required]
         public int UserId { get; set; }
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         [Required]
         public int AddressId { get; set; }
         [ForeignKey("AddressId")]
-        public virtual Address Address { get; set; }
+        public virtual Address? Address { get; set; }
 
         [Required]
         public int StatusId { get; set; }
         [ForeignKey("StatusId")]
-        public virtual OrderStatus Status { get; set; }
+        public virtual OrderStatus? Status { get; set; }
 
     }
 }

@@ -20,6 +20,6 @@ namespace SchemaBuilder.models
         [Required]
         public int AddressId { get; set; }
         [ForeignKey("AddressId")]
-        public virtual Address Address { get; set; }
+        public virtual Address? Address { get; set; }
     }
 }
