@@ -12,7 +12,7 @@ namespace PiggyBankMVC.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "addresses",
+                name: "Addresses",
                 columns: table => new
                 {
                     AddressId = table.Column<int>(type: "int", nullable: false)
@@ -24,11 +24,11 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_addresses", x => x.AddressId);
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "order_statuses",
+                name: "OrderStatuses",
                 columns: table => new
                 {
                     OrderStatusId = table.Column<int>(type: "int", nullable: false)
@@ -37,11 +37,11 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_order_statuses", x => x.OrderStatusId);
+                    table.PrimaryKey("PK_OrderStatuses", x => x.OrderStatusId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "review_statuses",
+                name: "ReviewStatuses",
                 columns: table => new
                 {
                     ReviewStatusId = table.Column<int>(type: "int", nullable: false)
@@ -50,11 +50,11 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_review_statuses", x => x.ReviewStatusId);
+                    table.PrimaryKey("PK_ReviewStatuses", x => x.ReviewStatusId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "roles",
+                name: "Roles",
                 columns: table => new
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false)
@@ -63,11 +63,11 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_roles", x => x.RoleId);
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "manufacturers",
+                name: "Manufacturers",
                 columns: table => new
                 {
                     ManufacturerId = table.Column<int>(type: "int", nullable: false)
@@ -77,17 +77,17 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_manufacturers", x => x.ManufacturerId);
+                    table.PrimaryKey("PK_Manufacturers", x => x.ManufacturerId);
                     table.ForeignKey(
-                        name: "FK_manufacturers_addresses_AddressId",
+                        name: "FK_Manufacturers_Addresses_AddressId",
                         column: x => x.AddressId,
-                        principalTable: "addresses",
+                        principalTable: "Addresses",
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "Users",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
@@ -103,23 +103,23 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_users_addresses_AddressId",
+                        name: "FK_Users_Addresses_AddressId",
                         column: x => x.AddressId,
-                        principalTable: "addresses",
+                        principalTable: "Addresses",
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_users_roles_RoleId",
+                        name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "roles",
+                        principalTable: "Roles",
                         principalColumn: "RoleId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "products",
+                name: "Products",
                 columns: table => new
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false)
@@ -139,17 +139,17 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_products", x => x.ProductId);
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
                     table.ForeignKey(
-                        name: "FK_products_manufacturers_ManufacturerId",
+                        name: "FK_Products_Manufacturers_ManufacturerId",
                         column: x => x.ManufacturerId,
-                        principalTable: "manufacturers",
+                        principalTable: "Manufacturers",
                         principalColumn: "ManufacturerId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "orders",
+                name: "Orders",
                 columns: table => new
                 {
                     OrderId = table.Column<int>(type: "int", nullable: false)
@@ -161,29 +161,29 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_orders", x => x.OrderId);
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_orders_addresses_AddressId",
+                        name: "FK_Orders_Addresses_AddressId",
                         column: x => x.AddressId,
-                        principalTable: "addresses",
+                        principalTable: "Addresses",
                         principalColumn: "AddressId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_orders_order_statuses_StatusId",
+                        name: "FK_Orders_OrderStatuses_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "order_statuses",
+                        principalTable: "OrderStatuses",
                         principalColumn: "OrderStatusId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_orders_users_UserId",
+                        name: "FK_Orders_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "reviews",
+                name: "Reviews",
                 columns: table => new
                 {
                     ReviewId = table.Column<int>(type: "int", nullable: false)
@@ -197,29 +197,29 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_reviews", x => x.ReviewId);
+                    table.PrimaryKey("PK_Reviews", x => x.ReviewId);
                     table.ForeignKey(
-                        name: "FK_reviews_products_ProductId",
+                        name: "FK_Reviews_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "products",
+                        principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_reviews_review_statuses_StatusId",
+                        name: "FK_Reviews_ReviewStatuses_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "review_statuses",
+                        principalTable: "ReviewStatuses",
                         principalColumn: "ReviewStatusId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_reviews_users_UserId",
+                        name: "FK_Reviews_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "order_details",
+                name: "OrderDetails",
                 columns: table => new
                 {
                     OrderDetailId = table.Column<int>(type: "int", nullable: false)
@@ -231,79 +231,79 @@ namespace PiggyBankMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_order_details", x => x.OrderDetailId);
+                    table.PrimaryKey("PK_OrderDetails", x => x.OrderDetailId);
                     table.ForeignKey(
-                        name: "FK_order_details_orders_OrderId",
+                        name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "orders",
+                        principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_order_details_products_ProductId",
+                        name: "FK_OrderDetails_Products_ProductId",
                         column: x => x.ProductId,
-                        principalTable: "products",
+                        principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_manufacturers_AddressId",
-                table: "manufacturers",
+                name: "IX_Manufacturers_AddressId",
+                table: "Manufacturers",
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_order_details_OrderId",
-                table: "order_details",
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_order_details_ProductId",
-                table: "order_details",
+                name: "IX_OrderDetails_ProductId",
+                table: "OrderDetails",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_orders_AddressId",
-                table: "orders",
+                name: "IX_Orders_AddressId",
+                table: "Orders",
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_orders_StatusId",
-                table: "orders",
+                name: "IX_Orders_StatusId",
+                table: "Orders",
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_orders_UserId",
-                table: "orders",
+                name: "IX_Orders_UserId",
+                table: "Orders",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_products_ManufacturerId",
-                table: "products",
+                name: "IX_Products_ManufacturerId",
+                table: "Products",
                 column: "ManufacturerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_reviews_ProductId",
-                table: "reviews",
+                name: "IX_Reviews_ProductId",
+                table: "Reviews",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_reviews_StatusId",
-                table: "reviews",
+                name: "IX_Reviews_StatusId",
+                table: "Reviews",
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_reviews_UserId",
-                table: "reviews",
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_AddressId",
-                table: "users",
+                name: "IX_Users_AddressId",
+                table: "Users",
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_RoleId",
-                table: "users",
+                name: "IX_Users_RoleId",
+                table: "Users",
                 column: "RoleId");
         }
 
@@ -311,34 +311,34 @@ namespace PiggyBankMVC.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "order_details");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "reviews");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "orders");
+                name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "products");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "review_statuses");
+                name: "ReviewStatuses");
 
             migrationBuilder.DropTable(
-                name: "order_statuses");
+                name: "OrderStatuses");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "manufacturers");
+                name: "Manufacturers");
 
             migrationBuilder.DropTable(
-                name: "roles");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "addresses");
+                name: "Addresses");
         }
     }
 }

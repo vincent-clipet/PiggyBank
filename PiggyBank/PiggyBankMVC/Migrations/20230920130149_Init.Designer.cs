@@ -12,7 +12,7 @@ using PiggyBankMVC.DataAccessLayer;
 namespace PiggyBankMVC.Migrations
 {
     [DbContext(typeof(PiggyContext))]
-    [Migration("20230919110752_Init")]
+    [Migration("20230920130149_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -55,7 +55,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("addresses");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.Manufacturer", b =>
@@ -78,7 +78,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("manufacturers");
+                    b.ToTable("Manufacturers");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.Order", b =>
@@ -109,7 +109,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("orders");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.OrderDetail", b =>
@@ -138,7 +138,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("order_details");
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.OrderStatus", b =>
@@ -156,7 +156,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasKey("OrderStatusId");
 
-                    b.ToTable("order_statuses");
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.Product", b =>
@@ -213,7 +213,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasIndex("ManufacturerId");
 
-                    b.ToTable("products");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.Review", b =>
@@ -252,7 +252,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("reviews");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.ReviewStatus", b =>
@@ -270,7 +270,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasKey("ReviewStatusId");
 
-                    b.ToTable("review_statuses");
+                    b.ToTable("ReviewStatuses");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.Role", b =>
@@ -288,7 +288,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("roles");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.User", b =>
@@ -338,7 +338,7 @@ namespace PiggyBankMVC.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("users");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("SchemaBuilder.models.Manufacturer", b =>
