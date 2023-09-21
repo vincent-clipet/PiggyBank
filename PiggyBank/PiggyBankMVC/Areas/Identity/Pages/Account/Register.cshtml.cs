@@ -77,7 +77,11 @@ namespace PiggyBankMVC.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Last name")]
-            public string Lastname { get; set; }
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "User name")]
+            public string UserName { get; set; }
 
 
             /// <summary>
@@ -124,10 +128,11 @@ namespace PiggyBankMVC.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
+                //await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.Firstname = Input.FirstName;
-                user.Lastname = Input.Lastname;
+                user.Lastname = Input.LastName;
 
 
                 var result = await _userManager.CreateAsync(user, Input.Password);

@@ -19,9 +19,14 @@
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Lastname" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Last name" />
-                <label asp-for="Input.Lastname">Last Name</label>
-                <span asp-validation-for="Input.Lastname" class="text-danger"></span>
+                <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Last name" />
+                <label asp-for="Input.LastName">Last Name</label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="User name" />
+                <label asp-for="Input.UserName">User Name</label>
+                <span asp-validation-for="Input.UserName" class="text-danger"></span>
             </div>
 
             <div class="form-floating mb-3">
