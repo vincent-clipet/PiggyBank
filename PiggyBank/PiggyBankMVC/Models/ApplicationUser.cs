@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PiggyBankMVC.Models
 {
+    [AllowAnonymous]
     public class ApplicationUser : IdentityUser
     {
         [Required]
