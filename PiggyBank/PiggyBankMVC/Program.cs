@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Models;
 
@@ -8,7 +9,7 @@ namespace PiggyBankMVC
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ namespace PiggyBankMVC
             // Identity
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PiggyContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
@@ -65,6 +67,28 @@ namespace PiggyBankMVC
 
             // Build app
             var app = builder.Build();
+
+
+
+            // Seed DB
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+                try
+                {
+                    var context = services.GetRequiredService<PiggyContext>();
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    await SeedGenerator.Initialize(services, userManager, roleManager);
+                }
+                catch (Exception ex)
+                {
+                    var logger = loggerFactory.CreateLogger<Program>();
+                    logger.LogError(ex, "Error while seeding DB");
+                }
+            }
 
 
 

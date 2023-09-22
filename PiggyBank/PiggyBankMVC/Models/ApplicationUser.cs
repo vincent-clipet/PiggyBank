@@ -19,9 +19,9 @@ namespace PiggyBankMVC.Models
         [Required]
         public bool IsActive { get; set; }
 
-        //[Required]
-        //public int AddressId { get; set; }
-        //[ForeignKey("AddressId")]
-        //public virtual Address? Address { get; set; }
+        [Required]
+        public int AddressId { get; set; }
+        [ForeignKey("AddressId")]
+        public virtual Address? Address { get; set; }
     }
 }
