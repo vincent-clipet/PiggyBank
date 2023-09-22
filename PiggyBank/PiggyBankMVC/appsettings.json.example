@@ -8,6 +8,6 @@
   "AllowedHosts": "*",
 
   "ConnectionStrings": {
-    "PiggyContext": "Server= ;Database= ;User Id= ;Password= ;TrustServerCertificate=true"
+    "PiggyContext": "Server= ;Database= ;User Id= ;Password= ;TrustServerCertificate=true;MultipleActiveResultSets=true"
   }
 }
