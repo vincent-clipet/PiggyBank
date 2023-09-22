@@ -227,7 +227,6 @@ namespace PiggyBankMVC.DataAccessLayer
                 await _userManager.AddToRoleAsync(admin, EnumRoles.Admin.ToString());
                 await _userManager.AddToRoleAsync(admin, EnumRoles.Moderator.ToString());
                 await _userManager.AddToRoleAsync(admin, EnumRoles.Assist.ToString());
-                // _context.Users.Add(admin);
             }
 
             user = await _userManager.FindByEmailAsync(moderator.Email);
@@ -235,8 +234,7 @@ namespace PiggyBankMVC.DataAccessLayer
             {
                 await _userManager.CreateAsync(moderator, moderator.Lastname); // Using LastName as password for testing
                 await _userManager.AddToRoleAsync(moderator, EnumRoles.Moderator.ToString());
-                await _userManager.AddToRoleAsync(admin, EnumRoles.Assist.ToString());
-                // _context.Users.Add(moderator);
+                await _userManager.AddToRoleAsync(moderator, EnumRoles.Assist.ToString());
             }
 
             user = await _userManager.FindByEmailAsync(assist.Email);
@@ -244,7 +242,6 @@ namespace PiggyBankMVC.DataAccessLayer
             {
                 await _userManager.CreateAsync(assist, assist.Lastname); // Using LastName as password for testing
                 await _userManager.AddToRoleAsync(assist, EnumRoles.Assist.ToString());
-                // _context.Users.Add(assist);
             }
 
 
@@ -269,16 +266,10 @@ namespace PiggyBankMVC.DataAccessLayer
                 user = await _userManager.FindByEmailAsync(u.Email);
                 if (user == null)
                 {
-                    //u.UserName = u.Lastname;
-                    //u.IsActive = true;
-                    //u.EmailConfirmed = true;
                     await _userManager.CreateAsync(u, u.Lastname); // Using LastName as password for testing
                     await _userManager.AddToRoleAsync(u, EnumRoles.Customer.ToString());
-                    // _context.Users.Add(u);
                 }
             }
-
-            // _context.SaveChanges();
         }
     
         private static void seedManufacturers()
