@@ -23,6 +23,8 @@ namespace PiggyBankMVC.DataAccessLayer
         {
             base.OnModelCreating(modelBuilder);
 
+            // Rename Identity Table
+            // TODO: only partially works
             modelBuilder.HasDefaultSchema("Identity");
             modelBuilder.Entity<IdentityUser>(entity => {entity.ToTable(name: "User");});
             modelBuilder.Entity<IdentityRole>(entity => {entity.ToTable(name: "Role");});
@@ -35,18 +37,30 @@ namespace PiggyBankMVC.DataAccessLayer
             // Remove OnDelete CASCADE from all entities
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
+            // Convert enums into Strings
+            modelBuilder.Entity<Order>()
+                .Property(e => e.OrderStatus)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (EnumOrderStatus)Enum.Parse(typeof(EnumOrderStatus), v)
+                );
+            modelBuilder.Entity<Review>()
+                .Property(e => e.ReviewStatus)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (EnumReviewStatus)Enum.Parse(typeof(EnumReviewStatus), v)
+                );
         }
 
-        //public DbSet<Product> Products { get; set; }
-        //public DbSet<Order> Orders { get; set; }
-        //public DbSet<OrderDetail> OrderDetails { get; set; }
-        //public DbSet<User> Users { get; set; }
-        //public DbSet<Review> Reviews { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; } // TODO: still needed ?
+        public DbSet<Review> Reviews { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<IdentityRole> Roles { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
-        //public DbSet<OrderStatus> OrderStatuses { get; set; }
-        //public DbSet<ReviewStatus> ReviewStatuses { get; set; }
 
     }
 }
