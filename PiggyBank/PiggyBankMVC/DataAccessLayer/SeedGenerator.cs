@@ -125,7 +125,7 @@ namespace PiggyBankMVC.DataAccessLayer
             var user = await _userManager.FindByEmailAsync(admin.Email);
             if (user == null)
             {
-                await _userManager.CreateAsync(admin, admin.Lastname); // Using LastName as password for testing
+                await _userManager.CreateAsync(admin, admin.Firstname); // Using Firstname as password for testing
                 await _userManager.AddToRoleAsync(admin, EnumRoles.Admin.ToString());
                 await _userManager.AddToRoleAsync(admin, EnumRoles.Moderator.ToString());
                 await _userManager.AddToRoleAsync(admin, EnumRoles.Assist.ToString());
@@ -134,7 +134,7 @@ namespace PiggyBankMVC.DataAccessLayer
             user = await _userManager.FindByEmailAsync(moderator.Email);
             if (user == null)
             {
-                await _userManager.CreateAsync(moderator, moderator.Lastname); // Using LastName as password for testing
+                await _userManager.CreateAsync(moderator, moderator.Firstname); // Using Firstname as password for testing
                 await _userManager.AddToRoleAsync(moderator, EnumRoles.Moderator.ToString());
                 await _userManager.AddToRoleAsync(moderator, EnumRoles.Assist.ToString());
             }
@@ -142,7 +142,7 @@ namespace PiggyBankMVC.DataAccessLayer
             user = await _userManager.FindByEmailAsync(assist.Email);
             if (user == null)
             {
-                await _userManager.CreateAsync(assist, assist.Lastname); // Using LastName as password for testing
+                await _userManager.CreateAsync(assist, assist.Firstname); // Using Firstname as password for testing
                 await _userManager.AddToRoleAsync(assist, EnumRoles.Assist.ToString());
             }
 
@@ -168,7 +168,7 @@ namespace PiggyBankMVC.DataAccessLayer
                 user = await _userManager.FindByEmailAsync(u.Email);
                 if (user == null)
                 {
-                    await _userManager.CreateAsync(u, u.Lastname); // Using LastName as password for testing
+                    await _userManager.CreateAsync(u, u.Firstname); // Using Firstname as password for testing
                     await _userManager.AddToRoleAsync(u, EnumRoles.Customer.ToString());
                 }
             }
