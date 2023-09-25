@@ -27,8 +27,8 @@ namespace PiggyBankMVC.DataAccessLayer
                 _rand = new Random();
 
                 // DB is already seeded, GTFO
-                //if (context.Addresses.Any())
-                //    return;
+                if (context.Addresses.Any())
+                    return;
 
                 try
                 { 
