@@ -1,5 +1,10 @@
 ## Migrations
 
+### Setup migrations
+```powershell
+Enable-Migration <name>
+```
+
 ### Create a new migration file
 ```powershell
 Add-Migration <name>
