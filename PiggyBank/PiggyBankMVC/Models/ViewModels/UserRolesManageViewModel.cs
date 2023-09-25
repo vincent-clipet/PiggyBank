@@ -1,4 +1,4 @@
-﻿namespace PiggyBankMVC.Models
+﻿namespace PiggyBankMVC.Models.ViewModels
 {
     public class UserRolesManageViewModel
     {

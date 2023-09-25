@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PiggyBankMVC.Models;
+using PiggyBankMVC.Models.ViewModels;
 
 namespace PiggyBankMVC.Controllers
 {
