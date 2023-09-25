@@ -15,7 +15,11 @@ namespace PiggyBankMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            // return View();
+            if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.IsInRole("Assist"))
+                return View();
+            else
+                return RedirectToAction("Index", "Products");
         }
 
         public IActionResult Privacy()
