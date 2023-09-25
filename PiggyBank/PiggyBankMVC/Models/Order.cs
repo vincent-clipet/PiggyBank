@@ -12,8 +12,8 @@ namespace PiggyBankMVC.Models
         public DateTime CreatedAt { get; set; }
 
         [Required]
-        public int UserId { get; set; }
-        [ForeignKey("ID")]
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
         public virtual ApplicationUser? User { get; set; }
 
         [Required]

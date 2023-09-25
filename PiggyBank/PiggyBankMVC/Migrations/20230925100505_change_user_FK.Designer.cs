@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PiggyBankMVC.DataAccessLayer;
 
@@ -11,9 +12,11 @@ using PiggyBankMVC.DataAccessLayer;
 namespace PiggyBankMVC.Migrations
 {
     [DbContext(typeof(PiggyContext))]
-    partial class PiggyContextModelSnapshot : ModelSnapshot
+    [Migration("20230925100505_change_user_FK")]
+    partial class change_user_FK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

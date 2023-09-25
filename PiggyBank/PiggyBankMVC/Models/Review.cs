@@ -23,8 +23,8 @@ namespace PiggyBankMVC.Models
         public Product? Product { get; set; }
 
         [Required]
-        public int UserId { get; set; }
-        [ForeignKey("ID")]
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
         public virtual ApplicationUser? User { get; set; }
 
         [Required]
