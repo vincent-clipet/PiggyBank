@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Addresses
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
               return _context.Addresses != null ? 
@@ -28,6 +30,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Addresses/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Addresses == null)
@@ -46,6 +49,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Addresses/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -56,6 +60,7 @@ namespace PiggyBankMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("AddressId,Number,Street,City,Zip")] Address address)
         {
             if (ModelState.IsValid)
@@ -68,6 +73,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Addresses/Edit/5
+        [Authorize(Roles = "Admin")] // TODO: exception for current User
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Addresses == null)
@@ -88,6 +94,7 @@ namespace PiggyBankMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")] // TODO: exception for current User
         public async Task<IActionResult> Edit(int id, [Bind("AddressId,Number,Street,City,Zip")] Address address)
         {
             if (id != address.AddressId)
@@ -119,41 +126,43 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Addresses/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Addresses == null)
-            {
-                return NotFound();
-            }
+        //[Authorize(Roles = "Admin")] // TODO: set to inactive instead
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null || _context.Addresses == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var address = await _context.Addresses
-                .FirstOrDefaultAsync(m => m.AddressId == id);
-            if (address == null)
-            {
-                return NotFound();
-            }
+        //    var address = await _context.Addresses
+        //        .FirstOrDefaultAsync(m => m.AddressId == id);
+        //    if (address == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(address);
-        }
+        //    return View(address);
+        //}
 
-        // POST: Addresses/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Addresses == null)
-            {
-                return Problem("Entity set 'PiggyContext.Addresses'  is null.");
-            }
-            var address = await _context.Addresses.FindAsync(id);
-            if (address != null)
-            {
-                _context.Addresses.Remove(address);
-            }
+        //// POST: Addresses/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Admin")] // TODO: set to inactive instead
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    if (_context.Addresses == null)
+        //    {
+        //        return Problem("Entity set 'PiggyContext.Addresses'  is null.");
+        //    }
+        //    var address = await _context.Addresses.FindAsync(id);
+        //    if (address != null)
+        //    {
+        //        _context.Addresses.Remove(address);
+        //    }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool AddressExists(int id)
         {

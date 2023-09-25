@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Manufacturers
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var piggyContext = _context.Manufacturers.Include(m => m.Address);
@@ -27,6 +29,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Manufacturers/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Manufacturers == null)
@@ -46,6 +49,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Manufacturers/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City");
@@ -57,6 +61,7 @@ namespace PiggyBankMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("ManufacturerId,Name,AddressId")] Manufacturer manufacturer)
         {
             if (ModelState.IsValid)
@@ -70,6 +75,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Manufacturers/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Manufacturers == null)
@@ -91,6 +97,7 @@ namespace PiggyBankMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ManufacturerId,Name,AddressId")] Manufacturer manufacturer)
         {
             if (id != manufacturer.ManufacturerId)
@@ -122,43 +129,43 @@ namespace PiggyBankMVC.Controllers
             return View(manufacturer);
         }
 
-        // GET: Manufacturers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Manufacturers == null)
-            {
-                return NotFound();
-            }
+        //// GET: Manufacturers/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null || _context.Manufacturers == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var manufacturer = await _context.Manufacturers
-                .Include(m => m.Address)
-                .FirstOrDefaultAsync(m => m.ManufacturerId == id);
-            if (manufacturer == null)
-            {
-                return NotFound();
-            }
+        //    var manufacturer = await _context.Manufacturers
+        //        .Include(m => m.Address)
+        //        .FirstOrDefaultAsync(m => m.ManufacturerId == id);
+        //    if (manufacturer == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(manufacturer);
-        }
+        //    return View(manufacturer);
+        //}
 
-        // POST: Manufacturers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Manufacturers == null)
-            {
-                return Problem("Entity set 'PiggyContext.Manufacturers'  is null.");
-            }
-            var manufacturer = await _context.Manufacturers.FindAsync(id);
-            if (manufacturer != null)
-            {
-                _context.Manufacturers.Remove(manufacturer);
-            }
+        //// POST: Manufacturers/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    if (_context.Manufacturers == null)
+        //    {
+        //        return Problem("Entity set 'PiggyContext.Manufacturers'  is null.");
+        //    }
+        //    var manufacturer = await _context.Manufacturers.FindAsync(id);
+        //    if (manufacturer != null)
+        //    {
+        //        _context.Manufacturers.Remove(manufacturer);
+        //    }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool ManufacturerExists(int id)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Reviews
+        [Authorize(Roles = "Admin,Moderator")] // TODO: add exception for current user
         public async Task<IActionResult> Index()
         {
             var piggyContext = _context.Reviews.Include(r => r.Product).Include(r => r.User);
@@ -27,6 +29,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Reviews/Details/5
+        [Authorize(Roles = "Admin,Moderator")] // TODO: add exception for current user
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Reviews == null)
@@ -47,6 +50,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Reviews/Create
+        [Authorize(Roles = "Customer")] // TODO: add exception for current user
         public IActionResult Create()
         {
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color");
@@ -59,6 +63,7 @@ namespace PiggyBankMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Customer")] // TODO: add exception for current user
         public async Task<IActionResult> Create([Bind("ReviewId,Score,Message,CreatedAt,ProductId,UserId,ReviewStatus")] Review review)
         {
             if (ModelState.IsValid)
@@ -73,6 +78,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Reviews/Edit/5
+        [Authorize(Roles = "Admin,Moderator")] // TODO: add exception for current user
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Reviews == null)
@@ -95,6 +101,7 @@ namespace PiggyBankMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")] // TODO: add exception for current user
         public async Task<IActionResult> Edit(int id, [Bind("ReviewId,Score,Message,CreatedAt,ProductId,UserId,ReviewStatus")] Review review)
         {
             if (id != review.ReviewId)
@@ -127,44 +134,44 @@ namespace PiggyBankMVC.Controllers
             return View(review);
         }
 
-        // GET: Reviews/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Reviews == null)
-            {
-                return NotFound();
-            }
+        //// GET: Reviews/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null || _context.Reviews == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var review = await _context.Reviews
-                .Include(r => r.Product)
-                .Include(r => r.User)
-                .FirstOrDefaultAsync(m => m.ReviewId == id);
-            if (review == null)
-            {
-                return NotFound();
-            }
+        //    var review = await _context.Reviews
+        //        .Include(r => r.Product)
+        //        .Include(r => r.User)
+        //        .FirstOrDefaultAsync(m => m.ReviewId == id);
+        //    if (review == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(review);
-        }
+        //    return View(review);
+        //}
 
-        // POST: Reviews/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Reviews == null)
-            {
-                return Problem("Entity set 'PiggyContext.Reviews'  is null.");
-            }
-            var review = await _context.Reviews.FindAsync(id);
-            if (review != null)
-            {
-                _context.Reviews.Remove(review);
-            }
+        //// POST: Reviews/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    if (_context.Reviews == null)
+        //    {
+        //        return Problem("Entity set 'PiggyContext.Reviews'  is null.");
+        //    }
+        //    var review = await _context.Reviews.FindAsync(id);
+        //    if (review != null)
+        //    {
+        //        _context.Reviews.Remove(review);
+        //    }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool ReviewExists(int id)
         {
