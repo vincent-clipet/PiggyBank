@@ -28,7 +28,6 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Products/Details/5
-        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Products == null)

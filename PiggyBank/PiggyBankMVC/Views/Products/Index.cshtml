@@ -5,11 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Product Gallery</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -17,86 +20,55 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Height)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Width)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Length)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Weight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Color)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsActive)
+                @Html.DisplayNameFor(model => model.Manufacturer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Manufacturer)
+                Image
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Height)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Width)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Length)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Manufacturer.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                @{
+                    //<img asp-src="~@item.ImageUrl" alt="Image">
+                }
+                    <img src="@(item.ImageUrl)" asp-append-version="true" alt="Image" width="100px" height="100px" >
+            </td>
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a><span> | </span>
+                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
+                    //<span> | </span>
+                    //<a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                }
+                else
+                {
+                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
+                }
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

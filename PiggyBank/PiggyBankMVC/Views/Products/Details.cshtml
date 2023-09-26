@@ -5,56 +5,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>@Html.DisplayFor(model => model.Name)</h1>
+<h5>@Html.DisplayFor(model => model.Description)</h5>
 
 <div>
-    <h4>Product</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Image
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            <img src="@Model.ImageUrl" asp-append-version="true" alt="@Model.Name" width="300px" height="300px" >
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
+        <dt class="col-sm-2">
+            Dimensions (H x W x L)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Height)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Height)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Width)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Width)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Length)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Length)
+        <dd class="col-sm-10">
+            @Model.Height mm x @Model.Width mm x @Model.Length mm
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Weight)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Weight)
+            @Html.DisplayFor(model => model.Weight) g
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Capacity)
+            @Html.DisplayNameFor(model => model.Capacity) coins
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Capacity)
@@ -72,12 +48,6 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Manufacturer)
         </dt>
         <dd class = "col-sm-10">
@@ -86,6 +56,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProductId">Edit</a> |
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.ProductId">Edit</a><span> | </span>
+    }
     <a asp-action="Index">Back to List</a>
 </div>
