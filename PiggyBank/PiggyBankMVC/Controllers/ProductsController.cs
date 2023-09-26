@@ -21,7 +21,6 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Products
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             var piggyContext = _context.Products.Include(p => p.Manufacturer);
