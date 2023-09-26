@@ -15,7 +15,6 @@ namespace PiggyBankMVC.DataAccessLayer
         private static UserManager<ApplicationUser>? _userManager;
         private static RoleManager<IdentityRole>? _roleManager;
         private static PiggyContext _context;
-        private static Random _rand;
 
         public static async Task Initialize(IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -24,7 +23,6 @@ namespace PiggyBankMVC.DataAccessLayer
                 _context = context;
                 _userManager = userManager;
                 _roleManager = roleManager;
-                _rand = new Random();
 
                 // DB is already seeded, GTFO
                 if (context.Addresses.Any())
@@ -195,27 +193,28 @@ namespace PiggyBankMVC.DataAccessLayer
 
         private static void seedProducts()
         {
+            int incr = 1;
             (new List<Product>{
-                new Product { Name="Red Piggybank", ImageUrl=null, Description="Nice red piggy", Height=60, Width=40, Length=80, Weight=1200, Capacity=883, Color="Red", Price=1800, IsActive=true, ManufacturerId=1},
-                new Product { Name="Green Piggybank", ImageUrl=null, Description="Cool green piggy", Height=70, Width=35, Length=90, Weight=1550, Capacity=1150, Color="Green", Price=2500, IsActive=true, ManufacturerId=1},
-                new Product { Name="Red Piggybank (Deluxe Season Pass)", ImageUrl=null, Description="Another red piggy, more deluxe this time", Height=50, Width=35, Length=75, Weight=1200, Capacity=913, Color="Red", Price=9999, IsActive=true, ManufacturerId=1},
-                new Product { Name="Broken Piggybank", ImageUrl=null, Description="It's broken, don't buy it", Height=60, Width=40, Length=80, Weight=800, Capacity=883, Color="Red", Price=1, IsActive=true, ManufacturerId=2},
-                new Product { Name = "Blue Piggybank", ImageUrl = null, Description = "Beautiful blue piggy", Height = 55, Width = 45, Length = 85, Weight = 1350, Capacity = 950, Color = "Blue", Price = 2100, IsActive = true, ManufacturerId = 2 },
-                new Product { Name = "Yellow Piggybank", ImageUrl = null, Description = "Vibrant yellow piggy", Height = 65, Width = 50, Length = 95, Weight = 1450, Capacity = 1030, Color = "Yellow", Price = 2700, IsActive = true, ManufacturerId = 2 },
-                new Product { Name = "Green Piggybank (Limited Edition)", ImageUrl = null, Description = "Exclusive green piggy", Height = 75, Width = 55, Length = 105, Weight = 1650, Capacity = 1200, Color = "Green", Price = 3500, IsActive = true, ManufacturerId = 2 },
-                new Product { Name = "Blue Piggybank (XL)", ImageUrl = null, Description = "Extra-large blue piggy", Height = 80, Width = 60, Length = 110, Weight = 1850, Capacity = 1350, Color = "Blue", Price = 4200, IsActive = true, ManufacturerId = 3 },
-                new Product { Name = "Purple Piggybank", ImageUrl = null, Description = "Elegant purple piggy", Height = 70, Width = 55, Length = 100, Weight = 1550, Capacity = 1100, Color = "Purple", Price = 3100, IsActive = true, ManufacturerId = 3 },
-                new Product { Name = "Pink Piggybank (Glow-in-the-dark)", ImageUrl = null, Description = "Fun pink piggy that glows in the dark", Height = 60, Width = 50, Length = 95, Weight = 1400, Capacity = 980, Color = "Pink", Price = 2900, IsActive = true, ManufacturerId = 3 },
-                new Product { Name = "Silver Piggybank", ImageUrl = null, Description = "Shiny silver piggy", Height = 65, Width = 50, Length = 95, Weight = 1550, Capacity = 1100, Color = "Silver", Price = 3200, IsActive = false, ManufacturerId = 4 },
-                new Product { Name = "Gold Piggybank (Limited Edition)", ImageUrl = null, Description = "Exclusive gold piggy", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Gold", Price = 4200, IsActive = true, ManufacturerId = 4 },
-                new Product { Name = "Bronze Piggybank", ImageUrl = null, Description = "Classic bronze piggy", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Bronze", Price = 2700, IsActive = true, ManufacturerId = 4 },
-                new Product { Name = "Black Piggybank (Stealth Edition)", ImageUrl = null, Description = "Sleek black piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Black", Price = 3400, IsActive = true, ManufacturerId = 5 },
-                new Product { Name = "Orange Piggybank", ImageUrl = null, Description = "Vivid orange piggy", Height = 55, Width = 40, Length = 85, Weight = 1300, Capacity = 900, Color = "Orange", Price = 2300, IsActive = false, ManufacturerId = 5 },
-                new Product { Name = "Pink Piggybank (Floral Design)", ImageUrl = null, Description = "Pretty pink piggy with floral patterns", Height = 65, Width = 50, Length = 95, Weight = 1500, Capacity = 1050, Color = "Pink", Price = 2900, IsActive = true, ManufacturerId = 5 },
-                new Product { Name = "Copper Piggybank", ImageUrl = null, Description = "Classic copper piggy", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Copper", Price = 2600, IsActive = false, ManufacturerId = 6 },
-                new Product { Name = "Teal Piggybank", ImageUrl = null, Description = "Stylish teal piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Teal", Price = 3200, IsActive = true, ManufacturerId = 6 },
-                new Product { Name = "Red Piggybank (Limited Edition)", ImageUrl = null, Description = "Exclusive red piggy with gold accents", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Red", Price = 3900, IsActive = false, ManufacturerId = 6 },
-                new Product { Name = "Green Piggybank (Jungle Adventure)", ImageUrl = null, Description = "Green piggy with jungle-themed decorations", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Green", Price = 2800, IsActive = true, ManufacturerId = 7 },
+                new Product { Name = "Red Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Nice red piggy", Height=60, Width=40, Length=80, Weight=1200, Capacity=883, Color="Red", Price=1800, IsActive=true, ManufacturerId=1},
+                new Product { Name = "Green Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Cool green piggy", Height=70, Width=35, Length=90, Weight=1550, Capacity=1150, Color="Green", Price=2500, IsActive=true, ManufacturerId=1},
+                new Product { Name = "Red Piggybank (Deluxe Season Pass)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Another red piggy, more deluxe this time", Height=50, Width=35, Length=75, Weight=1200, Capacity=913, Color="Red", Price=9999, IsActive=true, ManufacturerId=1},
+                new Product { Name = "Broken Piggybank",ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "It's broken, don't buy it", Height=60, Width=40, Length=80, Weight=800, Capacity=883, Color="Red", Price=1, IsActive=true, ManufacturerId=2},
+                new Product { Name = "Blue Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Beautiful blue piggy", Height = 55, Width = 45, Length = 85, Weight = 1350, Capacity = 950, Color = "Blue", Price = 2100, IsActive = true, ManufacturerId = 2 },
+                new Product { Name = "Yellow Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Vibrant yellow piggy", Height = 65, Width = 50, Length = 95, Weight = 1450, Capacity = 1030, Color = "Yellow", Price = 2700, IsActive = true, ManufacturerId = 2 },
+                new Product { Name = "Green Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive green piggy", Height = 75, Width = 55, Length = 105, Weight = 1650, Capacity = 1200, Color = "Green", Price = 3500, IsActive = true, ManufacturerId = 2 },
+                new Product { Name = "Blue Piggybank (XL)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Extra-large blue piggy", Height = 80, Width = 60, Length = 110, Weight = 1850, Capacity = 1350, Color = "Blue", Price = 4200, IsActive = true, ManufacturerId = 3 },
+                new Product { Name = "Purple Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Elegant purple piggy", Height = 70, Width = 55, Length = 100, Weight = 1550, Capacity = 1100, Color = "Purple", Price = 3100, IsActive = true, ManufacturerId = 3 },
+                new Product { Name = "Pink Piggybank (Glow-in-the-dark)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Fun pink piggy that glows in the dark", Height = 60, Width = 50, Length = 95, Weight = 1400, Capacity = 980, Color = "Pink", Price = 2900, IsActive = true, ManufacturerId = 3 },
+                new Product { Name = "Silver Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Shiny silver piggy", Height = 65, Width = 50, Length = 95, Weight = 1550, Capacity = 1100, Color = "Silver", Price = 3200, IsActive = false, ManufacturerId = 4 },
+                new Product { Name = "Gold Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive gold piggy", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Gold", Price = 4200, IsActive = true, ManufacturerId = 4 },
+                new Product { Name = "Bronze Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Classic bronze piggy", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Bronze", Price = 2700, IsActive = true, ManufacturerId = 4 },
+                new Product { Name = "Black Piggybank (Stealth Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Sleek black piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Black", Price = 3400, IsActive = true, ManufacturerId = 5 },
+                new Product { Name = "Orange Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Vivid orange piggy", Height = 55, Width = 40, Length = 85, Weight = 1300, Capacity = 900, Color = "Orange", Price = 2300, IsActive = false, ManufacturerId = 5 },
+                new Product { Name = "Pink Piggybank (Floral Design)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Pretty pink piggy with floral patterns", Height = 65, Width = 50, Length = 95, Weight = 1500, Capacity = 1050, Color = "Pink", Price = 2900, IsActive = true, ManufacturerId = 5 },
+                new Product { Name = "Copper Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Classic copper piggy", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Copper", Price = 2600, IsActive = false, ManufacturerId = 6 },
+                new Product { Name = "Teal Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Stylish teal piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Teal", Price = 3200, IsActive = true, ManufacturerId = 6 },
+                new Product { Name = "Red Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive red piggy with gold accents", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Red", Price = 3900, IsActive = false, ManufacturerId = 6 },
+                new Product { Name = "Green Piggybank (Jungle Adventure)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Green piggy with jungle-themed decorations", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Green", Price = 2800, IsActive = true, ManufacturerId = 7 },
             }).ForEach(element => _context.Products.Add(element)); _context.SaveChanges();
         }
 
