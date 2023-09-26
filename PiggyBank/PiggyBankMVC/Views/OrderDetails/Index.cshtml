@@ -1,15 +1,12 @@
 ﻿@model IEnumerable<PiggyBankMVC.Models.OrderDetail>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Order Details - List";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Order Details - List</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -20,16 +17,16 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order)
+                @Html.DisplayNameFor(model => model.OrderId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product)
+                @Html.DisplayNameFor(model => model.ProductId)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
@@ -38,17 +35,15 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Order.UserId)
+                @Html.DisplayFor(modelItem => item.Order.OrderId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Color)
+                @Html.DisplayFor(modelItem => item.Product.ProductId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderDetailId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderDetailId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

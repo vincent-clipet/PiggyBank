@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc.Html;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Models;
+using PiggyBankMVC.Models.Enums;
+using PiggyBankMVC.Models.ViewModels;
 
 namespace PiggyBankMVC.Controllers
 {
@@ -46,131 +49,42 @@ namespace PiggyBankMVC.Controllers
                 return NotFound();
             }
 
-            return View(orderDetail);
+            var vm = new OrderDetailsViewModel
+            {
+                OrderDetailId = orderDetail.OrderId,
+                Order = orderDetail.Order,
+                Product = orderDetail.Product,
+                Price = orderDetail.Price,
+                Quantity = orderDetail.Quantity
+            };
+
+            return View(vm);
         }
 
-        // GET: OrderDetails/Create
-        [Authorize(Roles = "Admin")] // TODO: add exception for current user
-        public IActionResult Create()
-        {
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "UserId");
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color");
-            return View();
-        }
-
-        // POST: OrderDetails/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")] // TODO: add exception for current user
-        public async Task<IActionResult> Create([Bind("OrderDetailId,Quantity,Price,OrderId,ProductId")] OrderDetail orderDetail)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(orderDetail);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "UserId", orderDetail.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", orderDetail.ProductId);
-            return View(orderDetail);
-        }
-
-        // GET: OrderDetails/Edit/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.OrderDetails == null)
-            {
-                return NotFound();
-            }
-
-            var orderDetail = await _context.OrderDetails.FindAsync(id);
-            if (orderDetail == null)
-            {
-                return NotFound();
-            }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "UserId", orderDetail.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", orderDetail.ProductId);
-            return View(orderDetail);
-        }
-
-        // POST: OrderDetails/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderDetailId,Quantity,Price,OrderId,ProductId")] OrderDetail orderDetail)
-        {
-            if (id != orderDetail.OrderDetailId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(orderDetail);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderDetailExists(orderDetail.OrderDetailId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "UserId", orderDetail.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", orderDetail.ProductId);
-            return View(orderDetail);
-        }
-
-        //// GET: OrderDetails/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
+        //// GET: OrderDetails/Create
+        //[Authorize(Roles = "Admin")] // TODO: add exception for current user
+        //public IActionResult Create()
         //{
-        //    if (id == null || _context.OrderDetails == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var orderDetail = await _context.OrderDetails
-        //        .Include(o => o.Order)
-        //        .Include(o => o.Product)
-        //        .FirstOrDefaultAsync(m => m.OrderDetailId == id);
-        //    if (orderDetail == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(orderDetail);
+        //    ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId");
+        //    ViewData["ProductName"] = new SelectList(_context.Products, "ProductId", "Name");
+        //    return View();
         //}
 
-        //// POST: OrderDetails/Delete/5
-        //[HttpPost, ActionName("Delete")]
+        //// POST: OrderDetails/Create
+        //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //[Authorize(Roles = "Admin")] // TODO: add exception for current user
+        //public async Task<IActionResult> Create([Bind("OrderDetailId,Quantity,Price,OrderId,ProductId")] OrderDetail orderDetail)
         //{
-        //    if (_context.OrderDetails == null)
+        //    if (ModelState.IsValid)
         //    {
-        //        return Problem("Entity set 'PiggyContext.OrderDetails'  is null.");
+        //        _context.Add(orderDetail);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
         //    }
-        //    var orderDetail = await _context.OrderDetails.FindAsync(id);
-        //    if (orderDetail != null)
-        //    {
-        //        _context.OrderDetails.Remove(orderDetail);
-        //    }
-            
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
+        //    ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "UserId", orderDetail.OrderId);
+        //    ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", orderDetail.ProductId);
+        //    return View(orderDetail);
         //}
 
         private bool OrderDetailExists(int id)

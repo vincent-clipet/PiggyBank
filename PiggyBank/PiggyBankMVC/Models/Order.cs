@@ -24,5 +24,7 @@ namespace PiggyBankMVC.Models
         [Required]
         [Column("OrderStatus")]
         public EnumOrderStatus OrderStatus { get; set; }
+
+        public ICollection<OrderDetail> Details { get; } = new List<OrderDetail>();
     }
 }

@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc.Html;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Models;
+using PiggyBankMVC.Models.Enums;
+using PiggyBankMVC.Models.ViewModels;
 
 namespace PiggyBankMVC.Controllers
 {
@@ -89,8 +93,12 @@ namespace PiggyBankMVC.Controllers
             {
                 return NotFound();
             }
+
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
+            ViewData["OrderStatus"] = new SelectList(EnumHelper.GetSelectList(typeof(EnumOrderStatus)), order.OrderStatus);
+            var tmp = ViewData;
+
             return View(order);
         }
 
