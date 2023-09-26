@@ -1,43 +1,92 @@
-﻿@model PiggyBankMVC.Models.Order
+﻿@model PiggyBankMVC.Models.ViewModels.OrderViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Order</h1>
 
 <div>
-    <h4>Order</h4>
     <hr />
     <dl class="row">
+
+        <dt class="col-sm-2">
+            OrderId
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.OrderId)
+        </dd>
+        <hr />
+
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.DisplayNameFor(model => model.Order.CreatedAt)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
+            @Html.DisplayFor(model => model.Order.CreatedAt)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            @Html.DisplayNameFor(model => model.Order.User)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
+            @Html.DisplayFor(model => model.Order.User.Email)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.Order.Address)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address.City)
+            @Html.DisplayFor(model => model.Order.Address.City)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderStatus)
+            @Html.DisplayNameFor(model => model.Order.OrderStatus)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrderStatus)
+            @Html.DisplayFor(model => model.Order.OrderStatus)
         </dd>
     </dl>
 </div>
+
+<br />
+
+<h4>Order Details</h4>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.OrderId">Edit</a> |
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Product
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Details)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Order?.OrderId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
