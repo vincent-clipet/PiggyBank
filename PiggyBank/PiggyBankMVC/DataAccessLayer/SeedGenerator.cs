@@ -227,13 +227,13 @@ namespace PiggyBankMVC.DataAccessLayer
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Andrew")).Id, AddressId = 12, OrderStatus = EnumOrderStatus.Ordered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("George")).Id, AddressId = 2, OrderStatus = EnumOrderStatus.Delivered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Alice")).Id, AddressId = 5, OrderStatus = EnumOrderStatus.Sent });
-            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Bob")).Id, AddressId = 10, OrderStatus = EnumOrderStatus.Ordered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Bob")).Id, AddressId = 10, OrderStatus = EnumOrderStatus.Cancelled });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Emily")).Id, AddressId = 6, OrderStatus = EnumOrderStatus.InProcess });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("David")).Id, AddressId = 7, OrderStatus = EnumOrderStatus.Sent });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Sophia")).Id, AddressId = 8, OrderStatus = EnumOrderStatus.Ordered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Liam")).Id, AddressId = 9, OrderStatus = EnumOrderStatus.Delivered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Olivia")).Id, AddressId = 10, OrderStatus = EnumOrderStatus.Ordered });
-            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, AddressId = 11, OrderStatus = EnumOrderStatus.InProcess });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, AddressId = 11, OrderStatus = EnumOrderStatus.Cancelled });
             _context.SaveChanges();
         }
 

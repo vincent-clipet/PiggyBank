@@ -2,6 +2,7 @@
 {
     public enum EnumOrderStatus
     {
+        Cancelled,
         Ordered,
         InProcess,
         Sent,
