@@ -98,18 +98,30 @@ namespace PiggyBankMVC.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+                .Include(o => o.Address)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
                 return NotFound();
             }
 
-            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
-            ViewData["OrderStatus"] = new SelectList(EnumHelper.GetSelectList(typeof(EnumOrderStatus)), order.OrderStatus);
-            var tmp = ViewData;
+            var orderDetails = _context.OrderDetails
+                .Include(o => o.Product)
+                .Where(m => m.OrderId == id).ToList();
 
-            return View(order);
+            var vm = new OrderViewModel
+            {
+                Order = order,
+                Details = orderDetails,
+            };
+
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Email", "Email", order.UserId);
+            // ViewData["OrderStatus"] = new SelectList(EnumHelper.GetSelectList(typeof(EnumOrderStatus)), order.OrderStatus); // TODO: does not work
+
+            return View(vm);
         }
 
         // POST: Orders/Edit/5
