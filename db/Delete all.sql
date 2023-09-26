@@ -1,8 +1,8 @@
 DELETE FROM [piggybank].[Identity].[OrderDetails];
 DELETE FROM [piggybank].[Identity].[Orders];
+DELETE FROM [piggybank].[Identity].[Reviews];
 DELETE FROM [piggybank].[Identity].[Products];
 DELETE FROM [piggybank].[Identity].[Manufacturers];
-DELETE FROM [piggybank].[Identity].[Reviews];
 DELETE FROM [piggybank].[Identity].[UserRoles];
 DELETE FROM [piggybank].[Identity].[RoleClaims];
 DELETE FROM [piggybank].[Identity].[UserClaims];
