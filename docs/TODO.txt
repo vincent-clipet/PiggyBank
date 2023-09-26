@@ -1,0 +1,17 @@
+TODO :
+
+- Add adress on register form
+- Set Phone Number & EmailConfirmed on Register
+
+- Allow editing only for current user :
+	- Address
+	- Reviews
+- Allow reading only for current user :
+	- Address
+	- Orders
+		- OrderDetails
+	- Reviews
+
+- Order#Edit : OrderStatus does not get filled from the enum
+
+- Make Delete just 'IsActive = false' where possible
