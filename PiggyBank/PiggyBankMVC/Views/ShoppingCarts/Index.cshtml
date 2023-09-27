@@ -29,7 +29,15 @@
                         <td>@item.Product?.Name</td>
                         <td>@item.Quantity</td>
                         <td>@(@item.Product?.Price * @item.Quantity)</td>
-                        <td><a asp-controller="ShoppingCarts" asp-action="Remove">Remove</a></td>
+                        <td>
+                            <a
+                                asp-controller="ShoppingCarts"
+                                asp-action="Remove"
+                                asp-route-productId="@item.ProductId"
+                            >
+                                Remove
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>
