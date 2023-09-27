@@ -61,6 +61,8 @@ namespace PiggyBankMVC.DataAccessLayer
         public DbSet<Address> Addresses { get; set; }
         public DbSet<IdentityRole> Roles { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set;}
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
 
     }
 }
