@@ -14,8 +14,6 @@ namespace PiggyBankMVC.Models
 
         public List<ShoppingCartItem> Items { get; } = new List<ShoppingCartItem>();
 
-
-
         private PiggyContext _context;
 
 
@@ -29,7 +27,7 @@ namespace PiggyBankMVC.Models
         /// <summary>
         /// Adds a new Product to this ShoppingCart
         /// </summary>
-        /// <returns>True if the item was added to cart. False if it already existed</returns>
+        /// <returns>True if the item was added to cart. False if it already existed or the quantity was invalid</returns>
         public bool Add(Product p, int quantity)
         {
             // Check if this Product was already added to this ShoppingCart.
@@ -37,6 +35,9 @@ namespace PiggyBankMVC.Models
             
             if (shoppingCartItem == null)
             {
+                if (quantity <= 0)
+                    return false;
+
                 shoppingCartItem = new ShoppingCartItem
                 {
                     Quantity = quantity,

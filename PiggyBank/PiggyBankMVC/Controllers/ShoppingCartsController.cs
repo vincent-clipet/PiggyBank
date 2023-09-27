@@ -1,150 +1,72 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.DataAccessLayer;
+using PiggyBankMVC.Migrations;
 using PiggyBankMVC.Models;
+using PiggyBankMVC.Models.ViewModels;
 
 namespace PiggyBankMVC.Controllers
 {
     public class ShoppingCartsController : Controller
     {
         private readonly PiggyContext _context;
+        private ShoppingCart _cart;
 
-        public ShoppingCartsController(PiggyContext context)
+
+
+        public ShoppingCartsController(PiggyContext context, ShoppingCart cart)
         {
             _context = context;
+            _cart = cart;
         }
+
+
 
         // GET: ShoppingCarts
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string lastUrl = "/")
         {
-              return _context.ShoppingCarts != null ? 
-                          View(await _context.ShoppingCarts.ToListAsync()) :
-                          Problem("Entity set 'PiggyContext.ShoppingCarts'  is null.");
+            _cart.GetItems();
+
+            var vm = new ShoppingCartViewModel
+            {
+                LastUrl = lastUrl,
+                ShoppingCart = _cart,
+                TotalPrice = _cart.GetTotalPrice()
+            };
+
+            return View("Index", vm);
         }
 
-        // GET: ShoppingCarts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Add(int productId, int quantity, string lastUrl = null)
         {
-            if (id == null || _context.ShoppingCarts == null)
-            {
+            Product? p = await _context.Products.FirstOrDefaultAsync(s => s.ProductId == productId);
+            if (p == null)
                 return NotFound();
-            }
 
-            var shoppingCart = await _context.ShoppingCarts
-                .FirstOrDefaultAsync(m => m.CartId == id);
-            if (shoppingCart == null)
-            {
-                return NotFound();
-            }
+            lastUrl = lastUrl.Replace("%2F", "/");
 
-            return View(shoppingCart);
+            bool ok = _cart.Add(p, quantity);
+            return Index(lastUrl);
         }
 
-
-        // POST: ShoppingCarts/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("CartId,CreatedAt")] ShoppingCart shoppingCart)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(shoppingCart);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(shoppingCart);
-        //}
-
-        // GET: ShoppingCarts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Remove(int productId)
         {
-            if (id == null || _context.ShoppingCarts == null)
-            {
+            Product? p = await _context.Products.FirstOrDefaultAsync(s => s.ProductId == productId);
+            if (p == null)
                 return NotFound();
-            }
 
-            var shoppingCart = await _context.ShoppingCarts.FindAsync(id);
-            if (shoppingCart == null)
-            {
-                return NotFound();
-            }
-            return View(shoppingCart);
+            _cart.Remove(p);
+
+            return RedirectToAction("Index");
         }
 
-        // POST: ShoppingCarts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CartId,CreatedAt")] ShoppingCart shoppingCart)
+        public IActionResult Back(string returnUrl = "/")
         {
-            if (id != shoppingCart.CartId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(shoppingCart);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ShoppingCartExists(shoppingCart.CartId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(shoppingCart);
+            return Redirect(returnUrl);
         }
-
-        // GET: ShoppingCarts/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.ShoppingCarts == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var shoppingCart = await _context.ShoppingCarts
-        //        .FirstOrDefaultAsync(m => m.CartId == id);
-        //    if (shoppingCart == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(shoppingCart);
-        //}
-
-        // POST: ShoppingCarts/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.ShoppingCarts == null)
-        //    {
-        //        return Problem("Entity set 'PiggyContext.ShoppingCarts'  is null.");
-        //    }
-        //    var shoppingCart = await _context.ShoppingCarts.FindAsync(id);
-        //    if (shoppingCart != null)
-        //    {
-        //        _context.ShoppingCarts.Remove(shoppingCart);
-        //    }
-            
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         private bool ShoppingCartExists(int id)
         {

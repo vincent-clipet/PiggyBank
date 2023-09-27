@@ -1,36 +1,72 @@
-﻿@model IEnumerable<PiggyBankMVC.Models.ShoppingCart>
+﻿@using System.Globalization;
+@model PiggyBankMVC.Models.ViewModels.ShoppingCartViewModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="row checkoutForm">
+    <h1>Shopping cart</h1>
+    <hr />
+    <br />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CartId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CartId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CartId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @if (Model.ShoppingCart.Items.Count() != 0)
+    {
+        <table class="table table-stripped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ShoppingCart.Items)
+                {
+                    <tr>
+                        <td class="text-center">@item.Product?.Name</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-center">{@item.Product?.Price * @item.Quantity}</td>
+                        <td class="text-center">@item.Product?.Price.ToString("c",CultureInfo.CreateSpecificCulture("fr-FR"))</td>
+                        <td class="text-center"><a asp-controller="ShoppingCart" asp-action="Remove"></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <hr />
+        <br />
+
+        <dl class="row">
+            <dt class="col-sm-1">
+                Total Price
+            </dt>
+            <dd class="col-sm-10">
+                @(
+                    Model.TotalPrice.ToString("c", CultureInfo.CreateSpecificCulture("fr-FR"))
+                    )
+            </dd>
+        </dl>
+
+        <hr />
+    }
+    else
+    {
+        <p>You cart is empty. Go shopping !</p>
+    }
+
+    <div>
+        <a class="" asp-action="Back" asp-route-returnUrl="@Model.LastUrl">Back</a>
+        @if (Model.ShoppingCart.Items.Count() != 0)
+        {
+            <a class="btn btn-success" asp-controller="Order" asp-action="ConvertShoppingCart">Check out</a>
+        }
+    </div>
+
+</div>
