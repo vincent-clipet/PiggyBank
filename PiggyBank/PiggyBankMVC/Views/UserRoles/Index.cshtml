@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>User Roles</h1>
+<h4>User Roles</h4>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -25,7 +25,7 @@
                 <td>@user.Email</td>
                 <td>@string.Join(" | ", user.Roles.ToList())</td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.UserId">Manage Roles</a>
+                    <a asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.UserId">Manage Roles</a>
                 </td>
             </tr>
         }

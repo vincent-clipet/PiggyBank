@@ -51,7 +51,7 @@ namespace PiggyBankMVC.Controllers
                 ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
                 return View("NotFound");
             }
-            ViewBag.UserName = user.UserName;
+            ViewBag.Email = user.Email;
             var model = new List<UserRolesManageViewModel>();
             var allRoles = _roleManager.Roles.ToList();
             foreach (var role in allRoles)

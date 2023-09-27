@@ -1,34 +1,38 @@
 ﻿@using PiggyBankMVC.Models.ViewModels
 @model List<UserRolesManageViewModel>
 @{
-    ViewData["Title"] = "Manage";
+    ViewData["Title"] = "Edit User Roles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <form method="post">
-    <div class="card">
-        <div class="card-header">
-            <h2>Manage User Roles</h2>
-            Add/Remove Roles for User / @ViewBag.UserName.
-        </div>
-        <div class="card-body">
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                <div class="form-check m-1">
-                    <input type="hidden" asp-for="@Model[i].RoleId" />
-                    <input type="hidden" asp-for="@Model[i].RoleName" />
-                    <input asp-for="@Model[i].Selected" class="form-check-input" />
-                    <label class="form-check-label" asp-for="@Model[i].Selected">
-                        @Model[i].RoleName
-                    </label>
-                </div>
-            }
-            <div asp-validation-summary="All" class="text-danger"></div>
-        </div>
-        <div class="card-footer">
-            <input type="submit" value="Update" class="btn btn-primary"
-                   style="width:auto" />
-            <a asp-action="EditUser" asp-route-id="@ViewBag.userId"
-               class="btn btn-primary" style="width:auto">Cancel</a>
-        </div>
+    <div>
+        <h4>Edit User Roles</h4>
+    </div>
+    <hr />
+    <h7><em>@ViewBag.Email</em></h7>
+    <hr />
+    <div>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div>
+                <input type="hidden" asp-for="@Model[i].RoleId" />
+                <input type="hidden" asp-for="@Model[i].RoleName" />
+                @if (Model[i].RoleName != "Visitor")
+                {
+                    <input asp-for="@Model[i].Selected" />
+                    <label asp-for="@Model[i].Selected">@Model[i].RoleName</label>
+                }
+                else
+                {
+                    <input asp-for="@Model[i].Selected" disabled="disabled" />
+                    <label asp-for="@Model[i].Selected"><s>@Model[i].RoleName</s></label>
+                }
+            </div>
+        }
+        <div asp-validation-summary="All" ></div>
+    </div>
+    <br />
+    <div>
+        <input type="submit" value="Update" />
     </div>
 </form>
