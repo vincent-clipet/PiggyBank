@@ -12,6 +12,7 @@ using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.Enums;
 using PiggyBankMVC.Models.ViewModels;
+using PiggyBankMVC.Utils;
 
 namespace PiggyBankMVC.Controllers
 {
@@ -37,18 +38,15 @@ namespace PiggyBankMVC.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Orders == null)
-            {
                 return NotFound();
-            }
 
             var order = await _context.Orders
                 .Include(o => o.Address)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
+            
             if (order == null)
-            {
                 return NotFound();
-            }
 
             var orderDetails = _context.OrderDetails
                 .Include(o => o.Product)
@@ -58,9 +56,10 @@ namespace PiggyBankMVC.Controllers
             {
                 Order = order,
                 Details = orderDetails,
+                TotalPrice = OrderUtils.getTotalPrice(orderDetails),
+                TotalProducts = OrderUtils.getTotalProducts(orderDetails),
+                UniqueProducts = OrderUtils.getUniqueProducts(orderDetails)
             };
-
-            Console.WriteLine(vm.Details);
 
             return View(vm);
         }
@@ -115,6 +114,9 @@ namespace PiggyBankMVC.Controllers
             {
                 Order = order,
                 Details = orderDetails,
+                TotalPrice = OrderUtils.getTotalPrice(orderDetails),
+                TotalProducts = OrderUtils.getTotalProducts(orderDetails),
+                UniqueProducts = OrderUtils.getUniqueProducts(orderDetails)
             };
 
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
