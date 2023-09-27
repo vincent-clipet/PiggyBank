@@ -1,7 +1,22 @@
-TODO :
 
-- Add adress on register form
-- Set Phone Number & EmailConfirmed on Register
+
+### Tier 1
+
+- Shopping Cart
+	- Implement Wipe
+	- Implement Remove
+	- Implement conversion to Order
+	- Hide "Shopping Cart" from NavBar when empty + Add Count next to it
+
+- Add Reviews on Products
+
+- Order#Edit : OrderStatus does not get filled from the enum
+
+- Remove all ShoppingCart functionnalities for Admin
+
+
+
+### Tier 2
 
 - Allow editing only for current user :
 	- Address
@@ -9,16 +24,18 @@ TODO :
 - Allow reading only for current user :
 	- Address
 	- Orders
-		- OrderDetails
 	- Reviews
 
-- Order#Edit : OrderStatus does not get filled from the enum
+- For Customer, add form to post a review
 
 - Make Delete just 'IsActive = false' where possible
 
+
+
+### Tier 3
+
 - Don't show picture if null
 
-- Shopping Cart
-	- Implement Wipe
-	- Implement Remove
-	- Implement conversion to Order
+- Set Phone Number & EmailConfirmed on Register
+
+- Add adress on register form
