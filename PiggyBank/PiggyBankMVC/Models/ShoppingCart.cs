@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.DataAccessLayer;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PiggyBankMVC.Models
 {
@@ -13,6 +14,13 @@ namespace PiggyBankMVC.Models
         public DateTime CreatedAt { get; set; }
 
         public List<ShoppingCartItem> Items { get; } = new List<ShoppingCartItem>();
+
+        [Required]
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser? User { get; set; }
+
+
 
         private PiggyContext _context;
 
@@ -30,7 +38,7 @@ namespace PiggyBankMVC.Models
         /// <returns>True if the item was added to cart. False if it already existed or the quantity was invalid</returns>
         public bool Add(Product p, int quantity)
         {
-            this.Create();
+            // this.Create();
 
             // Check if this Product was already added to this ShoppingCart.
             ShoppingCartItem? shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(s => s.ProductId == p.ProductId && s.CartId == this.CartId);
@@ -92,32 +100,24 @@ namespace PiggyBankMVC.Models
             return _context.ShoppingCartItems.Where(cart => cart.CartId == this.CartId).Select(item => item.Product.Price * item.Quantity).Sum();
         }
 
-        public bool Create()
+        public static ShoppingCart CreateOrFind(PiggyContext _context, string userId)
         {
-            ShoppingCart cart = _context.ShoppingCarts.FirstOrDefault(s => s.CartId == this.CartId);
-            if (cart != null)
-                return false;
+            ShoppingCart? cart = _context.ShoppingCarts.FirstOrDefault(s => s.UserId == userId);
+            if (cart == null)
+            {
+                cart = new ShoppingCart(_context)
+                {
+                    UserId = userId,
+                    CreatedAt = DateTime.Now
+                };
+                _context.ShoppingCarts.Add(cart);
+                _context.SaveChanges();
+                return cart;
+            }
             else
             {
-                _context.ShoppingCarts.Add(this);
-                _context.SaveChanges();
-                return true;
+                return cart;
             }
-        }
-
-
-
-        public static ShoppingCart GetCart(IServiceProvider services)
-        {
-            ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
-            var context = services.GetService<PiggyContext>();
-
-            ShoppingCart ret = new ShoppingCart(context) { CreatedAt = DateTime.Now };
-
-            int cartId = session.GetInt32("CartId") ?? ret.CartId;
-            session.SetInt32("CartId", cartId);
-
-            return ret;
         }
     }
 }

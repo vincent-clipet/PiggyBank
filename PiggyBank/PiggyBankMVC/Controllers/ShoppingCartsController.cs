@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
@@ -7,20 +8,23 @@ using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Migrations;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.ViewModels;
+using System.Security.Claims;
 
 namespace PiggyBankMVC.Controllers
 {
     public class ShoppingCartsController : Controller
     {
         private readonly PiggyContext _context;
-        private ShoppingCart _cart;
+        private readonly string? _userId;
+        private ShoppingCart? _cart;
 
 
 
-        public ShoppingCartsController(PiggyContext context, ShoppingCart cart)
+        public ShoppingCartsController(PiggyContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
-            _cart = cart;
+            _userId = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            _cart = ShoppingCart.CreateOrFind(_context, _userId);
         }
 
 

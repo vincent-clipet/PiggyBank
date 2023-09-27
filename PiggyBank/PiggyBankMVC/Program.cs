@@ -67,9 +67,9 @@ namespace PiggyBankMVC
                 options.Conventions.AllowAnonymousToPage("/Account/Register");
             });
 
-            builder.Services.AddScoped(sp => ShoppingCart.GetCart(sp));
 
-            builder.Services.AddSession();
+
+            builder.Services.AddHttpContextAccessor();
 
 
 
@@ -108,8 +108,6 @@ namespace PiggyBankMVC
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();
