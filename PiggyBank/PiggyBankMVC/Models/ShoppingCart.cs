@@ -102,7 +102,7 @@ namespace PiggyBankMVC.Models
 
         public static ShoppingCart CreateOrFind(PiggyContext _context, string userId)
         {
-            ShoppingCart? cart = _context.ShoppingCarts.FirstOrDefault(s => s.UserId == userId);
+            ShoppingCart? cart = _context.ShoppingCarts.Where(s => s.UserId == userId).Include(s => s.Items).ThenInclude(s => s.Product).FirstOrDefault();
             if (cart == null)
             {
                 cart = new ShoppingCart(_context)

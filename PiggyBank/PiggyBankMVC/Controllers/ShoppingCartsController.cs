@@ -32,7 +32,7 @@ namespace PiggyBankMVC.Controllers
         // GET: ShoppingCarts
         public IActionResult Index(string lastUrl = "/")
         {
-            _cart.GetItems();
+            // _cart.GetItems();
 
             var vm = new ShoppingCartViewModel
             {

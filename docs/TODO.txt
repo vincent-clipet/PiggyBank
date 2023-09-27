@@ -15,3 +15,10 @@ TODO :
 - Order#Edit : OrderStatus does not get filled from the enum
 
 - Make Delete just 'IsActive = false' where possible
+
+- Don't show picture if null
+
+- Shopping Cart
+	- Implement Wipe
+	- Implement Remove
+	- Implement conversion to Order
