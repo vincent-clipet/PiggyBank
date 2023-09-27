@@ -1,3 +1,7 @@
+* {
+    font-family: 'Fira Sans', sans-serif;
+}
+
 html {
   font-size: 14px;
 }
@@ -18,5 +22,42 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #eee;
+}
+
+body > header > nav {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+body > header > nav a {
+    border-bottom: 2px solid transparent;
+}
+
+body > header > nav a:hover {
+    border-bottom: 2px solid #eee;
+}
+
+body > header > nav a.active {
+    border-bottom: 2px solid #eee;
+    font-weight: bold;
+}
+
+.navbar-icon-p {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 50px;
+}
+
+.navbar-icon-p > img {
+    width: 30px;
+    height: 30px;
+}
+
+.navbar-icon-p > span {
+    margin-left: 10px;
+}
+
+.footer-copyright {
+    margin-left: 20px;
 }
