@@ -26,11 +26,10 @@
                 @foreach (var item in Model.ShoppingCart.Items)
                 {
                     <tr>
-                        <td class="text-center">@item.Product?.Name</td>
-                        <td class="text-center">@item.Quantity</td>
-                        <td class="text-center">{@item.Product?.Price * @item.Quantity}</td>
-                        <td class="text-center">@item.Product?.Price.ToString("c",CultureInfo.CreateSpecificCulture("fr-FR"))</td>
-                        <td class="text-center"><a asp-controller="ShoppingCart" asp-action="Remove"></a></td>
+                        <td>@item.Product?.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@(@item.Product?.Price * @item.Quantity)</td>
+                        <td><a asp-controller="ShoppingCarts" asp-action="Remove">Remove</a></td>
                     </tr>
                 }
             </tbody>
@@ -65,7 +64,7 @@
         <a class="" asp-action="Back" asp-route-returnUrl="@Model.LastUrl">Back</a>
         @if (Model.ShoppingCart.Items.Count() != 0)
         {
-            <a class="btn btn-success" asp-controller="Order" asp-action="ConvertShoppingCart">Check out</a>
+            <a asp-controller="Order" asp-action="ConvertShoppingCart">Check out</a>
         }
     </div>
 

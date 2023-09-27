@@ -30,6 +30,8 @@ namespace PiggyBankMVC.Models
         /// <returns>True if the item was added to cart. False if it already existed or the quantity was invalid</returns>
         public bool Add(Product p, int quantity)
         {
+            this.Create();
+
             // Check if this Product was already added to this ShoppingCart.
             ShoppingCartItem? shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(s => s.ProductId == p.ProductId && s.CartId == this.CartId);
             
@@ -88,6 +90,19 @@ namespace PiggyBankMVC.Models
         public int GetTotalPrice()
         {
             return _context.ShoppingCartItems.Where(cart => cart.CartId == this.CartId).Select(item => item.Product.Price * item.Quantity).Sum();
+        }
+
+        public bool Create()
+        {
+            ShoppingCart cart = _context.ShoppingCarts.FirstOrDefault(s => s.CartId == this.CartId);
+            if (cart != null)
+                return false;
+            else
+            {
+                _context.ShoppingCarts.Add(this);
+                _context.SaveChanges();
+                return true;
+            }
         }
 
 

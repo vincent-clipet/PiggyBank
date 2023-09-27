@@ -32,6 +32,10 @@
                 Image
             </th>
             <th></th>
+            @if (User.IsInRole("Customer"))
+            {
+                <th></th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -68,6 +72,20 @@
                     <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
                 }
             </td>
+            @if (User.IsInRole("Customer"))
+            {
+                <td>
+                    <a
+                        asp-controller="ShoppingCarts"
+                        asp-action="Add"
+                        asp-route-productId="@item.ProductId"
+                        asp-route-quantity="1"
+                        asp-route-lastUrl="@Context.Request.Path">
+                        Add to Cart
+                    </a>
+                </td>
+            }
+
         </tr>
     }
     </tbody>
