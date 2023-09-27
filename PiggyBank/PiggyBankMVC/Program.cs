@@ -18,6 +18,8 @@ namespace PiggyBankMVC
             var connectionString = builder.Configuration.GetConnectionString("PiggyContext") ?? throw new InvalidOperationException("Connection string 'PiggyContextConnection' not found.");
             builder.Services.AddDbContext<PiggyContext>(options => options.UseSqlServer(connectionString));
 
+
+
             // Identity
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
@@ -55,6 +57,8 @@ namespace PiggyBankMVC
                 options.SlidingExpiration = true;
             });
 
+
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages(options =>
@@ -62,6 +66,10 @@ namespace PiggyBankMVC
                 options.Conventions.AllowAnonymousToPage("/Account/Login");
                 options.Conventions.AllowAnonymousToPage("/Account/Register");
             });
+
+            builder.Services.AddScoped(sp => ShoppingCart.GetCart(sp));
+
+            builder.Services.AddSession();
 
 
 
@@ -100,6 +108,8 @@ namespace PiggyBankMVC
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();
