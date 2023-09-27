@@ -63,6 +63,13 @@
                                 </div>
                             </li>
                         }
+
+                        @if (User.IsInRole("Customer"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="ShoppingCart" asp-action="Details">Shopping Cart</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <partial name="_LoginPartial" />
