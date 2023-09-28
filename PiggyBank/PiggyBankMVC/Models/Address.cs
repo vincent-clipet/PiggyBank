@@ -27,5 +27,10 @@ namespace PiggyBankMVC.Models
         [Required]
         [MaxLength(50)]
         public string Zip { get; set; }
+
+        public override string ToString()
+        {
+            return Number + " " + Street + ". " + Zip + " " + "City";
+        }
     }
 }

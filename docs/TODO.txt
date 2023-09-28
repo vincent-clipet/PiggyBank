@@ -2,8 +2,6 @@
 
 ### Tier 1
 
-- Change Address Display
-
 - Order#Edit : OrderStatus does not get filled from the enum
 
 
@@ -25,6 +23,8 @@
 - Make Delete just 'IsActive = false' where possible
 
 - Hide "Shopping Cart" from NavBar when empty + Add Count next to it
+
+- - Change Address Display for Edit & Create (Order / Manufacturer)
 
 
 

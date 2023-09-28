@@ -23,19 +23,19 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address.City)
+                @item?.Address?.ToString()
             </td>
             <td>
-                    <a asp-action="Edit" asp-route-id="@item.ManufacturerId" role="button" class="btn btn-warning">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.ManufacturerId" role="button" class="btn btn-dark">Details</a>
+                <a asp-action="Edit" asp-route-id="@item.ManufacturerId" role="button" class="btn btn-warning">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.ManufacturerId" role="button" class="btn btn-dark">Details</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

@@ -51,8 +51,6 @@ namespace PiggyBankMVC.Controllers
         }
 
         // POST: Addresses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -80,8 +78,6 @@ namespace PiggyBankMVC.Controllers
         }
 
         // POST: Addresses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")] // TODO: exception for current User
@@ -107,45 +103,6 @@ namespace PiggyBankMVC.Controllers
             }
             return View(address);
         }
-
-        // GET: Addresses/Delete/5
-        //[Authorize(Roles = "Admin")] // TODO: set to inactive instead
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.Addresses == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var address = await _context.Addresses
-        //        .FirstOrDefaultAsync(m => m.AddressId == id);
-        //    if (address == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(address);
-        //}
-
-        //// POST: Addresses/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")] // TODO: set to inactive instead
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.Addresses == null)
-        //    {
-        //        return Problem("Entity set 'PiggyContext.Addresses'  is null.");
-        //    }
-        //    var address = await _context.Addresses.FindAsync(id);
-        //    if (address != null)
-        //    {
-        //        _context.Addresses.Remove(address);
-        //    }
-            
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         private bool AddressExists(int id)
         {
