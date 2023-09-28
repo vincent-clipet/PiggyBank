@@ -34,7 +34,7 @@
                                 asp-controller="ShoppingCarts"
                                 asp-action="Remove"
                                 asp-route-productId="@item.ProductId"
-                            >
+                                role="button" class="btn btn-danger">
                                 Remove
                             </a>
                         </td>
@@ -57,24 +57,35 @@
             <dd class="col-sm-10">
                 @(
                     Model.TotalPrice.ToString("c", CultureInfo.CreateSpecificCulture("fr-FR"))
-                    )
+                )
             </dd>
         </dl>
 
-        <hr />
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+            <a asp-controller="Order" asp-action="ConvertShoppingCart" role="button" class="btn btn-success">
+                Order
+            </a>
+
+            <a asp-controller="ShoppingCarts" asp-action="Wipe" role="button" class="btn btn-danger" align="right">
+                Wipe cart
+            </a>
+        </div>
+
+        <br />
     }
     else
     {
         <p>You cart is empty. Go shopping !</p>
     }
 
+    <br />
+    <hr />
+
+
     <div>
         <a class="" asp-action="Back" asp-route-returnUrl="@Model.LastUrl">Back</a>
-        @if (Model.ShoppingCart != null && Model.ShoppingCart.Items.Count() != 0)
-        {
-            <a asp-controller="Order" asp-action="ConvertShoppingCart">Check out</a>
-            <a asp-controller="ShoppingCarts" asp-action="Wipe">Wipe</a>
-        }
     </div>
+   
+
 
 </div>

@@ -10,7 +10,7 @@
 @if (User.IsInRole("Admin"))
 {
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create" role="button" class="btn btn-primary">Create New</a>
     </p>
 }
 <table class="table">
@@ -62,14 +62,12 @@
             <td>
                 @if (User.IsInRole("Admin"))
                 {
-                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a><span> | </span>
-                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
-                    //<span> | </span>
-                    //<a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.ProductId" role="button" class="btn btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.ProductId" role="button" class="btn btn-dark">Details</a>
                 }
                 else
                 {
-                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
+                    <a asp-action="Details" asp-route-id="@item.ProductId" role="button" class="btn btn-dark">Details</a>
                 }
             </td>
             @if (User.IsInRole("Customer"))
@@ -81,7 +79,7 @@
                         asp-route-productId="@item.ProductId"
                         asp-route-quantity="1"
                         asp-route-lastUrl="@Context.Request.Path">
-                        Add to Cart
+                            <button type="button" class="btn btn-success">Add to Cart</button>
                     </a>
                 </td>
             }

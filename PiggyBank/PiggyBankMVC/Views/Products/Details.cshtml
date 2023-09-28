@@ -10,6 +10,7 @@
 
 <div>
     <hr />
+
     <dl class="row">
         <dt class = "col-sm-2">
             Image
@@ -55,6 +56,22 @@
         </dd>
     </dl>
 </div>
+
+@if (User.IsInRole("Customer"))
+{
+    <td>
+        <a asp-controller="ShoppingCarts"
+           asp-action="Add"
+           asp-route-productId="@Model.ProductId"
+           asp-route-quantity="1"
+           asp-route-lastUrl="@Context.Request.Path">
+           <button type="button" class="btn btn-success">Add to Cart</button>
+        </a>
+    </td>
+}
+
+<hr />
+
 <div>
     @if (User.IsInRole("Admin"))
     {
