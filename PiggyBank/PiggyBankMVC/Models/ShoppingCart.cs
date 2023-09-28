@@ -35,19 +35,17 @@ namespace PiggyBankMVC.Models
         /// <summary>
         /// Adds a new Product to this ShoppingCart
         /// </summary>
-        /// <returns>True if the item was added to cart. False if it already existed or the quantity was invalid</returns>
+        /// <returns>True if the item was added to cart. False if the quantity was invalid</returns>
         public bool Add(Product p, int quantity)
         {
-            // this.Create();
+            if (quantity <= 0) return false;
 
             // Check if this Product was already added to this ShoppingCart.
             ShoppingCartItem? shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(s => s.ProductId == p.ProductId && s.CartId == this.CartId);
             
+            // Item not yet present in the ShoppingCart
             if (shoppingCartItem == null)
             {
-                if (quantity <= 0)
-                    return false;
-
                 shoppingCartItem = new ShoppingCartItem
                 {
                     Quantity = quantity,
@@ -55,11 +53,15 @@ namespace PiggyBankMVC.Models
                     ProductId = p.ProductId
                 };
                 _context.ShoppingCartItems.Add(shoppingCartItem);
-                _context.SaveChanges();
-                return true;
+            }
+            // Item already in the ShoppingCart
+            else
+            {
+                shoppingCartItem.Quantity += quantity;   
             }
 
-            return false;
+            _context.SaveChanges();
+            return true;
         }
 
         /// <summary>
