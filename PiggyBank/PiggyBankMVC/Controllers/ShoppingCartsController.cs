@@ -29,6 +29,7 @@ namespace PiggyBankMVC.Controllers
 
 
         // GET: ShoppingCarts
+        [Authorize(Roles = "Customer")]
         public IActionResult Index(string lastUrl = "/")
         {
             ShoppingCart? cart = _context.ShoppingCarts.Where(s => s.UserId == _userId).Include(s => s.Items).ThenInclude(s => s.Product).FirstOrDefault();
@@ -55,6 +56,7 @@ namespace PiggyBankMVC.Controllers
             }
         }
 
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Add(int productId, int quantity, string lastUrl = null)
         {
             Product? p = await _context.Products.FirstOrDefaultAsync(s => s.ProductId == productId);
@@ -69,6 +71,7 @@ namespace PiggyBankMVC.Controllers
             return Index(lastUrl);
         }
 
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Remove(int productId)
         {
             Product? p = await _context.Products.FirstOrDefaultAsync(s => s.ProductId == productId);
@@ -82,6 +85,7 @@ namespace PiggyBankMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Customer")]
         public IActionResult Wipe()
         {
             ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
@@ -92,6 +96,7 @@ namespace PiggyBankMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Customer")]
         public IActionResult ConvertToOrder(int shoppingCartId)
         {
             ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
