@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Elfie.Model.Structures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
@@ -7,6 +9,7 @@ using PiggyBankMVC.Models.Enums;
 using System;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Web.Razor.Parser.SyntaxConstants;
 
 namespace PiggyBankMVC.DataAccessLayer
 {
@@ -36,7 +39,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     seedManufacturers();
                     seedProducts();
                     await seedOrders();
-                    seedOrderDetails();
+                    await seedOrderDetails();
                     await seedReviews();
                 }
                 catch (Exception ex) { 
@@ -195,26 +198,38 @@ namespace PiggyBankMVC.DataAccessLayer
         {
             int incr = 1;
             (new List<Product>{
-                new Product { Name = "Red Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Nice red piggy", Height=60, Width=40, Length=80, Weight=1200, Capacity=883, Color="Red", Price=1800, IsActive=true, ManufacturerId=1},
-                new Product { Name = "Green Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Cool green piggy", Height=70, Width=35, Length=90, Weight=1550, Capacity=1150, Color="Green", Price=2500, IsActive=true, ManufacturerId=1},
-                new Product { Name = "Red Piggybank (Deluxe Season Pass)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Another red piggy, more deluxe this time", Height=50, Width=35, Length=75, Weight=1200, Capacity=913, Color="Red", Price=9999, IsActive=true, ManufacturerId=1},
-                new Product { Name = "Broken Piggybank",ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "It's broken, don't buy it", Height=60, Width=40, Length=80, Weight=800, Capacity=883, Color="Red", Price=1, IsActive=true, ManufacturerId=2},
-                new Product { Name = "Blue Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Beautiful blue piggy", Height = 55, Width = 45, Length = 85, Weight = 1350, Capacity = 950, Color = "Blue", Price = 2100, IsActive = true, ManufacturerId = 2 },
-                new Product { Name = "Yellow Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Vibrant yellow piggy", Height = 65, Width = 50, Length = 95, Weight = 1450, Capacity = 1030, Color = "Yellow", Price = 2700, IsActive = true, ManufacturerId = 2 },
-                new Product { Name = "Green Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive green piggy", Height = 75, Width = 55, Length = 105, Weight = 1650, Capacity = 1200, Color = "Green", Price = 3500, IsActive = true, ManufacturerId = 2 },
-                new Product { Name = "Blue Piggybank (XL)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Extra-large blue piggy", Height = 80, Width = 60, Length = 110, Weight = 1850, Capacity = 1350, Color = "Blue", Price = 4200, IsActive = true, ManufacturerId = 3 },
-                new Product { Name = "Purple Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Elegant purple piggy", Height = 70, Width = 55, Length = 100, Weight = 1550, Capacity = 1100, Color = "Purple", Price = 3100, IsActive = true, ManufacturerId = 3 },
-                new Product { Name = "Pink Piggybank (Glow-in-the-dark)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Fun pink piggy that glows in the dark", Height = 60, Width = 50, Length = 95, Weight = 1400, Capacity = 980, Color = "Pink", Price = 2900, IsActive = true, ManufacturerId = 3 },
-                new Product { Name = "Silver Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Shiny silver piggy", Height = 65, Width = 50, Length = 95, Weight = 1550, Capacity = 1100, Color = "Silver", Price = 3200, IsActive = false, ManufacturerId = 4 },
-                new Product { Name = "Gold Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive gold piggy", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Gold", Price = 4200, IsActive = true, ManufacturerId = 4 },
-                new Product { Name = "Bronze Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Classic bronze piggy", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Bronze", Price = 2700, IsActive = true, ManufacturerId = 4 },
-                new Product { Name = "Black Piggybank (Stealth Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Sleek black piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Black", Price = 3400, IsActive = true, ManufacturerId = 5 },
-                new Product { Name = "Orange Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Vivid orange piggy", Height = 55, Width = 40, Length = 85, Weight = 1300, Capacity = 900, Color = "Orange", Price = 2300, IsActive = false, ManufacturerId = 5 },
-                new Product { Name = "Pink Piggybank (Floral Design)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Pretty pink piggy with floral patterns", Height = 65, Width = 50, Length = 95, Weight = 1500, Capacity = 1050, Color = "Pink", Price = 2900, IsActive = true, ManufacturerId = 5 },
-                new Product { Name = "Copper Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Classic copper piggy", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Copper", Price = 2600, IsActive = false, ManufacturerId = 6 },
-                new Product { Name = "Teal Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Stylish teal piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Teal", Price = 3200, IsActive = true, ManufacturerId = 6 },
-                new Product { Name = "Red Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive red piggy with gold accents", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Red", Price = 3900, IsActive = false, ManufacturerId = 6 },
-                new Product { Name = "Green Piggybank (Jungle Adventure)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Green piggy with jungle-themed decorations", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Green", Price = 2800, IsActive = true, ManufacturerId = 7 },
+                new Product { Name = "Red Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Nice red piggy", Height=60, Width=40, Length=80, Weight=1200, Capacity=883, Color="Red", Price=18.00M, IsActive=true, ManufacturerId=1},
+                new Product { Name = "Green Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Cool green piggy", Height=70, Width=35, Length=90, Weight=1550, Capacity=1150, Color="Green", Price=25.00M, IsActive=true, ManufacturerId=1},
+                new Product { Name = "Red Piggybank (Deluxe Season Pass)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Another red piggy, more deluxe this time", Height=50, Width=35, Length=75, Weight=1200, Capacity=913, Color="Red", Price=99.99M, IsActive=true, ManufacturerId=1},
+                new Product { Name = "Broken Piggybank",ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "It's broken, don't buy it", Height=60, Width=40, Length=80, Weight=800, Capacity=883, Color="Red", Price=0.01M, IsActive=true, ManufacturerId=2},
+                new Product { Name = "Blue Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Beautiful blue piggy", Height = 55, Width = 45, Length = 85, Weight = 1350, Capacity = 950, Color = "Blue", Price = 21.00M, IsActive = true, ManufacturerId = 2 },
+                new Product { Name = "Yellow Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Vibrant yellow piggy", Height = 65, Width = 50, Length = 95, Weight = 1450, Capacity = 1030, Color = "Yellow", Price = 27.00M, IsActive = true, ManufacturerId = 2 },
+                new Product { Name = "Green Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive green piggy", Height = 75, Width = 55, Length = 105, Weight = 1650, Capacity = 1200, Color = "Green", Price = 35.00M, IsActive = true, ManufacturerId = 2 },
+                new Product { Name = "Blue Piggybank (XL)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Extra-large blue piggy", Height = 80, Width = 60, Length = 110, Weight = 1850, Capacity = 1350, Color = "Blue", Price = 42.00M, IsActive = true, ManufacturerId = 3 },
+                new Product { Name = "Purple Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Elegant purple piggy", Height = 70, Width = 55, Length = 100, Weight = 1550, Capacity = 1100, Color = "Purple", Price = 31.00M, IsActive = true, ManufacturerId = 3 },
+                new Product { Name = "Pink Piggybank (Glow-in-the-dark)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Fun pink piggy that glows in the dark", Height = 60, Width = 50, Length = 95, Weight = 1400, Capacity = 980, Color = "Pink", Price = 29.00M, IsActive = true, ManufacturerId = 3 },
+                new Product { Name = "Silver Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Shiny silver piggy", Height = 65, Width = 50, Length = 95, Weight = 1550, Capacity = 1100, Color = "Silver", Price = 32.00M, IsActive = false, ManufacturerId = 4 },
+                new Product { Name = "Gold Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive gold piggy", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Gold", Price = 42.00M, IsActive = true, ManufacturerId = 4 },
+                new Product { Name = "Bronze Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Classic bronze piggy", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Bronze", Price = 27.00M, IsActive = true, ManufacturerId = 4 },
+                new Product { Name = "Black Piggybank (Stealth Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Sleek black piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Black", Price = 34.00M, IsActive = true, ManufacturerId = 5 },
+                new Product { Name = "Orange Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Vivid orange piggy", Height = 55, Width = 40, Length = 85, Weight = 1300, Capacity = 900, Color = "Orange", Price = 23.00M, IsActive = false, ManufacturerId = 5 },
+                new Product { Name = "Pink Piggybank (Floral Design)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Pretty pink piggy with floral patterns", Height = 65, Width = 50, Length = 95, Weight = 1500, Capacity = 1050, Color = "Pink", Price = 29.00M, IsActive = true, ManufacturerId = 5 },
+                new Product { Name = "Copper Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Classic copper piggy", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Copper", Price = 26.00M, IsActive = false, ManufacturerId = 6 },
+                new Product { Name = "Teal Piggybank", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Stylish teal piggy", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Teal", Price = 32.00M, IsActive = false, ManufacturerId = 6 },
+                new Product { Name = "Red Piggybank (Limited Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Exclusive red piggy with gold accents", Height = 75, Width = 55, Length = 105, Weight = 1750, Capacity = 1250, Color = "Red", Price = 39.00M, IsActive = false, ManufacturerId = 6 },
+                new Product { Name = "Green Piggybank (Jungle Adventure)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Green piggy with jungle-themed decorations", Height = 60, Width = 45, Length = 90, Weight = 1400, Capacity = 1000, Color = "Green", Price = 28.00M, IsActive = true, ManufacturerId = 7 },
+                new Product { Name = "Purple Piggybank (Royal Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Luxurious purple piggy with gold trim", Height = 70, Width = 55, Length = 100, Weight = 1600, Capacity = 1120, Color = "Purple", Price = 45.00M, IsActive = true, ManufacturerId = 7 },
+                new Product { Name = "Pink Piggybank (Princess Collection)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Pink piggy fit for a princess", Height = 65, Width = 50, Length = 95, Weight = 1500, Capacity = 1050, Color = "Pink", Price = 36.00M, IsActive = false, ManufacturerId = 7 },
+                new Product { Name = "Gold Piggybank (Treasure Chest)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Gold piggy with hidden treasure compartment", Height = 80, Width = 60, Length = 110, Weight = 1800, Capacity = 1300, Color = "Gold", Price = 54.99M, IsActive = false, ManufacturerId = 8 },
+                new Product { Name = "Blue Piggybank (Underwater Adventure)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Blue piggy with underwater-themed decorations", Height = 75, Width = 55, Length = 105, Weight = 1700, Capacity = 1200, Color = "Blue", Price = 48.00M, IsActive = false, ManufacturerId = 8 },
+                new Product { Name = "Silver Piggybank (Shimmering Elegance)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Silver piggy with a shimmering finish", Height = 70, Width = 55, Length = 100, Weight = 1650, Capacity = 1150, Color = "Silver", Price = 41.00M, IsActive = true, ManufacturerId = 8 },
+                new Product { Name = "Green Piggybank (Enchanted Forest)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Green piggy inspired by an enchanted forest", Height = 65, Width = 50, Length = 95, Weight = 1550, Capacity = 1100, Color = "Green", Price = 37.00M, IsActive = false, ManufacturerId = 9 },
+                new Product { Name = "Red Piggybank (Firefighter Edition)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Red piggy with firefighter-themed decals", Height = 60, Width = 45, Length = 90, Weight = 1450, Capacity = 1050, Color = "Red", Price = 33.00M, IsActive = false, ManufacturerId = 9 },
+                new Product { Name = "Black Piggybank (Ninja Stealth)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Sleek black piggy inspired by ninja stealth", Height = 70, Width = 55, Length = 100, Weight = 1600, Capacity = 1150, Color = "Black", Price = 39.00M, IsActive = false, ManufacturerId = 9 },
+                new Product { Name = "Orange Piggybank (Tropical Paradise)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Orange piggy with tropical paradise motifs", Height = 55, Width = 40, Length = 85, Weight = 1400, Capacity = 1000, Color = "Orange", Price = 29.00M, IsActive = true, ManufacturerId = 10 },
+                new Product { Name = "Copper Piggybank (Antique Collection)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Copper piggy with antique design", Height = 60, Width = 45, Length = 90, Weight = 1450, Capacity = 1050, Color = "Copper", Price = 35.00M, IsActive = false, ManufacturerId = 10 },
+                new Product { Name = "Teal Piggybank (Ocean Breeze)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Teal piggy inspired by the ocean breeze", Height = 65, Width = 50, Length = 95, Weight = 1550, Capacity = 1100, Color = "Teal", Price = 38.00M, IsActive = true, ManufacturerId = 10 },
+                new Product { Name = "Red Piggybank (Cherry Blossom)", ImageUrl = "/images/products/" + (incr++).ToString().PadLeft(4, '0') + ".jpg", Description = "Red piggy adorned with cherry blossom artwork", Height = 70, Width = 55, Length = 100, Weight = 1600, Capacity = 1150, Color = "Red", Price = 40.00M, IsActive = false, ManufacturerId = 11 },
             }).ForEach(element => _context.Products.Add(element)); _context.SaveChanges();
         }
 
@@ -223,6 +238,11 @@ namespace PiggyBankMVC.DataAccessLayer
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, AddressId = 10, OrderStatus = EnumOrderStatus.Sent });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, AddressId = 2, OrderStatus = EnumOrderStatus.InProcess });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, AddressId = 3, OrderStatus = EnumOrderStatus.Ordered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, AddressId = 22, OrderStatus = EnumOrderStatus.InProcess });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, AddressId = 12, OrderStatus = EnumOrderStatus.Sent });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, AddressId = 35, OrderStatus = EnumOrderStatus.Delivered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, AddressId = 29, OrderStatus = EnumOrderStatus.Cancelled });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, AddressId = 18, OrderStatus = EnumOrderStatus.Ordered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, AddressId = 4, OrderStatus = EnumOrderStatus.Delivered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Andrew")).Id, AddressId = 12, OrderStatus = EnumOrderStatus.Ordered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("George")).Id, AddressId = 2, OrderStatus = EnumOrderStatus.Delivered });
@@ -234,37 +254,117 @@ namespace PiggyBankMVC.DataAccessLayer
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Liam")).Id, AddressId = 9, OrderStatus = EnumOrderStatus.Delivered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Olivia")).Id, AddressId = 10, OrderStatus = EnumOrderStatus.Ordered });
             _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, AddressId = 11, OrderStatus = EnumOrderStatus.Cancelled });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, AddressId = 15, OrderStatus = EnumOrderStatus.Sent });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, AddressId = 27, OrderStatus = EnumOrderStatus.InProcess });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, AddressId = 32, OrderStatus = EnumOrderStatus.Ordered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, AddressId = 18, OrderStatus = EnumOrderStatus.Delivered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Andrew")).Id, AddressId = 34, OrderStatus = EnumOrderStatus.Ordered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("George")).Id, AddressId = 11, OrderStatus = EnumOrderStatus.Delivered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Alice")).Id, AddressId = 20, OrderStatus = EnumOrderStatus.Sent });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Bob")).Id, AddressId = 29, OrderStatus = EnumOrderStatus.Cancelled });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Emily")).Id, AddressId = 40, OrderStatus = EnumOrderStatus.InProcess });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("David")).Id, AddressId = 22, OrderStatus = EnumOrderStatus.Sent });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Sophia")).Id, AddressId = 25, OrderStatus = EnumOrderStatus.Ordered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Liam")).Id, AddressId = 13, OrderStatus = EnumOrderStatus.Delivered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Olivia")).Id, AddressId = 19, OrderStatus = EnumOrderStatus.Ordered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, AddressId = 6, OrderStatus = EnumOrderStatus.Cancelled });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, AddressId = 37, OrderStatus = EnumOrderStatus.Sent });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, AddressId = 8, OrderStatus = EnumOrderStatus.Ordered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Andrew")).Id, AddressId = 16, OrderStatus = EnumOrderStatus.Delivered });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("George")).Id, AddressId = 31, OrderStatus = EnumOrderStatus.InProcess });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Alice")).Id, AddressId = 9, OrderStatus = EnumOrderStatus.Sent });
+            _context.Orders.Add(new Order { CreatedAt = DateTime.Now, UserId = (await _userManager.FindByNameAsync("Bob")).Id, AddressId = 28, OrderStatus = EnumOrderStatus.Cancelled });
             _context.SaveChanges();
         }
 
-        private static void seedOrderDetails()
+        private async static Task seedOrderDetails()
         {
             (new List<OrderDetail>{
-                new OrderDetail { Quantity = 1, Price = 20000, OrderId = 1, ProductId = 1 },
-                new OrderDetail { Quantity = 5, Price = 15000, OrderId = 1, ProductId = 2 },
-                new OrderDetail { Quantity = 1, Price = 21000, OrderId = 2, ProductId = 1 },
-                new OrderDetail { Quantity = 1, Price = 22000, OrderId = 3, ProductId = 3 },
-                new OrderDetail { Quantity = 2, Price = 23000, OrderId = 4, ProductId = 3 },
-                new OrderDetail { Quantity = 18, Price = 95099, OrderId = 4, ProductId = 1 },
-                new OrderDetail { Quantity = 1, Price = 1800, OrderId = 4, ProductId = 4 },
-                new OrderDetail { Quantity = 3, Price = 78689, OrderId = 5, ProductId = 2 },
-                new OrderDetail { Quantity = 1, Price = 78689, OrderId = 5, ProductId = 5 },
-                new OrderDetail { Quantity = 1, Price = 1234, OrderId = 6, ProductId = 5 },
-                new OrderDetail { Quantity = 3, Price = 25000, OrderId = 6, ProductId = 3 },
-                new OrderDetail { Quantity = 2, Price = 17000, OrderId = 7, ProductId = 4 },
-                new OrderDetail { Quantity = 1, Price = 21000, OrderId = 8, ProductId = 1 },
-                new OrderDetail { Quantity = 4, Price = 26000, OrderId = 8, ProductId = 5 },
-                new OrderDetail { Quantity = 2, Price = 22000, OrderId = 8, ProductId = 2 },
-                new OrderDetail { Quantity = 1, Price = 20000, OrderId = 9, ProductId = 6 },
-                new OrderDetail { Quantity = 3, Price = 23000, OrderId = 9, ProductId = 4 },
-                new OrderDetail { Quantity = 2, Price = 19000, OrderId = 10, ProductId = 7 },
-                new OrderDetail { Quantity = 1, Price = 24000, OrderId = 10, ProductId = 8 },
-                new OrderDetail { Quantity = 1, Price = 28000, OrderId = 10, ProductId = 9 },
-                new OrderDetail { Quantity = 5, Price = 18000, OrderId = 10, ProductId = 10 },
-                new OrderDetail { Quantity = 2, Price = 22000, OrderId = 10, ProductId = 11 },
-                new OrderDetail { Quantity = 3, Price = 26000, OrderId = 11, ProductId = 10 },
-                new OrderDetail { Quantity = 1, Price = 30000, OrderId = 12, ProductId = 12 },
-                new OrderDetail { Quantity = 2, Price = 32000, OrderId = 13, ProductId = 8 }
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 1)).Price, OrderId = 1, ProductId = 1 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 2)).Price, OrderId = 1, ProductId = 2 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 1)).Price, OrderId = 2, ProductId = 1 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 3)).Price, OrderId = 3, ProductId = 3 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 4)).Price, OrderId = 1, ProductId = 3 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 1)).Price, OrderId = 4, ProductId = 1 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 5)).Price, OrderId = 2, ProductId = 4 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 6)).Price, OrderId = 3, ProductId = 2 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 7)).Price, OrderId = 5, ProductId = 5 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 8)).Price, OrderId = 4, ProductId = 7 },
+                new OrderDetail { Quantity = 6, Price = 6 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 9)).Price, OrderId = 6, ProductId = 8 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 10)).Price, OrderId = 7, ProductId = 9 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 11)).Price, OrderId = 8, ProductId = 10 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 12)).Price, OrderId = 9, ProductId = 11 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 13)).Price, OrderId = 10, ProductId = 12 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 14)).Price, OrderId = 11, ProductId = 13 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 7)).Price, OrderId = 12, ProductId = 14 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 6)).Price, OrderId = 13, ProductId = 6 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 9)).Price, OrderId = 14, ProductId = 9 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 2)).Price, OrderId = 14, ProductId = 7 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 3)).Price, OrderId = 13, ProductId = 3 },
+                new OrderDetail { Quantity = 6, Price = 6 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 8)).Price, OrderId = 12, ProductId = 8 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 5)).Price, OrderId = 11, ProductId = 5 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 1)).Price, OrderId = 10, ProductId = 1 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 4)).Price, OrderId = 9, ProductId = 4 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 12)).Price, OrderId = 8, ProductId = 12 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 11)).Price, OrderId = 7, ProductId = 11 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 10)).Price, OrderId = 6, ProductId = 10 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 9)).Price, OrderId = 5, ProductId = 9 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 8)).Price, OrderId = 4, ProductId = 8 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 7)).Price, OrderId = 3, ProductId = 7 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 6)).Price, OrderId = 2, ProductId = 6 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 5)).Price, OrderId = 1, ProductId = 5 },
+                new OrderDetail { Quantity = 6, Price = 6 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 4)).Price, OrderId = 14, ProductId = 4 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 3)).Price, OrderId = 13, ProductId = 3 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 2)).Price, OrderId = 12, ProductId = 2 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 1)).Price, OrderId = 11, ProductId = 1 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 14)).Price, OrderId = 10, ProductId = 14 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 13)).Price, OrderId = 9, ProductId = 13 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 12)).Price, OrderId = 8, ProductId = 12 },
+                new OrderDetail { Quantity = 7, Price = 7 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 18)).Price, OrderId = 23, ProductId = 18 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 20)).Price, OrderId = 27, ProductId = 20 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 26)).Price, OrderId = 30, ProductId = 26 },
+                new OrderDetail { Quantity = 6, Price = 6 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 22)).Price, OrderId = 17, ProductId = 22 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 29)).Price, OrderId = 19, ProductId = 29 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 30)).Price, OrderId = 15, ProductId = 30 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 28)).Price, OrderId = 26, ProductId = 28 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 24)).Price, OrderId = 31, ProductId = 24 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 25)).Price, OrderId = 28, ProductId = 25 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 27)).Price, OrderId = 39, ProductId = 27 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 19)).Price, OrderId = 35, ProductId = 19 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 16)).Price, OrderId = 24, ProductId = 16 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 23)).Price, OrderId = 37, ProductId = 23 },
+                new OrderDetail { Quantity = 6, Price = 6 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 21)).Price, OrderId = 20, ProductId = 21 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 17)).Price, OrderId = 33, ProductId = 17 },
+                new OrderDetail { Quantity = 7, Price = 7 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 14)).Price, OrderId = 38, ProductId = 14 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 13)).Price, OrderId = 25, ProductId = 13 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 12)).Price, OrderId = 32, ProductId = 12 },
+                new OrderDetail { Quantity = 6, Price = 6 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 11)).Price, OrderId = 21, ProductId = 11 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 10)).Price, OrderId = 34, ProductId = 10 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 9)).Price, OrderId = 36, ProductId = 9 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 8)).Price, OrderId = 22, ProductId = 8 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 7)).Price, OrderId = 29, ProductId = 7 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 6)).Price, OrderId = 31, ProductId = 6 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 5)).Price, OrderId = 18, ProductId = 5 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 4)).Price, OrderId = 27, ProductId = 4 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 3)).Price, OrderId = 19, ProductId = 3 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 2)).Price, OrderId = 28, ProductId = 2 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 1)).Price, OrderId = 30, ProductId = 1 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 15)).Price, OrderId = 37, ProductId = 15 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 18)).Price, OrderId = 15, ProductId = 18 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 20)).Price, OrderId = 23, ProductId = 20 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 26)).Price, OrderId = 16, ProductId = 26 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 22)).Price, OrderId = 34, ProductId = 22 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 29)).Price, OrderId = 25, ProductId = 29 },
+                new OrderDetail { Quantity = 6, Price = 6 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 30)).Price, OrderId = 31, ProductId = 30 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 28)).Price, OrderId = 27, ProductId = 28 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 24)).Price, OrderId = 26, ProductId = 24 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 25)).Price, OrderId = 33, ProductId = 25 },
+                new OrderDetail { Quantity = 5, Price = 5 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 27)).Price, OrderId = 32, ProductId = 27 },
+                new OrderDetail { Quantity = 1, Price = 1 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 19)).Price, OrderId = 35, ProductId = 19 },
+                new OrderDetail { Quantity = 4, Price = 4 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 16)).Price, OrderId = 30, ProductId = 16 },
+                new OrderDetail { Quantity = 2, Price = 2 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 23)).Price, OrderId = 37, ProductId = 23 },
+                new OrderDetail { Quantity = 6, Price = 6 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 21)).Price, OrderId = 36, ProductId = 21 },
+                new OrderDetail { Quantity = 3, Price = 3 * (await _context.Products.FirstOrDefaultAsync(p => p.ProductId == 17)).Price, OrderId = 39, ProductId = 17 },
             }).ForEach(element => _context.OrderDetails.Add(element)); _context.SaveChanges();
         }
 

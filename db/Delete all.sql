@@ -1,3 +1,5 @@
+DELETE FROM [piggybank].[Identity].[ShoppingCartItems];
+DELETE FROM [piggybank].[Identity].[ShoppingCarts];
 DELETE FROM [piggybank].[Identity].[OrderDetails];
 DELETE FROM [piggybank].[Identity].[Orders];
 DELETE FROM [piggybank].[Identity].[Reviews];
@@ -13,9 +15,12 @@ DELETE FROM [piggybank].[Identity].[User];
 DELETE FROM [piggybank].[Identity].[AspNetUsers];
 DELETE FROM [piggybank].[Identity].[Addresses];
 
+
 DBCC CHECKIDENT ('[piggybank].[Identity].[Manufacturers]', RESEED, 0);
 DBCC CHECKIDENT ('[piggybank].[Identity].[OrderDetails]', RESEED, 0);
 DBCC CHECKIDENT ('[piggybank].[Identity].[Orders]', RESEED, 0);
 DBCC CHECKIDENT ('[piggybank].[Identity].[Products]', RESEED, 0);
 DBCC CHECKIDENT ('[piggybank].[Identity].[Reviews]', RESEED, 0);
 DBCC CHECKIDENT ('[piggybank].[Identity].[Addresses]', RESEED, 0);
+DBCC CHECKIDENT ('[piggybank].[Identity].[ShoppingCarts]', RESEED, 0);
+DBCC CHECKIDENT ('[piggybank].[Identity].[ShoppingCartItems]', RESEED, 0);

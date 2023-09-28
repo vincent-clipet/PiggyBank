@@ -6,9 +6,15 @@
 
 - Order#Edit : OrderStatus does not get filled from the enum
 
+- Hide Order navbar for guests
+
+- Change Price Display
+
 
 
 ### Tier 2
+
+- Change Address Display
 
 - Allow editing only for current user :
 	- Address
