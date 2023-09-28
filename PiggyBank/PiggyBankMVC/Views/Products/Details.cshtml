@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Review> reviews = (List<Review>)ViewData["Reviews"];
 }
 
 <h1>@Html.DisplayFor(model => model.Name)</h1>
@@ -87,3 +88,51 @@
     }
     <a asp-action="Index" role="button" class="btn btn-secondary">Back to List</a>
 </div>
+
+<hr />
+
+@if(Model.Reviews.Count > 0)
+{
+
+    <section style="color: #000; background-color: #eeeeee;">
+        <div class="container py-5">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 col-xl-8 text-center">
+                    <h3 class=" mb-4">Reviews</h3>
+                </div>
+            </div>
+
+            <div class="row text-center">
+
+                @foreach (Review review in reviews)
+                {
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="card">
+                            <div class="card-body py-4 mt-2">
+                                <h5 class="font-weight-bold">@review.User.UserName</h5>
+                                <ul class="list-unstyled d-flex justify-content-center">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        @if (i > review.Score)
+                                        {
+                                            <li><i class="fa fa-star-o"></i></li>
+                                        }
+                                        else
+                                        {
+                                            <li><i class="fa fa-star"></i></li>
+                                        }
+                                    }
+                                </ul>
+                                <p class="mb-2">
+                                    <i class="fa fa-quote-left pe-2"></i>
+                                    @review.Message
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+}

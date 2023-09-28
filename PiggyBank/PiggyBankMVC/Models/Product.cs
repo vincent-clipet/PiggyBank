@@ -48,5 +48,7 @@ namespace PiggyBankMVC.Models
         [ForeignKey("ManufacturerId")]
         public virtual Manufacturer? Manufacturer { get; set; }
 
+        public virtual ICollection<Review>? Reviews { get;} = new List<Review>();
+
     }
 }

@@ -41,12 +41,17 @@ namespace PiggyBankMVC.Controllers
 
             if (id == null || _context.Products == null) return NotFound();
 
-            var product = await _context.Products
+            Product? product = await _context.Products
                 .Include(p => p.Manufacturer)
+                .Include(p => p.Reviews)
+                .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
 
             if (product == null) return NotFound();
             if (!product.IsActive && isCustomerOrGuest) return Forbid();
+
+            List<Review> reviews = product.Reviews.Take(3).ToList();
+            ViewData["Reviews"] = reviews;
 
             return View(product);
         }
