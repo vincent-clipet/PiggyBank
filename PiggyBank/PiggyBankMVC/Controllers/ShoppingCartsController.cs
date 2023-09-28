@@ -9,6 +9,7 @@ using PiggyBankMVC.Migrations;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.ViewModels;
 using System.Security.Claims;
+using System.Web.Helpers;
 
 namespace PiggyBankMVC.Controllers
 {
@@ -16,7 +17,6 @@ namespace PiggyBankMVC.Controllers
     {
         private readonly PiggyContext _context;
         private readonly string? _userId;
-        private ShoppingCart? _cart;
 
 
 
@@ -24,7 +24,6 @@ namespace PiggyBankMVC.Controllers
         {
             _context = context;
             _userId = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            _cart = ShoppingCart.CreateOrFind(_context, _userId);
         }
 
 
@@ -32,16 +31,28 @@ namespace PiggyBankMVC.Controllers
         // GET: ShoppingCarts
         public IActionResult Index(string lastUrl = "/")
         {
-            // _cart.GetItems();
+            ShoppingCart? cart = _context.ShoppingCarts.Where(s => s.UserId == _userId).Include(s => s.Items).ThenInclude(s => s.Product).FirstOrDefault();
 
-            var vm = new ShoppingCartViewModel
+            if (cart == null)
             {
-                LastUrl = lastUrl,
-                ShoppingCart = _cart,
-                TotalPrice = _cart.GetTotalPrice()
-            };
-
-            return View("Index", vm);
+                var vm = new ShoppingCartViewModel
+                {
+                    LastUrl = null,
+                    ShoppingCart = null,
+                    TotalPrice = 0,
+                };
+                return View("Index", vm);
+            }
+            else
+            {
+                var vm = new ShoppingCartViewModel
+                {
+                    LastUrl = lastUrl,
+                    ShoppingCart = cart,
+                    TotalPrice = cart.GetTotalPrice()
+                };
+                return View("Index", vm);
+            }
         }
 
         public async Task<IActionResult> Add(int productId, int quantity, string lastUrl = null)
@@ -51,6 +62,8 @@ namespace PiggyBankMVC.Controllers
                 return NotFound();
 
             lastUrl = lastUrl.Replace("%2F", "/");
+
+            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
 
             bool ok = _cart.Add(p, quantity);
             return Index(lastUrl);
@@ -62,8 +75,20 @@ namespace PiggyBankMVC.Controllers
             if (p == null)
                 return NotFound();
 
+            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
+
             _cart.Remove(p);
 
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Wipe()
+        {
+            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
+
+            _context.ShoppingCartItems.RemoveRange(_context.ShoppingCartItems.Where(i => i.CartId == _cart.CartId));
+            _context.ShoppingCarts.Remove(_cart);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 

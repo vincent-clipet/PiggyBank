@@ -11,7 +11,7 @@
     <hr />
     <br />
 
-    @if (Model.ShoppingCart.Items.Count() != 0)
+    @if (Model.ShoppingCart != null && Model.ShoppingCart.Items.Count() != 0)
     {
         <table class="table table-stripped">
             <thead>
@@ -70,9 +70,10 @@
 
     <div>
         <a class="" asp-action="Back" asp-route-returnUrl="@Model.LastUrl">Back</a>
-        @if (Model.ShoppingCart.Items.Count() != 0)
+        @if (Model.ShoppingCart != null && Model.ShoppingCart.Items.Count() != 0)
         {
             <a asp-controller="Order" asp-action="ConvertShoppingCart">Check out</a>
+            <a asp-controller="ShoppingCarts" asp-action="Wipe">Wipe</a>
         }
     </div>
 
