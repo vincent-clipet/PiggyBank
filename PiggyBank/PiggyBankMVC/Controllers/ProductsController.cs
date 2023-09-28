@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,34 +15,46 @@ namespace PiggyBankMVC.Controllers
     public class ProductsController : Controller
     {
         private readonly PiggyContext _context;
+        private readonly string? _userId;
+        private readonly ClaimsPrincipal? _principal;
 
-        public ProductsController(PiggyContext context)
+        public ProductsController(PiggyContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _principal = httpContextAccessor?.HttpContext?.User;
+            _userId = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var piggyContext = _context.Products.Include(p => p.Manufacturer);
-            return View(await piggyContext.ToListAsync());
+            bool isCustomerOrGuest = _principal.IsInRole("Customer") || ! User.Identity.IsAuthenticated;
+
+            var orders = isCustomerOrGuest ?
+                _context.Products.Include(p => p.Manufacturer).Where(p => p.IsActive == true)
+                :
+                _context.Products.Include(p => p.Manufacturer);
+
+            return View(orders);
         }
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            bool isCustomerOrGuest = _principal.IsInRole("Customer") || !User.Identity.IsAuthenticated;
+
             if (id == null || _context.Products == null)
-            {
                 return NotFound();
-            }
 
             var product = await _context.Products
                 .Include(p => p.Manufacturer)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
+
+            if (!product.IsActive && isCustomerOrGuest)
+                return Forbid();
+            
             if (product == null)
-            {
                 return NotFound();
-            }
 
             return View(product);
         }
