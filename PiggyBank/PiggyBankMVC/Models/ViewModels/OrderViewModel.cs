@@ -6,7 +6,7 @@ namespace PiggyBankMVC.Models.ViewModels
     {
         public virtual Order? Order { get; set; }
         public virtual List<OrderDetail>? Details { get; set; }
-        public decimal? TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public int? TotalProducts { get; set; }
         public int? UniqueProducts { get; set; }
     }

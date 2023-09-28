@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PiggyBankMVC.Models.Product>
+﻿@using System.Globalization;
+@model IEnumerable<PiggyBankMVC.Models.Product>
 
 @{
     ViewData["Title"] = "Index";
@@ -48,7 +49,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @item.Price.ToString("c", CultureInfo.CreateSpecificCulture("fr-FR"))
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Manufacturer.Name)

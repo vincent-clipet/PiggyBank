@@ -5,7 +5,7 @@ namespace PiggyBankMVC.Utils
 {
     public static class OrderUtils
     {
-        public static decimal? getTotalPrice(List<OrderDetail> od)
+        public static decimal getTotalPrice(List<OrderDetail> od)
         {
             return od.Aggregate(0.0M, (acc, orderDetail) => (acc + orderDetail.Price));
         }

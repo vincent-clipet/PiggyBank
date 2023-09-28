@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PiggyBankMVC.Models.OrderDetail>
+﻿@using System.Globalization;
+@model IEnumerable<PiggyBankMVC.Models.OrderDetail>
 
 @{
     ViewData["Title"] = "Order Details - List";
@@ -32,7 +33,7 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @item.Price.ToString("c", CultureInfo.CreateSpecificCulture("fr-FR"))
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Order.OrderId)

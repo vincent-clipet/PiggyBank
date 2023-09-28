@@ -26,9 +26,18 @@
                 @foreach (var item in Model.ShoppingCart.Items)
                 {
                     <tr>
-                        <td>@item.Product?.Name</td>
-                        <td>@item.Quantity</td>
-                        <td>@(@item.Product?.Price * @item.Quantity)</td>
+                        <td>
+                            @item.Product?.Name
+                        </td>
+                        <td>
+                            @item.Quantity
+                        </td>
+                        <td>
+                            @{
+                                decimal sum = (decimal)(item.Product?.Price * @item.Quantity);
+                            }
+                            @sum.ToString("c", CultureInfo.CreateSpecificCulture("fr-FR"))
+                        </td>
                         <td>
                             <a
                                 asp-controller="ShoppingCarts"

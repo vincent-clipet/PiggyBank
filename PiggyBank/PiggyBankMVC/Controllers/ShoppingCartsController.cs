@@ -38,7 +38,7 @@ namespace PiggyBankMVC.Controllers
                 {
                     LastUrl = null,
                     ShoppingCart = null,
-                    TotalPrice = 0,
+                    TotalPrice = 0.0M,
                 };
                 return View("Index", vm);
             }
