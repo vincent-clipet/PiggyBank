@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.Product.ProductId)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a>
+                <a asp-action="Details" asp-route-id="@item.OrderDetailId role="button" class="btn btn-dark">Details</a>
             </td>
         </tr>
     }

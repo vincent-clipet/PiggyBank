@@ -8,7 +8,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" role="button" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -29,7 +29,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Number)
@@ -44,11 +44,10 @@
                 @Html.DisplayFor(modelItem => item.Zip)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.AddressId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AddressId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AddressId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.AddressId" role="button" class="btn btn-warning">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.AddressId" role="button" class="btn btn-dark">Details</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
