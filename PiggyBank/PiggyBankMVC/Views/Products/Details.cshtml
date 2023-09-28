@@ -91,19 +91,16 @@
 
 <hr />
 
-@if(Model.Reviews.Count > 0)
-{
-
-    <section style="color: #000; background-color: #eeeeee;">
-        <div class="container py-5">
+<section style="color: #000; background-color: #eeeeee;">
+    <div class="container py-5">
+        @if (Model.Reviews.Count > 0)
+        {
             <div class="row d-flex justify-content-center">
                 <div class="col-md-10 col-xl-8 text-center">
                     <h3 class=" mb-4">Reviews</h3>
                 </div>
             </div>
-
             <div class="row text-center">
-
                 @foreach (Review review in reviews)
                 {
                     <div class="col-md-4 mb-4 mb-md-0">
@@ -113,7 +110,7 @@
                                 <ul class="list-unstyled d-flex justify-content-center">
                                     @for (int i = 1; i <= 5; i++)
                                     {
-                                        @if (i > review.Score)
+                                        if (i > review.Score)
                                         {
                                             <li><i class="fa fa-star-o"></i></li>
                                         }
@@ -131,8 +128,15 @@
                         </div>
                     </div>
                 }
-
             </div>
-        </div>
-    </section>
-}
+        }
+        else
+        {
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 col-xl-8 text-center">
+                    <h3 class=" mb-4">No reviews yet</h3>
+                </div>
+            </div>
+        }
+    </div>
+</section>

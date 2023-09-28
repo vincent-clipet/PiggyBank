@@ -4,11 +4,11 @@
 
 - Order#Edit : OrderStatus does not get filled from the enum
 
+- Remove virtual on ViewModels
+
 
 
 ### Tier 2
-
-- Add Reviews on Products
 
 - Allow editing only for current user :
 	- Address
