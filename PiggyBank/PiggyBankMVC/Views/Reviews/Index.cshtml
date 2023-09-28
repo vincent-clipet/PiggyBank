@@ -7,9 +7,12 @@
 
 <h1>Reviews</h1>
 
-<p>
-    <a asp-action="Create" role="button" class="btn btn-primary">Create New</a>
-</p>
+@if (User.IsInRole("Customer"))
+{
+    <p>
+        <a asp-action="Create" role="button" class="btn btn-primary">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -58,7 +61,6 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ReviewId" role="button" class="btn btn-warning">Edit</a>
                 <a asp-action="Details" asp-route-id="@item.ReviewId" role="button" class="btn btn-dark">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.ReviewId" role="button" class="btn btn-danger">Delete</a>
             </td>
         </tr>
 }
