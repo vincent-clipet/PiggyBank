@@ -79,14 +79,11 @@ namespace PiggyBankMVC.Controllers
 
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
             ViewData["UserId"] = new SelectList(_context.Users, "Email", "Email", order.UserId);
-            // ViewData["OrderStatus"] = new SelectList(EnumHelper.GetSelectList(typeof(EnumOrderStatus)), order.OrderStatus); // TODO: does not work
 
             return View(new OrderViewModel(order, orderDetails));
         }
 
         // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Assist")]
@@ -110,9 +107,15 @@ namespace PiggyBankMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            var orderDetails = _context.OrderDetails
+                .Include(o => o.Product)
+                .Where(m => m.OrderId == id).ToList();
+
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
-            return View(order);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", order.UserId);
+
+            return View(new OrderViewModel(order, orderDetails));
         }
 
         private bool OrderExists(int id)
