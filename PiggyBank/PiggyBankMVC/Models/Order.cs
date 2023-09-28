@@ -26,5 +26,22 @@ namespace PiggyBankMVC.Models
         public EnumOrderStatus OrderStatus { get; set; }
 
         public ICollection<OrderDetail> Details { get; } = new List<OrderDetail>();
+
+
+
+        public static decimal getTotalPrice(List<OrderDetail> od)
+        {
+            return od.Aggregate(0.0M, (acc, orderDetail) => (acc + orderDetail.Price));
+        }
+
+        public static int? getTotalProducts(List<OrderDetail> od)
+        {
+            return od.Aggregate(0, (acc, orderDetail) => acc + orderDetail.Quantity);
+        }
+
+        public static int? getUniqueProducts(List<OrderDetail> od)
+        {
+            return od.Count;
+        }
     }
 }

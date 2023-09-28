@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace PiggyBankMVC.Models
 {
@@ -23,5 +24,12 @@ namespace PiggyBankMVC.Models
         public int AddressId { get; set; }
         [ForeignKey("AddressId")]
         public virtual Address? Address { get; set; }
+
+
+
+        public static string? GetUserId(ClaimsPrincipal u)
+        {
+            return u?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        }
     }
 }

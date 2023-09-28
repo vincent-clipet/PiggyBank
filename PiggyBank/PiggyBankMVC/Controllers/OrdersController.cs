@@ -13,7 +13,6 @@ using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.Enums;
 using PiggyBankMVC.Models.ViewModels;
-using PiggyBankMVC.Utils;
 
 namespace PiggyBankMVC.Controllers
 {
@@ -31,7 +30,7 @@ namespace PiggyBankMVC.Controllers
         public async Task<IActionResult> Index()
         {
             bool isCustomer = User.IsInRole("Customer");
-            string? userId = UserUtils.GetUserId(User);
+            string? userId = ApplicationUser.GetUserId(User);
 
             if (userId == null) return NotFound();
 
@@ -55,7 +54,7 @@ namespace PiggyBankMVC.Controllers
             bool isCustomer = User.IsInRole("Customer");
 
             // This order wasn't created by this user, return
-            if (isCustomer && order.UserId != UserUtils.GetUserId(User)) return Forbid();
+            if (isCustomer && order.UserId != ApplicationUser.GetUserId(User)) return Forbid();
 
             order = await _context.Orders
                         .Include(o => o.Address)
@@ -66,16 +65,7 @@ namespace PiggyBankMVC.Controllers
                 .Include(o => o.Product)
                 .Where(m => m.OrderId == id).ToList();
 
-            var vm = new OrderViewModel
-            {
-                Order = order,
-                Details = orderDetails,
-                TotalPrice = OrderUtils.getTotalPrice(orderDetails),
-                TotalProducts = OrderUtils.getTotalProducts(orderDetails),
-                UniqueProducts = OrderUtils.getUniqueProducts(orderDetails)
-            };
-
-            return View(vm);
+            return View(new OrderViewModel(order, orderDetails));
         }
 
         // GET: Orders/Edit/5
@@ -95,20 +85,11 @@ namespace PiggyBankMVC.Controllers
                 .Include(o => o.Product)
                 .Where(m => m.OrderId == id).ToList();
 
-            var vm = new OrderViewModel
-            {
-                Order = order,
-                Details = orderDetails,
-                TotalPrice = OrderUtils.getTotalPrice(orderDetails),
-                TotalProducts = OrderUtils.getTotalProducts(orderDetails),
-                UniqueProducts = OrderUtils.getUniqueProducts(orderDetails)
-            };
-
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
             ViewData["UserId"] = new SelectList(_context.Users, "Email", "Email", order.UserId);
             // ViewData["OrderStatus"] = new SelectList(EnumHelper.GetSelectList(typeof(EnumOrderStatus)), order.OrderStatus); // TODO: does not work
 
-            return View(vm);
+            return View(new OrderViewModel(order, orderDetails));
         }
 
         // POST: Orders/Edit/5

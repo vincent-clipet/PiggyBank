@@ -24,7 +24,6 @@ namespace PiggyBankMVC.DataAccessLayer
             base.OnModelCreating(modelBuilder);
 
             // Rename Identity Table
-            // TODO: only partially works
             modelBuilder.HasDefaultSchema("Identity");
             modelBuilder.Entity<IdentityUser>(entity => {entity.ToTable(name: "User");});
             modelBuilder.Entity<IdentityRole>(entity => {entity.ToTable(name: "Role");});
@@ -56,7 +55,7 @@ namespace PiggyBankMVC.DataAccessLayer
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<ApplicationUser> Users { get; set; } // TODO: still needed ?
+        public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<IdentityRole> Roles { get; set; }

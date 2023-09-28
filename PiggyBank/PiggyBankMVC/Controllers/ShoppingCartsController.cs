@@ -8,7 +8,6 @@ using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Migrations;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.ViewModels;
-using PiggyBankMVC.Utils;
 using System.Security.Claims;
 using System.Web.Helpers;
 
@@ -27,7 +26,7 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Customer")]
         public IActionResult Index(string lastUrl = "/")
         {
-            string? userId = UserUtils.GetUserId(User);
+            string? userId = ApplicationUser.GetUserId(User);
             if (userId == null) return NotFound();
 
             ShoppingCart? cart = _context.ShoppingCarts.Where(s => s.UserId == userId).Include(s => s.Items).ThenInclude(s => s.Product).FirstOrDefault();
@@ -62,7 +61,7 @@ namespace PiggyBankMVC.Controllers
 
             lastUrl = lastUrl.Replace("%2F", "/");
 
-            string? userId = UserUtils.GetUserId(User);
+            string? userId = ApplicationUser.GetUserId(User);
             if (userId == null) return NotFound();
 
             ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, userId);
@@ -77,7 +76,7 @@ namespace PiggyBankMVC.Controllers
             Product? p = await _context.Products.FirstOrDefaultAsync(s => s.ProductId == productId);
             if (p == null) return NotFound();
 
-            string? userId = UserUtils.GetUserId(User);
+            string? userId = ApplicationUser.GetUserId(User);
             if (userId == null) return NotFound();
 
             ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, userId);
@@ -90,7 +89,7 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Customer")]
         public IActionResult Wipe()
         {
-            string? userId = UserUtils.GetUserId(User);
+            string? userId = ApplicationUser.GetUserId(User);
             if (userId == null) return NotFound();
 
             ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, userId);
@@ -104,7 +103,7 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Customer")]
         public IActionResult ConvertToOrder(int shoppingCartId)
         {
-            string? userId = UserUtils.GetUserId(User);
+            string? userId = ApplicationUser.GetUserId(User);
             if (userId == null) return NotFound();
 
             ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, userId);

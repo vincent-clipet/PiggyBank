@@ -24,7 +24,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: OrderDetails
-        [Authorize(Roles = "Admin")] // TODO: add exception for current user
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var piggyContext = _context.OrderDetails.Include(o => o.Order).Include(o => o.Product);
@@ -32,7 +32,7 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: OrderDetails/Details/5
-        [Authorize(Roles = "Admin")] // TODO: add exception for current user
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.OrderDetails == null) return NotFound();
