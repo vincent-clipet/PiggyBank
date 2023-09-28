@@ -5,9 +5,9 @@ namespace PiggyBankMVC.Utils
 {
     public static class OrderUtils
     {
-        public static int? getTotalPrice(List<OrderDetail> od)
+        public static decimal? getTotalPrice(List<OrderDetail> od)
         {
-            return od.Aggregate(0, (acc, orderDetail) => acc + orderDetail.Price);
+            return od.Aggregate(0.0M, (acc, orderDetail) => (acc + orderDetail.Price));
         }
 
         public static int? getTotalProducts(List<OrderDetail> od)

@@ -36,9 +36,9 @@ namespace PiggyBankMVC.Controllers
             if (userId == null) return NotFound();
 
             var orders = isCustomer ?
-                _context.Orders.Include(o => o.Address).Include(o => o.User).Where(o => o.UserId == userId)
+                _context.Orders.Include(o => o.Address).Include(o => o.User).OrderByDescending(o => o.CreatedAt).Where(o => o.UserId == userId)
                 :
-                _context.Orders.Include(o => o.Address).Include(o => o.User);
+                _context.Orders.Include(o => o.Address).Include(o => o.User).OrderByDescending(o => o.CreatedAt);
 
             return View(orders);
         }

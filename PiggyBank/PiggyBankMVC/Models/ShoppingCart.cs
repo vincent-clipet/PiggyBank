@@ -95,7 +95,7 @@ namespace PiggyBankMVC.Models
             _context.SaveChanges();
         }
 
-        public int GetTotalPrice()
+        public decimal GetTotalPrice()
         {
             return _context.ShoppingCartItems.Where(cart => cart.CartId == this.CartId).Select(item => item.Product.Price * item.Quantity).Sum();
         }

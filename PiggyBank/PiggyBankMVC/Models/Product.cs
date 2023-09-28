@@ -37,8 +37,9 @@ namespace PiggyBankMVC.Models
         [Required]
         public string Color { get; set; }
 
-        [Range(0, Int32.MaxValue)]
-        public int Price { get; set; }
+        [Range(0, 1000000)]
+        [Column(TypeName = "money")]
+        public decimal Price { get; set; }
 
         [Required]
         public bool IsActive { get; set; } = true;
@@ -47,11 +48,5 @@ namespace PiggyBankMVC.Models
         [ForeignKey("ManufacturerId")]
         public virtual Manufacturer? Manufacturer { get; set; }
 
-
-
-        public float GetRealPrice()
-        {
-            return this.Price / 100;
-        }
     }
 }
