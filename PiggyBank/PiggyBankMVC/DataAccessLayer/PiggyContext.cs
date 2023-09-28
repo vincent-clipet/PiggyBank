@@ -3,12 +3,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PiggyBankMVC.DataAccessLayer
 {
@@ -25,13 +19,13 @@ namespace PiggyBankMVC.DataAccessLayer
 
             // Rename Identity Table
             modelBuilder.HasDefaultSchema("Identity");
-            modelBuilder.Entity<IdentityUser>(entity => {entity.ToTable(name: "User");});
-            modelBuilder.Entity<IdentityRole>(entity => {entity.ToTable(name: "Role");});
-            modelBuilder.Entity<IdentityUserRole<string>>(entity =>{entity.ToTable("UserRoles");});
-            modelBuilder.Entity<IdentityUserClaim<string>>(entity =>{entity.ToTable("UserClaims");});
-            modelBuilder.Entity<IdentityUserLogin<string>>(entity =>{entity.ToTable("UserLogins");});
-            modelBuilder.Entity<IdentityRoleClaim<string>>(entity =>{entity.ToTable("RoleClaims");});
-            modelBuilder.Entity<IdentityUserToken<string>>(entity =>{entity.ToTable("UserTokens");});
+            modelBuilder.Entity<IdentityUser>(entity => { entity.ToTable(name: "User"); });
+            modelBuilder.Entity<IdentityRole>(entity => { entity.ToTable(name: "Role"); });
+            modelBuilder.Entity<IdentityUserRole<string>>(entity => { entity.ToTable("UserRoles"); });
+            modelBuilder.Entity<IdentityUserClaim<string>>(entity => { entity.ToTable("UserClaims"); });
+            modelBuilder.Entity<IdentityUserLogin<string>>(entity => { entity.ToTable("UserLogins"); });
+            modelBuilder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaims"); });
+            modelBuilder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("UserTokens"); });
 
             // Remove OnDelete CASCADE from all entities
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -60,7 +54,7 @@ namespace PiggyBankMVC.DataAccessLayer
         public DbSet<Address> Addresses { get; set; }
         public DbSet<IdentityRole> Roles { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
-        public DbSet<ShoppingCart> ShoppingCarts { get; set;}
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
 
     }

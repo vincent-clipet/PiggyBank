@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web.Mvc.Html;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Models;
-using PiggyBankMVC.Models.Enums;
 using PiggyBankMVC.Models.ViewModels;
 
 namespace PiggyBankMVC.Controllers
@@ -78,7 +70,7 @@ namespace PiggyBankMVC.Controllers
                 .Include(o => o.Address)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
-            
+
             if (order == null) return NotFound();
 
             var orderDetails = _context.OrderDetails
@@ -125,7 +117,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool OrderExists(int id)
         {
-          return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();
+            return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();
         }
     }
 }

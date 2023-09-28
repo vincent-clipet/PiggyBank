@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using PiggyBankMVC.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-using PiggyBankMVC.Models.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PiggyBankMVC.Models
 {

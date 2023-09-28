@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Models;
@@ -24,9 +19,9 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-              return _context.Addresses != null ? 
-                          View(await _context.Addresses.ToListAsync()) :
-                          Problem("Entity set 'PiggyContext.Addresses'  is null.");
+            return _context.Addresses != null ?
+                        View(await _context.Addresses.ToListAsync()) :
+                        Problem("Entity set 'PiggyContext.Addresses'  is null.");
         }
 
         // GET: Addresses/Details/5
@@ -106,7 +101,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool AddressExists(int id)
         {
-          return (_context.Addresses?.Any(e => e.AddressId == id)).GetValueOrDefault();
+            return (_context.Addresses?.Any(e => e.AddressId == id)).GetValueOrDefault();
         }
     }
 }

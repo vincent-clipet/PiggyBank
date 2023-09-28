@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PiggyBankMVC.Models
 {
@@ -48,7 +48,7 @@ namespace PiggyBankMVC.Models
         [ForeignKey("ManufacturerId")]
         public virtual Manufacturer? Manufacturer { get; set; }
 
-        public virtual ICollection<Review>? Reviews { get;} = new List<Review>();
+        public virtual ICollection<Review>? Reviews { get; } = new List<Review>();
 
     }
 }

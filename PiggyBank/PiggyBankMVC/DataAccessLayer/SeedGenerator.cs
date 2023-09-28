@@ -1,15 +1,7 @@
-﻿using Humanizer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.Elfie.Model.Structures;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.Enums;
-using System;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using static System.Web.Razor.Parser.SyntaxConstants;
 
 namespace PiggyBankMVC.DataAccessLayer
 {
@@ -32,7 +24,7 @@ namespace PiggyBankMVC.DataAccessLayer
                     return;
 
                 try
-                { 
+                {
                     seedAddresses();
                     await seedRoles();
                     await seedUsers();
@@ -42,7 +34,8 @@ namespace PiggyBankMVC.DataAccessLayer
                     await seedOrderDetails();
                     await seedReviews();
                 }
-                catch (Exception ex) { 
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.ToString());
                 }
             }
@@ -105,7 +98,8 @@ namespace PiggyBankMVC.DataAccessLayer
             {
                 if (!await _roleManager.RoleExistsAsync(role.ToString()))
                 {
-                    try { 
+                    try
+                    {
                         var element = new IdentityRole(role.ToString());
                         await _roleManager.CreateAsync(element);
                     }
@@ -119,10 +113,10 @@ namespace PiggyBankMVC.DataAccessLayer
 
         private async static Task seedUsers()
         {
-            var admin = new ApplicationUser { Firstname = "Admin", Lastname = "Admin", UserName = "Admin", Email = "admin@piggybank.com", PhoneNumber = "0000000000", IsActive = true, AddressId = 1, EmailConfirmed = true};
+            var admin = new ApplicationUser { Firstname = "Admin", Lastname = "Admin", UserName = "Admin", Email = "admin@piggybank.com", PhoneNumber = "0000000000", IsActive = true, AddressId = 1, EmailConfirmed = true };
             var moderator = new ApplicationUser { Firstname = "Moderator", Lastname = "Moderator", UserName = "Moderator", Email = "moderator@piggybank.com", PhoneNumber = "0000000001", IsActive = true, AddressId = 1, EmailConfirmed = true };
             var assist = new ApplicationUser { Firstname = "Assist", Lastname = "Assist", UserName = "Assist", Email = "assist@piggybank.com", PhoneNumber = "0000000002", IsActive = true, AddressId = 1, EmailConfirmed = true };
-            
+
             var user = await _userManager.FindByEmailAsync(admin.Email);
             if (user == null)
             {
@@ -163,7 +157,7 @@ namespace PiggyBankMVC.DataAccessLayer
                 new ApplicationUser { Firstname = "Olivia", Lastname = "Thompson", UserName = "Olivia", Email = "olivia.thompson@example.com", PhoneNumber="999-555-7777", IsActive = true, EmailConfirmed = true, AddressId = 13 },
                 new ApplicationUser { Firstname = "Noah", Lastname = "Garcia", UserName = "Noah", Email = "noah.garcia@example.com", PhoneNumber="111-222-3333", IsActive = true, EmailConfirmed = true, AddressId = 14 }
             };
-            
+
             foreach (ApplicationUser u in newUsers)
             {
                 user = await _userManager.FindByEmailAsync(u.Email);
@@ -174,7 +168,7 @@ namespace PiggyBankMVC.DataAccessLayer
                 }
             }
         }
-    
+
         private static void seedManufacturers()
         {
             (new List<Manufacturer>{
@@ -372,26 +366,26 @@ namespace PiggyBankMVC.DataAccessLayer
         {
             //var allCustomers = _userManager.Users.Where(e => e.AddressId != 1).ToArray();
             //_rand.Next(0, allCustomers.Length);
-            _context.Reviews.Add(new Review { Score = 5, Message = "Very good product, would recommend",            CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 1 });
-            _context.Reviews.Add(new Review { Score = 1, Message = "Terrible, don't buy this !!!!!!!!!!!!!!",       CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, ProductId = 4});
-            _context.Reviews.Add(new Review { Score = 4, Message = "Good quality, but a bit pricey",                CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, ProductId = 2 });
-            _context.Reviews.Add(new Review { Score = 3, Message = "Decent product, average performance",           CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Andrew")).Id, ProductId = 3 });
-            _context.Reviews.Add(new Review { Score = 5, Message = "Excellent product, worth every penny",          CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("George")).Id, ProductId = 5 });
-            _context.Reviews.Add(new Review { Score = 2, Message = "Not what I expected, disappointed",             CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Alice")).Id, ProductId = 6 });
-            _context.Reviews.Add(new Review { Score = 4, Message = "Great product, fast delivery",                  CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("Bob")).Id, ProductId = 7 });
-            _context.Reviews.Add(new Review { Score = 5, Message = "Outstanding quality, highly recommended",       CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Emily")).Id, ProductId = 8 });
-            _context.Reviews.Add(new Review { Score = 1, Message = "Worst purchase ever, never buying again",       CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("David")).Id, ProductId = 9 });
-            _context.Reviews.Add(new Review { Score = 4, Message = "Satisfied with the product, good value",        CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Sophia")).Id, ProductId = 10 });
-            _context.Reviews.Add(new Review { Score = 5, Message = "Impressive product, exceeded my expectations",  CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("Liam")).Id, ProductId = 11 });
-            _context.Reviews.Add(new Review { Score = 3, Message = "Average product, nothing special",              CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Olivia")).Id, ProductId = 12 });
-            _context.Reviews.Add(new Review { Score = 4, Message = "Reliable product, happy with the purchase",     CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("Noah")).Id, ProductId = 1 });
-            _context.Reviews.Add(new Review { Score = 5, Message = "Top-notch quality, would buy again",            CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 2 });
-            _context.Reviews.Add(new Review { Score = 2, Message = "Disappointing product, not worth the price",    CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 3 });
-            _context.Reviews.Add(new Review { Score = 4, Message = "Good product, could be better",                 CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 4 });
-            _context.Reviews.Add(new Review { Score = 3, Message = "Average performance, nothing special",          CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, ProductId = 5 });
-            _context.Reviews.Add(new Review { Score = 4, Message = "Satisfied with the purchase, decent quality",   CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, ProductId = 6 });
+            _context.Reviews.Add(new Review { Score = 5, Message = "Very good product, would recommend", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 1 });
+            _context.Reviews.Add(new Review { Score = 1, Message = "Terrible, don't buy this !!!!!!!!!!!!!!", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, ProductId = 4 });
+            _context.Reviews.Add(new Review { Score = 4, Message = "Good quality, but a bit pricey", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, ProductId = 2 });
+            _context.Reviews.Add(new Review { Score = 3, Message = "Decent product, average performance", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Andrew")).Id, ProductId = 3 });
+            _context.Reviews.Add(new Review { Score = 5, Message = "Excellent product, worth every penny", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("George")).Id, ProductId = 5 });
+            _context.Reviews.Add(new Review { Score = 2, Message = "Not what I expected, disappointed", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Alice")).Id, ProductId = 6 });
+            _context.Reviews.Add(new Review { Score = 4, Message = "Great product, fast delivery", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("Bob")).Id, ProductId = 7 });
+            _context.Reviews.Add(new Review { Score = 5, Message = "Outstanding quality, highly recommended", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Emily")).Id, ProductId = 8 });
+            _context.Reviews.Add(new Review { Score = 1, Message = "Worst purchase ever, never buying again", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("David")).Id, ProductId = 9 });
+            _context.Reviews.Add(new Review { Score = 4, Message = "Satisfied with the product, good value", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Sophia")).Id, ProductId = 10 });
+            _context.Reviews.Add(new Review { Score = 5, Message = "Impressive product, exceeded my expectations", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("Liam")).Id, ProductId = 11 });
+            _context.Reviews.Add(new Review { Score = 3, Message = "Average product, nothing special", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Olivia")).Id, ProductId = 12 });
+            _context.Reviews.Add(new Review { Score = 4, Message = "Reliable product, happy with the purchase", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("Noah")).Id, ProductId = 1 });
+            _context.Reviews.Add(new Review { Score = 5, Message = "Top-notch quality, would buy again", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 2 });
+            _context.Reviews.Add(new Review { Score = 2, Message = "Disappointing product, not worth the price", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 3 });
+            _context.Reviews.Add(new Review { Score = 4, Message = "Good product, could be better", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Hidden, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 4 });
+            _context.Reviews.Add(new Review { Score = 3, Message = "Average performance, nothing special", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, ProductId = 5 });
+            _context.Reviews.Add(new Review { Score = 4, Message = "Satisfied with the purchase, decent quality", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.Moderated, UserId = (await _userManager.FindByNameAsync("Azerty")).Id, ProductId = 6 });
             _context.Reviews.Add(new Review { Score = 5, Message = "Excellent value for money, highly recommended", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Malenia")).Id, ProductId = 7 });
-            _context.Reviews.Add(new Review { Score = 1, Message = "Avoid this product at all costs, terrible",     CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 8 });
+            _context.Reviews.Add(new Review { Score = 1, Message = "Avoid this product at all costs, terrible", CreatedAt = DateTime.Now, ReviewStatus = EnumReviewStatus.NeedReview, UserId = (await _userManager.FindByNameAsync("Jean-Michel")).Id, ProductId = 8 });
             _context.SaveChanges();
         }
 

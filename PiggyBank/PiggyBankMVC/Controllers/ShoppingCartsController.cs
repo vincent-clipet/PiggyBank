@@ -1,15 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.DataAccessLayer;
-using PiggyBankMVC.Migrations;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.ViewModels;
-using System.Security.Claims;
-using System.Web.Helpers;
 
 namespace PiggyBankMVC.Controllers
 {
@@ -151,7 +146,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool ShoppingCartExists(int id)
         {
-          return (_context.ShoppingCarts?.Any(e => e.CartId == id)).GetValueOrDefault();
+            return (_context.ShoppingCarts?.Any(e => e.CartId == id)).GetValueOrDefault();
         }
     }
 }

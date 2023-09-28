@@ -42,7 +42,7 @@ namespace PiggyBankMVC.Models
 
             // Check if this Product was already added to this ShoppingCart.
             ShoppingCartItem? shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(s => s.ProductId == p.ProductId && s.CartId == this.CartId);
-            
+
             // Item not yet present in the ShoppingCart
             if (shoppingCartItem == null)
             {
@@ -57,7 +57,7 @@ namespace PiggyBankMVC.Models
             // Item already in the ShoppingCart
             else
             {
-                shoppingCartItem.Quantity += quantity;   
+                shoppingCartItem.Quantity += quantity;
             }
 
             _context.SaveChanges();
@@ -71,14 +71,14 @@ namespace PiggyBankMVC.Models
         public bool Remove(Product p)
         {
             ShoppingCartItem? shoppingCartItem = _context.ShoppingCartItems.SingleOrDefault(s => s.ProductId == p.ProductId && s.CartId == this.CartId);
-            
+
             if (shoppingCartItem != null)
             {
                 _context.ShoppingCartItems.Remove(shoppingCartItem);
                 _context.SaveChanges();
                 return true;
             }
-            
+
             return false;
         }
 

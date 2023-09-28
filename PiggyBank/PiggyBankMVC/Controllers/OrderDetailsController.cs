@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Mvc.Html;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PiggyBankMVC.DataAccessLayer;
-using PiggyBankMVC.Models;
-using PiggyBankMVC.Models.Enums;
 using PiggyBankMVC.Models.ViewModels;
 
 namespace PiggyBankMVC.Controllers
@@ -58,7 +50,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool OrderDetailExists(int id)
         {
-          return (_context.OrderDetails?.Any(e => e.OrderDetailId == id)).GetValueOrDefault();
+            return (_context.OrderDetails?.Any(e => e.OrderDetailId == id)).GetValueOrDefault();
         }
     }
 }

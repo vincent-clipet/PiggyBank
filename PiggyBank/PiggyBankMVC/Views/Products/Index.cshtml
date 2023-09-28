@@ -57,7 +57,9 @@
             <td>
                 @if (item.ImageUrl != null)
                 {
-                    <img src="@(item.ImageUrl)" asp-append-version="true" alt="Image" width="100px" height="100px">
+                    <a asp-action="Details" asp-route-id="@item.ProductId">
+                        <img src="@(item.ImageUrl)" asp-append-version="true" alt="Image" width="100px" height="100px">
+                    </a>
                 }
             </td>
             <td>

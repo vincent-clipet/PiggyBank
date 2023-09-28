@@ -2,26 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace PiggyBankMVC.Areas.Identity.Pages.Account
 {
@@ -132,7 +123,7 @@ namespace PiggyBankMVC.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
-                
+
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.Firstname = Input.FirstName;
                 user.Lastname = Input.LastName;
@@ -146,7 +137,7 @@ namespace PiggyBankMVC.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     await _userManager.AddToRoleAsync(user, EnumRoles.Customer.ToString());
-                    _logger.LogInformation("Added role '"+ EnumRoles.Customer.ToString() + "' to user.");
+                    _logger.LogInformation("Added role '" + EnumRoles.Customer.ToString() + "' to user.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

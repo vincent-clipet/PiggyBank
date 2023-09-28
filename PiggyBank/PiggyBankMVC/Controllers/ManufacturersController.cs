@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -114,7 +110,7 @@ namespace PiggyBankMVC.Controllers
 
         private bool ManufacturerExists(int id)
         {
-          return (_context.Manufacturers?.Any(e => e.ManufacturerId == id)).GetValueOrDefault();
+            return (_context.Manufacturers?.Any(e => e.ManufacturerId == id)).GetValueOrDefault();
         }
     }
 }
