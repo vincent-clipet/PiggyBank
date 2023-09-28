@@ -2,9 +2,11 @@
 
 ### Tier 1
 
-- Order#Edit : OrderStatus does not get filled from the enum
+- Order#Edit :
+	- Submiting the form doesn't save anything (ModelState.isValid = false; UserId is the cause)
+	- the <select> element for UserId/Email works unexpectedly, needs investigating
 
-- Remove virtual on ViewModels
+
 
 
 
@@ -15,7 +17,6 @@
 	- Reviews
 - Allow reading only for current user :
 	- Address
-	- Orders
 	- Reviews
 
 - For Customer, add form to post a review
@@ -24,7 +25,9 @@
 
 - Hide "Shopping Cart" from NavBar when empty + Add Count next to it
 
-- - Change Address Display for Edit & Create (Order / Manufacturer)
+- Change Address Display for Edit & Create (Order / Manufacturer)
+
+
 
 
 
@@ -33,9 +36,6 @@
 - Set Phone Number & EmailConfirmed on Register
 
 - Add adress on register form
-
-
-
 
 
 
