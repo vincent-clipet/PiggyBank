@@ -16,7 +16,14 @@
             Image
         </dt>
         <dd class = "col-sm-10">
-            <img src="@Model.ImageUrl" asp-append-version="true" alt="@Model.Name" width="300px" height="300px" >
+            @if (Model.ImageUrl != null)
+            {
+                <img src="@Model.ImageUrl" asp-append-version="true" alt="@Model.Name" width="300px" height="300px" >
+            }
+            else
+            {
+                <i><code>No Image</code></i>
+            }
         </dd>
         <dt class="col-sm-2">
             Dimensions (H x W x L)

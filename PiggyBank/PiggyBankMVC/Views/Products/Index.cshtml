@@ -54,10 +54,10 @@
                 @Html.DisplayFor(modelItem => item.Manufacturer.Name)
             </td>
             <td>
-                @{
-                    //<img asp-src="~@item.ImageUrl" alt="Image">
+                @if (item.ImageUrl != null)
+                {
+                    <img src="@(item.ImageUrl)" asp-append-version="true" alt="Image" width="100px" height="100px">
                 }
-                    <img src="@(item.ImageUrl)" asp-append-version="true" alt="Image" width="100px" height="100px" >
             </td>
             <td>
                 @if (User.IsInRole("Admin"))
