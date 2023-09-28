@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc.Html;
 using Microsoft.AspNetCore.Authorization;
@@ -19,10 +20,14 @@ namespace PiggyBankMVC.Controllers
     public class OrdersController : Controller
     {
         private readonly PiggyContext _context;
+        private readonly string? _userId;
+        private readonly ClaimsPrincipal? _principal;
 
-        public OrdersController(PiggyContext context)
+        public OrdersController(PiggyContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _principal = httpContextAccessor?.HttpContext?.User;
+            _userId = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
         // GET: Orders
@@ -34,19 +39,26 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Orders/Details/5
-        [Authorize(Roles = "Admin,Assist")] // TODO: add exception for current user
+        [Authorize(Roles = "Admin,Assist,Customer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Orders == null)
                 return NotFound();
 
-            var order = await _context.Orders
-                .Include(o => o.Address)
-                .Include(o => o.User)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
-            
+            Order? order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
             if (order == null)
                 return NotFound();
+
+            bool isCustomer = _principal.IsInRole("Customer");
+
+            // This order wasn't created by this user, return
+            if (order.UserId != _userId && isCustomer)
+                return Forbid();
+
+            order = await _context.Orders
+                        .Include(o => o.Address)
+                        .Include(o => o.User)
+                        .FirstOrDefaultAsync(m => m.OrderId == id);
 
             var orderDetails = _context.OrderDetails
                 .Include(o => o.Product)

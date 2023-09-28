@@ -130,7 +130,7 @@ namespace PiggyBankMVC.Controllers
 
             _context.SaveChanges();
 
-            return RedirectToAction("Details", "Orders", new { order.OrderId });
+            return RedirectToAction("Details", "Orders", new { id = order.OrderId });
         }
 
         public IActionResult Back(string returnUrl = "/")
