@@ -31,11 +31,17 @@ namespace PiggyBankMVC.Controllers
         }
 
         // GET: Orders
-        [Authorize(Roles = "Admin,Assist")] // TODO: add exception for current user
+        [Authorize(Roles = "Admin,Assist,Customer")] // TODO: add exception for current user
         public async Task<IActionResult> Index()
         {
-            var piggyContext = _context.Orders.Include(o => o.Address).Include(o => o.User);
-            return View(await piggyContext.ToListAsync());
+            bool isCustomer = _principal.IsInRole("Customer");
+
+            var orders = isCustomer ?
+                _context.Orders.Include(o => o.Address).Include(o => o.User).Where(o => o.UserId == _userId)
+                :
+                _context.Orders.Include(o => o.Address).Include(o => o.User);
+
+            return View(orders);
         }
 
         // GET: Orders/Details/5

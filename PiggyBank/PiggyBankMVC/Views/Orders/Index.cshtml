@@ -5,11 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+@if (User.IsInRole("Customer"))
+{
+    <h1>Your Orders</h1>
+}
+else
+{
+    <h1>Orders</h1>
+}
 
-<p>
-    <a asp-action="Create" role="button" class="btn btn-primary">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -26,7 +30,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
@@ -38,10 +42,13 @@
                 @Html.DisplayFor(modelItem => item.OrderStatus)
             </td>
             <td>
+                @if (User.IsInRole("Admin"))
+                {
                     <a asp-action="Edit" asp-route-id="@item.OrderId" role="button" class="btn btn-warning">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.OrderId" role="button" class="btn btn-dark">Details</a>
+                }
+                <a asp-action="Details" asp-route-id="@item.OrderId" role="button" class="btn btn-dark">Details</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
