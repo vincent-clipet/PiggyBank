@@ -8,6 +8,8 @@
 
 - Remove all ShoppingCart functionnalities for Admin
 
+- Filter Product (IsActive)
+
 
 
 ### Tier 2

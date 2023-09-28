@@ -59,8 +59,6 @@ namespace PiggyBankMVC.Controllers
         }
 
         // POST: Reviews/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Customer")] // TODO: add exception for current user
@@ -97,8 +95,6 @@ namespace PiggyBankMVC.Controllers
         }
 
         // POST: Reviews/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Moderator")] // TODO: add exception for current user
@@ -133,45 +129,6 @@ namespace PiggyBankMVC.Controllers
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", review.UserId);
             return View(review);
         }
-
-        //// GET: Reviews/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.Reviews == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var review = await _context.Reviews
-        //        .Include(r => r.Product)
-        //        .Include(r => r.User)
-        //        .FirstOrDefaultAsync(m => m.ReviewId == id);
-        //    if (review == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(review);
-        //}
-
-        //// POST: Reviews/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.Reviews == null)
-        //    {
-        //        return Problem("Entity set 'PiggyContext.Reviews'  is null.");
-        //    }
-        //    var review = await _context.Reviews.FindAsync(id);
-        //    if (review != null)
-        //    {
-        //        _context.Reviews.Remove(review);
-        //    }
-            
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         private bool ReviewExists(int id)
         {

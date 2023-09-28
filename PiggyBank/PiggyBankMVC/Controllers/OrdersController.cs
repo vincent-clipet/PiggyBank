@@ -82,30 +82,6 @@ namespace PiggyBankMVC.Controllers
             return View(vm);
         }
 
-        //// GET: Orders/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City");
-        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-        //    return View();
-        //}
-
-        //// POST: Orders/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("OrderId,CreatedAt,UserId,AddressId,OrderStatus")] Order order)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(order);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
-        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
-        //    return View(order);
-        //}
-
         // GET: Orders/Edit/5
         [Authorize(Roles = "Admin,Assist")] // TODO: add exception for current user
         public async Task<IActionResult> Edit(int? id)

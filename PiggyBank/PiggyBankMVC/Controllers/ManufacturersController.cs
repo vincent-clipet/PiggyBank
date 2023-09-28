@@ -129,44 +129,6 @@ namespace PiggyBankMVC.Controllers
             return View(manufacturer);
         }
 
-        //// GET: Manufacturers/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.Manufacturers == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var manufacturer = await _context.Manufacturers
-        //        .Include(m => m.Address)
-        //        .FirstOrDefaultAsync(m => m.ManufacturerId == id);
-        //    if (manufacturer == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(manufacturer);
-        //}
-
-        //// POST: Manufacturers/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.Manufacturers == null)
-        //    {
-        //        return Problem("Entity set 'PiggyContext.Manufacturers'  is null.");
-        //    }
-        //    var manufacturer = await _context.Manufacturers.FindAsync(id);
-        //    if (manufacturer != null)
-        //    {
-        //        _context.Manufacturers.Remove(manufacturer);
-        //    }
-            
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
         private bool ManufacturerExists(int id)
         {
           return (_context.Manufacturers?.Any(e => e.ManufacturerId == id)).GetValueOrDefault();

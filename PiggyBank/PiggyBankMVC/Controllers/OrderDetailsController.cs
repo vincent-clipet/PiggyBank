@@ -61,32 +61,6 @@ namespace PiggyBankMVC.Controllers
             return View(vm);
         }
 
-        //// GET: OrderDetails/Create
-        //[Authorize(Roles = "Admin")] // TODO: add exception for current user
-        //public IActionResult Create()
-        //{
-        //    ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId");
-        //    ViewData["ProductName"] = new SelectList(_context.Products, "ProductId", "Name");
-        //    return View();
-        //}
-
-        //// POST: OrderDetails/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")] // TODO: add exception for current user
-        //public async Task<IActionResult> Create([Bind("OrderDetailId,Quantity,Price,OrderId,ProductId")] OrderDetail orderDetail)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(orderDetail);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "UserId", orderDetail.OrderId);
-        //    ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", orderDetail.ProductId);
-        //    return View(orderDetail);
-        //}
-
         private bool OrderDetailExists(int id)
         {
           return (_context.OrderDetails?.Any(e => e.OrderDetailId == id)).GetValueOrDefault();
