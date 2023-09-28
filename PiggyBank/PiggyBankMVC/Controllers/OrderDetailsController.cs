@@ -35,19 +35,14 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")] // TODO: add exception for current user
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.OrderDetails == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.OrderDetails == null) return NotFound();
 
             var orderDetail = await _context.OrderDetails
                 .Include(o => o.Order)
                 .Include(o => o.Product)
                 .FirstOrDefaultAsync(m => m.OrderDetailId == id);
-            if (orderDetail == null)
-            {
-                return NotFound();
-            }
+
+            if (orderDetail == null) return NotFound();
 
             var vm = new OrderDetailsViewModel
             {

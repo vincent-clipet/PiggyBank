@@ -32,19 +32,14 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin,Moderator")] // TODO: add exception for current user
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Reviews == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Reviews == null) return NotFound();
 
             var review = await _context.Reviews
                 .Include(r => r.Product)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.ReviewId == id);
-            if (review == null)
-            {
-                return NotFound();
-            }
+
+            if (review == null) return NotFound();
 
             return View(review);
         }
@@ -79,16 +74,11 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin,Moderator")] // TODO: add exception for current user
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Reviews == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Reviews == null) return NotFound();
 
             var review = await _context.Reviews.FindAsync(id);
-            if (review == null)
-            {
-                return NotFound();
-            }
+            if (review == null) return NotFound();
+
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Color", review.ProductId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", review.UserId);
             return View(review);
@@ -100,10 +90,7 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin,Moderator")] // TODO: add exception for current user
         public async Task<IActionResult> Edit(int id, [Bind("ReviewId,Score,Message,CreatedAt,ProductId,UserId,ReviewStatus")] Review review)
         {
-            if (id != review.ReviewId)
-            {
-                return NotFound();
-            }
+            if (id != review.ReviewId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -115,13 +102,9 @@ namespace PiggyBankMVC.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ReviewExists(review.ReviewId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }

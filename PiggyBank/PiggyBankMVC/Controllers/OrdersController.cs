@@ -20,24 +20,23 @@ namespace PiggyBankMVC.Controllers
     public class OrdersController : Controller
     {
         private readonly PiggyContext _context;
-        private readonly string? _userId;
-        private readonly ClaimsPrincipal? _principal;
 
-        public OrdersController(PiggyContext context, IHttpContextAccessor httpContextAccessor)
+        public OrdersController(PiggyContext context)
         {
             _context = context;
-            _principal = httpContextAccessor?.HttpContext?.User;
-            _userId = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
         // GET: Orders
         [Authorize(Roles = "Admin,Assist,Customer")] // TODO: add exception for current user
         public async Task<IActionResult> Index()
         {
-            bool isCustomer = _principal.IsInRole("Customer");
+            bool isCustomer = User.IsInRole("Customer");
+            string? userId = UserUtils.GetUserId(User);
+
+            if (userId == null) return NotFound();
 
             var orders = isCustomer ?
-                _context.Orders.Include(o => o.Address).Include(o => o.User).Where(o => o.UserId == _userId)
+                _context.Orders.Include(o => o.Address).Include(o => o.User).Where(o => o.UserId == userId)
                 :
                 _context.Orders.Include(o => o.Address).Include(o => o.User);
 
@@ -48,18 +47,15 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin,Assist,Customer")]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Orders == null)
-                return NotFound();
+            if (id == null || _context.Orders == null) return NotFound();
 
             Order? order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
-            if (order == null)
-                return NotFound();
+            if (order == null) return NotFound();
 
-            bool isCustomer = _principal.IsInRole("Customer");
+            bool isCustomer = User.IsInRole("Customer");
 
             // This order wasn't created by this user, return
-            if (order.UserId != _userId && isCustomer)
-                return Forbid();
+            if (isCustomer && order.UserId != UserUtils.GetUserId(User)) return Forbid();
 
             order = await _context.Orders
                         .Include(o => o.Address)
@@ -86,19 +82,14 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin,Assist")] // TODO: add exception for current user
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Orders == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Orders == null) return NotFound();
 
             var order = await _context.Orders
                 .Include(o => o.Address)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
+            
+            if (order == null) return NotFound();
 
             var orderDetails = _context.OrderDetails
                 .Include(o => o.Product)
@@ -128,10 +119,7 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin,Assist")]
         public async Task<IActionResult> Edit(int id, [Bind("OrderId,CreatedAt,UserId,AddressId,OrderStatus")] Order order)
         {
-            if (id != order.OrderId)
-            {
-                return NotFound();
-            }
+            if (id != order.OrderId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -143,13 +131,9 @@ namespace PiggyBankMVC.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!OrderExists(order.OrderId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }

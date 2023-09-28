@@ -33,17 +33,12 @@ namespace PiggyBankMVC.Controllers
         [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Addresses == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Addresses == null) return NotFound();
 
             var address = await _context.Addresses
                 .FirstOrDefaultAsync(m => m.AddressId == id);
-            if (address == null)
-            {
-                return NotFound();
-            }
+
+            if (address == null) return NotFound();
 
             return View(address);
         }
@@ -76,16 +71,11 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")] // TODO: exception for current User
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Addresses == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Addresses == null) return NotFound();
 
             var address = await _context.Addresses.FindAsync(id);
-            if (address == null)
-            {
-                return NotFound();
-            }
+            if (address == null) return NotFound();
+
             return View(address);
         }
 
@@ -97,10 +87,7 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")] // TODO: exception for current User
         public async Task<IActionResult> Edit(int id, [Bind("AddressId,Number,Street,City,Zip")] Address address)
         {
-            if (id != address.AddressId)
-            {
-                return NotFound();
-            }
+            if (id != address.AddressId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -112,13 +99,9 @@ namespace PiggyBankMVC.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!AddressExists(address.AddressId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }

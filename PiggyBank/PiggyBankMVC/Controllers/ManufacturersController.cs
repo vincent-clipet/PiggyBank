@@ -32,18 +32,13 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Manufacturers == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Manufacturers == null) return NotFound();
 
             var manufacturer = await _context.Manufacturers
                 .Include(m => m.Address)
                 .FirstOrDefaultAsync(m => m.ManufacturerId == id);
-            if (manufacturer == null)
-            {
-                return NotFound();
-            }
+
+            if (manufacturer == null) return NotFound();
 
             return View(manufacturer);
         }
@@ -78,16 +73,11 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Manufacturers == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Manufacturers == null) return NotFound();
 
             var manufacturer = await _context.Manufacturers.FindAsync(id);
-            if (manufacturer == null)
-            {
-                return NotFound();
-            }
+            if (manufacturer == null) return NotFound();
+
             ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", manufacturer.AddressId);
             return View(manufacturer);
         }
@@ -100,10 +90,7 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ManufacturerId,Name,AddressId")] Manufacturer manufacturer)
         {
-            if (id != manufacturer.ManufacturerId)
-            {
-                return NotFound();
-            }
+            if (id != manufacturer.ManufacturerId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -115,13 +102,9 @@ namespace PiggyBankMVC.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ManufacturerExists(manufacturer.ManufacturerId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }

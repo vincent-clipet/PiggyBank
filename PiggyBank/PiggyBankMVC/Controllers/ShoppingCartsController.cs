@@ -8,6 +8,7 @@ using PiggyBankMVC.DataAccessLayer;
 using PiggyBankMVC.Migrations;
 using PiggyBankMVC.Models;
 using PiggyBankMVC.Models.ViewModels;
+using PiggyBankMVC.Utils;
 using System.Security.Claims;
 using System.Web.Helpers;
 
@@ -16,23 +17,20 @@ namespace PiggyBankMVC.Controllers
     public class ShoppingCartsController : Controller
     {
         private readonly PiggyContext _context;
-        private readonly string? _userId;
 
-
-
-        public ShoppingCartsController(PiggyContext context, IHttpContextAccessor httpContextAccessor)
+        public ShoppingCartsController(PiggyContext context)
         {
             _context = context;
-            _userId = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
-
-
 
         // GET: ShoppingCarts
         [Authorize(Roles = "Customer")]
         public IActionResult Index(string lastUrl = "/")
         {
-            ShoppingCart? cart = _context.ShoppingCarts.Where(s => s.UserId == _userId).Include(s => s.Items).ThenInclude(s => s.Product).FirstOrDefault();
+            string? userId = UserUtils.GetUserId(User);
+            if (userId == null) return NotFound();
+
+            ShoppingCart? cart = _context.ShoppingCarts.Where(s => s.UserId == userId).Include(s => s.Items).ThenInclude(s => s.Product).FirstOrDefault();
 
             if (cart == null)
             {
@@ -60,12 +58,14 @@ namespace PiggyBankMVC.Controllers
         public async Task<IActionResult> Add(int productId, int quantity, string lastUrl = null)
         {
             Product? p = await _context.Products.FirstOrDefaultAsync(s => s.ProductId == productId);
-            if (p == null)
-                return NotFound();
+            if (p == null) return NotFound();
 
             lastUrl = lastUrl.Replace("%2F", "/");
 
-            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
+            string? userId = UserUtils.GetUserId(User);
+            if (userId == null) return NotFound();
+
+            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, userId);
 
             bool ok = _cart.Add(p, quantity);
             return Index(lastUrl);
@@ -75,10 +75,12 @@ namespace PiggyBankMVC.Controllers
         public async Task<IActionResult> Remove(int productId)
         {
             Product? p = await _context.Products.FirstOrDefaultAsync(s => s.ProductId == productId);
-            if (p == null)
-                return NotFound();
+            if (p == null) return NotFound();
 
-            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
+            string? userId = UserUtils.GetUserId(User);
+            if (userId == null) return NotFound();
+
+            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, userId);
 
             _cart.Remove(p);
 
@@ -88,7 +90,10 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Customer")]
         public IActionResult Wipe()
         {
-            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
+            string? userId = UserUtils.GetUserId(User);
+            if (userId == null) return NotFound();
+
+            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, userId);
 
             _context.ShoppingCartItems.RemoveRange(_context.ShoppingCartItems.Where(i => i.CartId == _cart.CartId));
             _context.ShoppingCarts.Remove(_cart);
@@ -99,16 +104,18 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Customer")]
         public IActionResult ConvertToOrder(int shoppingCartId)
         {
-            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
-            ApplicationUser? user = _context.Users.Where(u => u.Id == _userId).Include(u => u.Address).FirstOrDefault();
+            string? userId = UserUtils.GetUserId(User);
+            if (userId == null) return NotFound();
 
-            if (user == null || _cart == null)
-                return NotFound();
+            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, userId);
+
+            ApplicationUser? user = _context.Users.Where(u => u.Id == userId).Include(u => u.Address).FirstOrDefault();
+            if (user == null || _cart == null) return NotFound();
 
             Order order = new Order
             {
                 CreatedAt = DateTime.Now,
-                UserId = _userId,
+                UserId = userId,
                 AddressId = user.AddressId,
                 OrderStatus = Models.Enums.EnumOrderStatus.Ordered,
             };

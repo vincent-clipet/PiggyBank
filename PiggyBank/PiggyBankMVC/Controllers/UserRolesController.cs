@@ -24,13 +24,13 @@ namespace PiggyBankMVC.Controllers
             var userRolesViewModel = new List<UserRolesViewModel>();
             foreach (ApplicationUser user in users)
             {
-                var thisViewModel = new UserRolesViewModel();
-                thisViewModel.UserId = user.Id;
-                thisViewModel.Email = user.Email;
-                thisViewModel.FirstName = user.Firstname;
-                thisViewModel.LastName = user.Lastname;
-                thisViewModel.Roles = await GetUserRoles(user);
-                userRolesViewModel.Add(thisViewModel);
+                var vm = new UserRolesViewModel();
+                vm.UserId = user.Id;
+                vm.Email = user.Email;
+                vm.FirstName = user.Firstname;
+                vm.LastName = user.Lastname;
+                vm.Roles = await GetUserRoles(user);
+                userRolesViewModel.Add(vm);
             }
             return View(userRolesViewModel);
         }

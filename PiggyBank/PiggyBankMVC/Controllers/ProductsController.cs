@@ -15,20 +15,16 @@ namespace PiggyBankMVC.Controllers
     public class ProductsController : Controller
     {
         private readonly PiggyContext _context;
-        private readonly string? _userId;
-        private readonly ClaimsPrincipal? _principal;
 
-        public ProductsController(PiggyContext context, IHttpContextAccessor httpContextAccessor)
+        public ProductsController(PiggyContext context)
         {
             _context = context;
-            _principal = httpContextAccessor?.HttpContext?.User;
-            _userId = httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            bool isCustomerOrGuest = _principal.IsInRole("Customer") || ! User.Identity.IsAuthenticated;
+            bool isCustomerOrGuest = User.IsInRole("Customer") || !User.Identity.IsAuthenticated;
 
             var orders = isCustomerOrGuest ?
                 _context.Products.Include(p => p.Manufacturer).Where(p => p.IsActive == true)
@@ -41,20 +37,16 @@ namespace PiggyBankMVC.Controllers
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            bool isCustomerOrGuest = _principal.IsInRole("Customer") || !User.Identity.IsAuthenticated;
+            bool isCustomerOrGuest = User.IsInRole("Customer") || !User.Identity.IsAuthenticated;
 
-            if (id == null || _context.Products == null)
-                return NotFound();
+            if (id == null || _context.Products == null) return NotFound();
 
             var product = await _context.Products
                 .Include(p => p.Manufacturer)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
 
-            if (!product.IsActive && isCustomerOrGuest)
-                return Forbid();
-            
-            if (product == null)
-                return NotFound();
+            if (product == null) return NotFound();
+            if (!product.IsActive && isCustomerOrGuest) return Forbid();
 
             return View(product);
         }
@@ -87,16 +79,11 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
+            if (id == null || _context.Products == null) return NotFound();
 
             var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            if (product == null) return NotFound();
+
             ViewData["ManufacturerId"] = new SelectList(_context.Manufacturers, "ManufacturerId", "Name", product.ManufacturerId);
             return View(product);
         }
@@ -107,10 +94,7 @@ namespace PiggyBankMVC.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,ImageUrl,Description,Height,Width,Length,Weight,Capacity,Color,Price,IsActive,ManufacturerId")] Product product)
         {
-            if (id != product.ProductId)
-            {
-                return NotFound();
-            }
+            if (id != product.ProductId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -122,13 +106,9 @@ namespace PiggyBankMVC.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ProductExists(product.ProductId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
