@@ -92,6 +92,47 @@ namespace PiggyBankMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult ConvertToOrder(int shoppingCartId)
+        {
+            ShoppingCart _cart = ShoppingCart.CreateOrFind(_context, _userId);
+            ApplicationUser? user = _context.Users.Where(u => u.Id == _userId).Include(u => u.Address).FirstOrDefault();
+
+            if (user == null || _cart == null)
+                return NotFound();
+
+            Order order = new Order
+            {
+                CreatedAt = DateTime.Now,
+                UserId = _userId,
+                AddressId = user.AddressId,
+                OrderStatus = Models.Enums.EnumOrderStatus.Ordered,
+            };
+
+            _context.Orders.Add(order);
+            _context.SaveChanges(true);
+
+            foreach (ShoppingCartItem item in _cart.Items)
+            {
+                OrderDetail od = new OrderDetail
+                {
+                    Quantity = item.Quantity,
+                    Price = item.Quantity * item.Product.Price,
+                    OrderId = order.OrderId,
+                    ProductId = item.ProductId,
+                };
+                order.Details.Add(od);
+                _context.OrderDetails.Add(od);
+            }
+
+            // Delete the cart, not useful anymore
+            _context.ShoppingCartItems.RemoveRange(_context.ShoppingCartItems.Where(i => i.CartId == _cart.CartId));
+            _context.ShoppingCarts.Remove(_cart);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", "Orders", new { order.OrderId });
+        }
+
         public IActionResult Back(string returnUrl = "/")
         {
             return Redirect(returnUrl);
