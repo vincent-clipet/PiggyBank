@@ -2,12 +2,6 @@
 
 ### Tier 1
 
-- Shopping Cart
-	- Implement Wipe
-	- Implement Remove
-	- Implement conversion to Order
-	- Hide "Shopping Cart" from NavBar when empty + Add Count next to it
-
 - Add Reviews on Products
 
 - Order#Edit : OrderStatus does not get filled from the enum
@@ -30,12 +24,18 @@
 
 - Make Delete just 'IsActive = false' where possible
 
+- Hide "Shopping Cart" from NavBar when empty + Add Count next to it
+
 
 
 ### Tier 3
 
-- Don't show picture if null
-
 - Set Phone Number & EmailConfirmed on Register
 
 - Add adress on register form
+
+
+
+
+
+

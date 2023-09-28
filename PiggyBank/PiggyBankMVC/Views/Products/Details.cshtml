@@ -82,7 +82,7 @@
 <div>
     @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Edit" asp-route-id="@Model?.ProductId">Edit</a><span> | </span>
+        <a asp-action="Edit" role="button" class="btn btn-warning" asp-route-id="@Model?.ProductId">Edit</a>
     }
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" role="button" class="btn btn-secondary">Back to List</a>
 </div>
