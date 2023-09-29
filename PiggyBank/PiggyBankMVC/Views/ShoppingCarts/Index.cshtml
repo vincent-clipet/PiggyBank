@@ -67,10 +67,32 @@
             </dd>
         </dl>
 
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmOrder" tabindex="-1" aria-labelledby="confirmOrder" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmOrderLabel">Confirm order ?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                        <a asp-controller="ShoppingCarts" asp-action="ConvertToOrder" role="button" class="btn btn-success">
+                            Confirm
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
-            <a asp-controller="ShoppingCarts" asp-action="ConvertToOrder" role="button" class="btn btn-success">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmOrder">
                 Order
-            </a>
+            </button>
 
             <a asp-controller="ShoppingCarts" asp-action="Wipe" role="button" class="btn btn-danger" align="right">
                 Wipe cart
