@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    ViewData["DisabledColor"] = "#dddddd";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -40,8 +41,10 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -65,7 +68,17 @@
             <td>
                 @if (User.IsInRole("Admin"))
                 {
-                    <a asp-action="Edit" asp-route-id="@item.ProductId" role="button" class="btn btn-warning">Edit</a>
+                    if (item.IsActive)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.ProductId" role="button" class="btn btn-warning">Details</a>
+                    }
+                    else
+                    {
+                        <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Product is disabled"
+                            asp-action="Edit" asp-route-id="@item.ProductId"
+                            role="button" class="btn btn-secondary">Details</a>
+                    }
+
                     <a asp-action="Details" asp-route-id="@item.ProductId" role="button" class="btn btn-dark">Details</a>
                 }
                 else

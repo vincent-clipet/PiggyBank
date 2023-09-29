@@ -61,3 +61,7 @@ body > header > nav a.active {
 .footer-copyright {
     margin-left: 20px;
 }
+
+.disabled {
+    background-color: #dddddd;
+}
